@@ -1,0 +1,119 @@
+---
+const faqs = [
+  {
+    q: '¿Tienen estacionamiento?',
+    a: 'Sí, contamos con un amplio estacionamiento privado y seguro para todos nuestros clientes sin costo adicional.',
+  },
+  {
+    q: '¿Cómo reservar para grupos grandes?',
+    a: 'Para grupos de más de 10 personas, recomendamos contactarnos directamente vía WhatsApp con al menos 48 horas de anticipación para asegurar la mejor ubicación.',
+  },
+  {
+    q: '¿Los shows tienen costo adicional?',
+    a: 'El valor de la entrada o cover varía según el artista. Generalmente los precios están indicados en nuestra cartelera de eventos.',
+  },
+];
+---
+
+<section id="contacto" class="py-section-gap bg-surface-container-low">
+  <div class="max-w-container-max mx-auto px-margin-mobile md:px-gutter">
+
+    <!-- Header -->
+    <div class="text-center mb-16">
+      <span class="text-primary-container text-label-sm uppercase tracking-[0.3em] font-bold block mb-4">
+        Asistencia
+      </span>
+      <h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">
+        Contacto y Ayuda
+      </h2>
+    </div>
+
+    <!-- 2 columnas: mapa + info -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-20">
+
+      <!-- Columna izquierda: mapa placeholder -->
+      <div class="flex flex-col gap-5">
+        <div class="aspect-video bg-surface-container rounded-xl flex flex-col items-center justify-center gap-3 border border-primary-container/10">
+          <span class="material-symbols-outlined text-5xl text-primary-container/40">location_on</span>
+          <span class="text-on-surface-variant text-sm text-center px-6">Terraza Doña Dominga<br />Mallarauco, Región Metropolitana</span>
+        </div>
+        <a
+          href="https://maps.google.com/?q=Mallarauco+Region+Metropolitana+Chile"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center justify-center gap-2 px-6 py-3 border border-primary-container/40 text-on-surface rounded-full hover:bg-primary-container/10 hover:border-primary-container/70 transition-all text-sm font-semibold"
+        >
+          <span class="material-symbols-outlined text-base text-primary-container">directions</span>
+          Cómo llegar
+        </a>
+      </div>
+
+      <!-- Columna derecha: horarios + teléfono + cita -->
+      <div class="flex flex-col gap-6">
+
+        <!-- Horarios -->
+        <div class="glass-card rounded-xl p-6">
+          <h3 class="font-headline-lg text-on-surface font-semibold text-lg mb-4 flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary-container text-xl">schedule</span>
+            Horarios
+          </h3>
+          <ul class="space-y-2 text-on-surface-variant text-sm">
+            <li class="flex justify-between">
+              <span>Jueves a Sábado</span>
+              <span class="text-on-surface font-medium">19:00 - 03:00 hrs</span>
+            </li>
+            <li class="flex justify-between text-on-surface-variant/50">
+              <span>Domingo - Miércoles</span>
+              <span>Cerrado</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Teléfono -->
+        <div class="glass-card rounded-xl p-6">
+          <h3 class="font-headline-lg text-on-surface font-semibold text-lg mb-4 flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary-container text-xl">phone</span>
+            Teléfono
+          </h3>
+          <a
+            href="tel:+56974131205"
+            class="text-on-surface hover:text-primary-container transition-colors font-medium text-lg"
+          >
+            +56 9 7413 1205
+          </a>
+          <p class="text-on-surface-variant text-xs mt-1">También por WhatsApp</p>
+        </div>
+
+        <!-- Cita destacada -->
+        <div class="border-l-4 border-primary-container pl-5 py-2">
+          <p class="text-on-surface-variant italic text-sm leading-relaxed">
+            "Cada visita a Doña Dominga es una experiencia que se lleva en el corazón. Venimos a crear recuerdos."
+          </p>
+          <span class="text-primary-container text-label-sm font-semibold mt-2 block">— La familia Dominga</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- FAQ accordion -->
+    <div class="max-w-3xl mx-auto space-y-3">
+      <h3 class="font-headline-lg text-on-surface text-center text-xl font-semibold mb-6">
+        Preguntas frecuentes
+      </h3>
+      {faqs.map((faq) => (
+        <details class="group glass-card overflow-hidden rounded-xl">
+          <summary class="flex justify-between items-center p-6 cursor-pointer list-none">
+            <span class="font-semibold text-on-surface text-sm md:text-base">{faq.q}</span>
+            <span class="material-symbols-outlined text-on-surface-variant transition-transform duration-300 group-open:rotate-180 flex-shrink-0 ml-4">
+              expand_more
+            </span>
+          </summary>
+          <div class="px-6 pb-6 pt-0 text-on-surface-variant text-sm leading-relaxed border-t border-primary-container/10">
+            {faq.a}
+          </div>
+        </details>
+      ))}
+    </div>
+
+  </div>
+</section>

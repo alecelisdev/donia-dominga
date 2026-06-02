@@ -1,0 +1,73 @@
+---
+const categories = [
+  {
+    name: 'Para Compartir',
+    items: [
+      { name: 'Tabla Mallaraucana', price: '$18.900' },
+      { name: 'Quesos de Autor', price: '$14.500' },
+      { name: 'Ceviche del Valle', price: '$12.900' },
+      { name: 'Empanaditas Gourmet', price: '$9.500' },
+    ],
+  },
+  {
+    name: 'Coctelería & Vinos',
+    items: [
+      { name: 'Dominga Spritz', price: '$6.800' },
+      { name: 'Pisco Sour Premium', price: '$5.500' },
+      { name: 'Copa Vino Selección', price: '$4.500' },
+      { name: 'Mojito de Maracuyá', price: '$6.200' },
+    ],
+  },
+];
+---
+
+<section id="menu" class="py-section-gap bg-background">
+  <div class="max-w-container-max mx-auto px-margin-mobile md:px-gutter">
+    <div class="flex flex-col lg:flex-row gap-16">
+
+      <!-- Columna izquierda -->
+      <div class="lg:w-1/3">
+        <span class="text-primary-container text-label-sm uppercase tracking-[0.3em] font-bold block mb-4">
+          Gastronomía
+        </span>
+        <h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-stack-md">
+          Nuestra Carta
+        </h2>
+        <p class="text-on-surface-variant text-body-md leading-relaxed mb-stack-lg">
+          Una selección curada que celebra los ingredientes locales de Mallarauco. Desde tablas de quesos artesanales hasta coctelería de autor diseñada para acompañar nuestras noches de show.
+        </p>
+
+        <!-- Happy Hour box: borde completo, sin radius grande -->
+        <div class="p-stack-lg border border-primary-container/20 bg-surface-container-low">
+          <span class="material-symbols-outlined text-primary-container block mb-2">local_bar</span>
+          <h4 class="text-2xl text-on-surface mb-2 font-bold">Happy Hour</h4>
+          <p class="text-on-surface-variant text-body-md">
+            Jueves y Viernes de 18:00 a 20:00. 2x1 en Coctelería Nacional.
+          </p>
+        </div>
+      </div>
+
+      <!-- Columna derecha: 2 columnas con categorías -->
+      <div class="lg:w-2/3 grid grid-cols-1 md:grid-cols-2 gap-12">
+        {categories.map((cat) => (
+          <div>
+            <!-- Header de categoría: caps pequeñas con borde inferior -->
+            <h3 class="text-xs text-primary-container uppercase tracking-widest border-b border-primary-container/20 pb-4 mb-8 font-bold">
+              {cat.name}
+            </h3>
+            <ul class="space-y-6">
+              {cat.items.map((item) => (
+                <li class="flex items-end">
+                  <span class="text-on-surface text-body-md font-bold">{item.name}</span>
+                  <span class="dotted-leader"></span>
+                  <span class="text-primary-container text-body-md">{item.price}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+
+    </div>
+  </div>
+</section>

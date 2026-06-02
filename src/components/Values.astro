@@ -1,0 +1,56 @@
+---
+const values = [
+  {
+    icon: 'eco',
+    title: 'Productos del Campo',
+    description: 'Ingredientes frescos y locales de Mallarauco.',
+  },
+  {
+    icon: 'soup_kitchen',
+    title: 'Comida Casera',
+    description: 'Recetas tradicionales con el toque secreto de casa.',
+  },
+  {
+    icon: 'groups',
+    title: 'Atención Familiar',
+    description: 'Te recibimos como en casa, con calidez y cercanía.',
+  },
+  {
+    icon: 'history',
+    title: 'Tradición 1993',
+    description: 'Tres décadas de historia y momentos compartidos.',
+  },
+];
+---
+
+<section class="py-section-gap bg-surface-container-low border-y border-primary-container/10">
+  <div class="max-w-container-max mx-auto px-margin-mobile md:px-gutter">
+
+    <!-- Header -->
+    <div class="text-center mb-16">
+      <span class="text-primary-container text-label-sm uppercase tracking-[0.3em] font-bold block mb-4">
+        Nuestro Compromiso
+      </span>
+      <h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">
+        Valores de Nuestra Tierra
+      </h2>
+    </div>
+
+    <!-- Grid de valores — sin bordes, sin glassmorphism -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-8">
+      {values.map((v, i) => (
+        <div
+          class="reveal text-center space-y-4 group"
+          style={`--reveal-delay: ${i * 100}ms`}
+        >
+          <div class="w-16 h-16 mx-auto bg-primary-container/10 rounded-full flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
+            <span class="material-symbols-outlined text-primary-container text-3xl">{v.icon}</span>
+          </div>
+          <h3 class="text-xl font-bold text-on-surface">{v.title}</h3>
+          <p class="text-sm text-on-surface-variant leading-relaxed">{v.description}</p>
+        </div>
+      ))}
+    </div>
+
+  </div>
+</section>

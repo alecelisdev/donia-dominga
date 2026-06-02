@@ -1,0 +1,71 @@
+---
+const reviews = [
+  {
+    stars: 5,
+    title: 'Una noche perfecta',
+    quote: 'Fuimos en aniversario y quedamos encantados. La música en vivo, los quesos artesanales y la atención hicieron de esa noche algo muy especial.',
+    user: '@carolina_rm',
+  },
+  {
+    stars: 5,
+    title: 'El mejor plan del fin de semana',
+    quote: 'Llevamos a toda la familia y cada uno encontró algo que amar. Los niños con las empanadas, los grandes con el vino y el show. ¡Volveremos!',
+    user: '@familiaconcha2024',
+  },
+  {
+    stars: 5,
+    title: 'Auténtico y delicioso',
+    quote: 'Rara vez encuentras un lugar tan genuino. La comida sabe a campo de verdad y el ambiente te hace olvidar que estás cerca de Santiago.',
+    user: '@javierandres_v',
+  },
+  {
+    stars: 5,
+    title: 'Un descubrimiento único',
+    quote: 'Me lo recomendaron y no lo podía creer. Un lugar así, tan cercano a la ciudad pero con toda la esencia del campo chileno. Sorprendente.',
+    user: '@patrizialopez',
+  },
+];
+---
+
+<section class="py-section-gap bg-surface-container-low">
+  <div class="max-w-container-max mx-auto px-margin-mobile md:px-gutter">
+
+    <!-- Header -->
+    <div class="text-center mb-14">
+      <span class="text-primary-container text-label-sm uppercase tracking-[0.3em] font-bold block mb-4">
+        Opiniones
+      </span>
+      <h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">
+        Lo que dicen nuestros clientes
+      </h2>
+    </div>
+
+    <!-- Reviews grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-0 divide-y md:divide-y-0 md:divide-x divide-primary-container/10">
+      {reviews.map((r, i) => (
+        <div class={`px-6 py-8 ${i === 0 ? 'pl-0' : ''} ${i === reviews.length - 1 ? 'pr-0' : ''}`}>
+          <!-- Estrellas -->
+          <div class="flex gap-0.5 mb-3">
+            {Array.from({ length: r.stars }).map(() => (
+              <span class="material-symbols-outlined icon-filled text-primary-container text-base">star</span>
+            ))}
+          </div>
+
+          <!-- Título -->
+          <h3 class="font-headline-lg text-on-surface italic font-semibold text-base mb-3">
+            "{r.title}"
+          </h3>
+
+          <!-- Cita -->
+          <p class="text-on-surface-variant text-sm leading-relaxed mb-4">
+            {r.quote}
+          </p>
+
+          <!-- Usuario -->
+          <span class="text-primary-container text-label-sm font-semibold">{r.user}</span>
+        </div>
+      ))}
+    </div>
+
+  </div>
+</section>

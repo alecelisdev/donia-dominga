@@ -1,0 +1,150 @@
+---
+---
+
+<section id="reserva" class="py-section-gap bg-background relative overflow-hidden">
+
+  <!-- Dot pattern background -->
+  <div
+    class="absolute inset-0 opacity-20"
+    style="background-image: radial-gradient(circle, rgba(255,92,34,0.3) 1px, transparent 1px); background-size: 28px 28px;"
+  ></div>
+
+  <div class="relative z-10 max-w-container-max mx-auto px-margin-mobile md:px-gutter">
+    <div class="max-w-2xl mx-auto">
+
+      <!-- Header -->
+      <div class="text-center mb-12">
+        <span class="text-primary-container text-label-sm uppercase tracking-[0.3em] font-bold block mb-4">
+          Reservas
+        </span>
+        <h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-4">
+          Reserva tu mesa
+        </h2>
+        <p class="text-on-surface-variant text-body-md">
+          Completa el formulario y nos pondremos en contacto contigo para confirmar disponibilidad.
+        </p>
+      </div>
+
+      <!-- Form -->
+      <form
+        class="glass-card rounded-2xl p-8 box-glow space-y-5"
+        onsubmit="return false;"
+      >
+        <!-- Nombre y email -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div>
+            <label class="block text-on-surface-variant text-sm mb-1.5 font-medium" for="nombre">
+              Nombre completo
+            </label>
+            <input
+              id="nombre"
+              type="text"
+              placeholder="María González"
+              class="w-full bg-surface-container-high border border-outline-variant rounded-lg px-4 py-3 text-on-surface placeholder-on-surface-variant/50 focus:outline-none focus:border-primary-container transition-colors text-sm"
+            />
+          </div>
+          <div>
+            <label class="block text-on-surface-variant text-sm mb-1.5 font-medium" for="email">
+              Correo electrónico
+            </label>
+            <input
+              id="email"
+              type="email"
+              placeholder="maria@email.com"
+              class="w-full bg-surface-container-high border border-outline-variant rounded-lg px-4 py-3 text-on-surface placeholder-on-surface-variant/50 focus:outline-none focus:border-primary-container transition-colors text-sm"
+            />
+          </div>
+        </div>
+
+        <!-- Fecha y personas -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div>
+            <label class="block text-on-surface-variant text-sm mb-1.5 font-medium" for="fecha">
+              Fecha
+            </label>
+            <input
+              id="fecha"
+              type="date"
+              class="w-full bg-surface-container-high border border-outline-variant rounded-lg px-4 py-3 text-on-surface focus:outline-none focus:border-primary-container transition-colors text-sm"
+            />
+          </div>
+          <div>
+            <label class="block text-on-surface-variant text-sm mb-1.5 font-medium" for="personas">
+              Número de personas
+            </label>
+            <select
+              id="personas"
+              class="w-full bg-surface-container-high border border-outline-variant rounded-lg px-4 py-3 text-on-surface focus:outline-none focus:border-primary-container transition-colors text-sm appearance-none"
+            >
+              <option value="">Seleccionar</option>
+              <option value="1">1 persona</option>
+              <option value="2">2 personas</option>
+              <option value="3">3 personas</option>
+              <option value="4">4 personas</option>
+              <option value="5-6">5-6 personas</option>
+              <option value="7-10">7-10 personas</option>
+              <option value="10+">Más de 10</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- WhatsApp -->
+        <div>
+          <label class="block text-on-surface-variant text-sm mb-1.5 font-medium" for="whatsapp">
+            WhatsApp (para confirmar)
+          </label>
+          <input
+            id="whatsapp"
+            type="tel"
+            placeholder="+56 9 XXXX XXXX"
+            class="w-full bg-surface-container-high border border-outline-variant rounded-lg px-4 py-3 text-on-surface placeholder-on-surface-variant/50 focus:outline-none focus:border-primary-container transition-colors text-sm"
+          />
+        </div>
+
+        <!-- Notas -->
+        <div>
+          <label class="block text-on-surface-variant text-sm mb-1.5 font-medium" for="notas">
+            Notas o solicitudes especiales <span class="text-on-surface-variant/50">(opcional)</span>
+          </label>
+          <textarea
+            id="notas"
+            rows="3"
+            placeholder="Ej: cumpleaños, silla para bebé, alergias..."
+            class="w-full bg-surface-container-high border border-outline-variant rounded-lg px-4 py-3 text-on-surface placeholder-on-surface-variant/50 focus:outline-none focus:border-primary-container transition-colors text-sm resize-none"
+          ></textarea>
+        </div>
+
+        <!-- Submit -->
+        <button
+          type="submit"
+          class="w-full flex items-center justify-center gap-2 py-4 bg-primary-container text-on-primary-container font-semibold rounded-full hover:opacity-90 transition-opacity box-glow text-base"
+          id="submit-btn"
+        >
+          <span class="material-symbols-outlined">calendar_today</span>
+          Confirmar reservación
+        </button>
+
+        <!-- Nota -->
+        <p class="text-center text-on-surface-variant/60 text-xs">
+          También puedes reservar directamente por
+          <a href="https://wa.me/56974131205" target="_blank" class="text-primary-container hover:underline">WhatsApp</a>
+        </p>
+      </form>
+
+    </div>
+  </div>
+</section>
+
+<script>
+  const btn = document.getElementById('submit-btn');
+  btn?.addEventListener('click', () => {
+    btn.textContent = '✓ ¡Solicitud enviada!';
+    btn.classList.add('opacity-70');
+    btn.setAttribute('disabled', 'true');
+    setTimeout(() => {
+      btn.innerHTML = '<span class="material-symbols-outlined">calendar_today</span> Confirmar reservación';
+      btn.classList.remove('opacity-70');
+      btn.removeAttribute('disabled');
+    }, 3000);
+  });
+</script>

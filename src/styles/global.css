@@ -1,0 +1,251 @@
+@import "tailwindcss";
+
+@theme {
+  /* ── Colors ── */
+  --color-background:               #161311;
+  --color-surface:                  #161311;
+  --color-surface-dim:              #161311;
+  --color-surface-bright:           #3d3836;
+  --color-surface-container-lowest: #110d0c;
+  --color-surface-container-low:    #1f1b19;
+  --color-surface-container:        #231f1d;
+  --color-surface-container-high:   #2e2927;
+  --color-surface-container-highest:#393431;
+  --color-surface-variant:          #393431;
+  --color-on-background:            #eae1dd;
+  --color-on-surface:               #eae1dd;
+  --color-on-surface-variant:       #d0c5af;
+  --color-inverse-surface:          #eae1dd;
+  --color-inverse-on-surface:       #342f2d;
+
+  --color-primary:                  #ff5c22;
+  --color-on-primary:               #ffffff;
+  --color-primary-container:        #ff5c22;
+  --color-on-primary-container:     #ffffff;
+  --color-primary-fixed:            #ffe088;
+  --color-primary-fixed-dim:        #e9c349;
+  --color-on-primary-fixed:         #241a00;
+  --color-on-primary-fixed-variant: #574500;
+  --color-inverse-primary:          #735c00;
+  --color-surface-tint:             #e9c349;
+
+  --color-secondary:                #ffb68c;
+  --color-on-secondary:             #532200;
+  --color-secondary-container:      #753401;
+  --color-on-secondary-container:   #fb9f66;
+  --color-secondary-fixed:          #ffdbc9;
+  --color-secondary-fixed-dim:      #ffb68c;
+  --color-on-secondary-fixed:       #321200;
+  --color-on-secondary-fixed-variant:#753401;
+
+  --color-tertiary:                 #b1da9a;
+  --color-on-tertiary:              #173809;
+  --color-tertiary-container:       #96be81;
+  --color-on-tertiary-container:    #2b4d1c;
+  --color-tertiary-fixed:           #c5efad;
+  --color-tertiary-fixed-dim:       #a9d293;
+  --color-on-tertiary-fixed:        #062100;
+  --color-on-tertiary-fixed-variant:#2d4f1e;
+
+  --color-outline:                  #99907c;
+  --color-outline-variant:          #4d4635;
+  --color-error:                    #ffb4ab;
+  --color-on-error:                 #690005;
+  --color-error-container:          #93000a;
+  --color-on-error-container:       #ffdad6;
+
+  --color-warm-white:               #FDF5E6;
+  --color-midnight-forest:          #0B1408;
+  --color-terracotta-clay:          #BC5449;
+  --color-amber-glow:               #FFBF00;
+
+  /* ── Spacing ── */
+  --spacing-stack-sm:      8px;
+  --spacing-stack-md:      16px;
+  --spacing-stack-lg:      32px;
+  --spacing-gutter:        24px;
+  --spacing-margin-mobile: 20px;
+  --spacing-section-gap:   120px;
+  --spacing-container-max: 1200px;
+
+  /* ── Border Radius ── */
+  --radius-DEFAULT: 0.125rem;
+  --radius-lg:      0.25rem;
+  --radius-xl:      0.5rem;
+  --radius-full:    0.75rem;
+
+  /* ── Font Families ── */
+  --font-display-lg:         "Playfair Display", serif;
+  --font-headline-lg:        "Playfair Display", serif;
+  --font-headline-lg-mobile: "Playfair Display", serif;
+  --font-headline-md:        "Playfair Display", serif;
+  --font-body-lg:            "Manrope", sans-serif;
+  --font-body-md:            "Manrope", sans-serif;
+  --font-label-sm:           "Manrope", sans-serif;
+
+  /* ── Font Sizes ── */
+  --text-display-lg:                  64px;
+  --text-display-lg--line-height:     72px;
+  --text-display-lg--letter-spacing:  -0.02em;
+
+  --text-headline-lg:                 48px;
+  --text-headline-lg--line-height:    56px;
+
+  --text-headline-lg-mobile:          32px;
+  --text-headline-lg-mobile--line-height: 40px;
+
+  --text-headline-md:                 32px;
+  --text-headline-md--line-height:    40px;
+
+  --text-body-lg:                     18px;
+  --text-body-lg--line-height:        28px;
+
+  --text-body-md:                     16px;
+  --text-body-md--line-height:        24px;
+
+  --text-label-sm:                    12px;
+  --text-label-sm--line-height:       16px;
+  --text-label-sm--letter-spacing:    0.05em;
+}
+
+/* ── Base ── */
+body {
+  font-family: "Manrope", sans-serif;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, .font-headline {
+  font-family: "Playfair Display", serif;
+}
+
+/* ── Material Symbols ── */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+.icon-filled {
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* ── Hero overlay ── */
+.hero-overlay {
+  background: linear-gradient(
+    to right,
+    rgba(22, 19, 17, 0.95) 0%,
+    rgba(22, 19, 17, 0.7) 60%,
+    rgba(22, 19, 17, 0.4) 100%
+  );
+}
+
+@media (max-width: 768px) {
+  .hero-overlay {
+    background: linear-gradient(
+      to bottom,
+      rgba(22, 19, 17, 0.4) 0%,
+      rgba(22, 19, 17, 0.8) 60%,
+      rgba(22, 19, 17, 0.97) 100%
+    );
+  }
+}
+
+/* ── Glass card ── */
+.glass-card {
+  background: rgba(35, 31, 29, 0.6);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 92, 34, 0.1);
+}
+
+/* ── Dotted leader (menu) ── */
+.dotted-leader {
+  flex-grow: 1;
+  border-bottom: 1px dotted rgba(153, 144, 124, 0.5);
+  margin: 0 8px;
+  margin-bottom: 5px;
+}
+
+/* ── Glow effects ── */
+.text-glow {
+  text-shadow: 0 0 15px rgba(255, 92, 34, 0.4);
+}
+
+.box-glow {
+  box-shadow: 0 0 20px rgba(255, 92, 34, 0.15);
+}
+
+/* ── Spark indicator (mobile menu) ── */
+.spark-indicator {
+  position: relative;
+}
+
+.spark-indicator::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 70%;
+  background-color: #ff5c22;
+  border-radius: 0 4px 4px 0;
+}
+
+/* ── Date input dark scheme ── */
+input[type="date"] {
+  color-scheme: dark;
+}
+
+/* ── Select transparent background fix ── */
+select option {
+  background-color: #231f1d;
+  color: #eae1dd;
+}
+
+/* ── Scroll offset (compensa nav fijo 64px) ── */
+html {
+  scroll-padding-top: 80px;
+}
+
+/* ── Hero entrance ── */
+@keyframes heroFadeUp {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.hero-animate {
+  opacity: 0;
+  animation: heroFadeUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ── Scroll reveal ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity  0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Nav link activo ── */
+.nav-link.is-active {
+  color: var(--color-primary-container);
+  font-weight: 700;
+  border-bottom: 1px solid var(--color-primary-container);
+  padding-bottom: 2px;
+}
+
+/* ── WhatsApp pulsing glow ── */
+@keyframes waGlow {
+  0%, 100% { box-shadow: 0 4px 24px rgba(37,211,102,0.35); }
+  50%       { box-shadow: 0 4px 36px rgba(37,211,102,0.65), 0 0 0 6px rgba(37,211,102,0.12); }
+}
+
+.wa-glow {
+  animation: waGlow 2.8s ease-in-out infinite;
+}

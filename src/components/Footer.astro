@@ -1,0 +1,84 @@
+---
+const year = new Date().getFullYear();
+
+const socials = [
+  {
+    icon: 'photo_camera',
+    label: 'Instagram',
+    href: 'https://instagram.com',
+  },
+  {
+    icon: 'thumb_up',
+    label: 'Facebook',
+    href: 'https://facebook.com',
+  },
+  {
+    icon: 'chat',
+    label: 'WhatsApp',
+    href: 'https://wa.me/56974131205',
+  },
+  {
+    icon: 'map',
+    label: 'Google Maps',
+    href: 'https://maps.google.com/?q=Mallarauco+Region+Metropolitana+Chile',
+  },
+];
+---
+
+<footer class="bg-surface-container-lowest border-t border-primary-container/10 py-12">
+  <div class="max-w-container-max mx-auto px-margin-mobile md:px-gutter">
+
+    <div class="flex flex-col md:flex-row items-center md:items-start justify-between gap-8">
+
+      <!-- Marca -->
+      <div class="flex flex-col items-center md:items-start gap-3">
+        <div class="flex items-center gap-3">
+          <img src="/Logo.jpg" alt="Logo Doña Dominga" class="h-10 w-10 rounded-full object-cover" />
+          <span class="font-headline-lg text-on-surface text-lg font-semibold">Doña Dominga</span>
+        </div>
+        <p class="text-on-surface-variant text-xs text-center md:text-left max-w-xs leading-relaxed">
+          Terraza con shows en vivo en Mallarauco, Región Metropolitana. Gastronomía artesanal y buena onda.
+        </p>
+        <p class="text-on-surface-variant/40 text-xs">
+          © {year} Terraza Doña Dominga. Todos los derechos reservados.
+        </p>
+      </div>
+
+      <!-- Links rápidos -->
+      <div class="flex flex-col items-center md:items-start gap-2 text-sm">
+        <span class="text-on-surface-variant/60 text-xs uppercase tracking-wider font-semibold mb-1">Navegación</span>
+        <a href="#nosotros" class="text-on-surface-variant hover:text-primary-container transition-colors">Nosotros</a>
+        <a href="#eventos" class="text-on-surface-variant hover:text-primary-container transition-colors">Eventos</a>
+        <a href="#menu" class="text-on-surface-variant hover:text-primary-container transition-colors">Menú</a>
+        <a href="#reserva" class="text-on-surface-variant hover:text-primary-container transition-colors">Reservas</a>
+        <a href="#contacto" class="text-on-surface-variant hover:text-primary-container transition-colors">Contacto</a>
+      </div>
+
+      <!-- Redes sociales -->
+      <div class="flex flex-col items-center md:items-start gap-3">
+        <span class="text-on-surface-variant/60 text-xs uppercase tracking-wider font-semibold">Síguenos</span>
+        <div class="flex gap-3">
+          {socials.map((s) => (
+            <a
+              href={s.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={s.label}
+              class="w-10 h-10 glass-card rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary-container hover:border-primary-container/30 transition-all"
+            >
+              <span class="material-symbols-outlined text-lg">{s.icon}</span>
+            </a>
+          ))}
+        </div>
+        <a
+          href="tel:+56974131205"
+          class="text-on-surface-variant hover:text-primary-container transition-colors text-sm flex items-center gap-1.5"
+        >
+          <span class="material-symbols-outlined text-sm">phone</span>
+          +56 9 7413 1205
+        </a>
+      </div>
+
+    </div>
+  </div>
+</footer>
