@@ -43,7 +43,10 @@ const reviews = [
     <!-- Reviews grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-0 divide-y md:divide-y-0 md:divide-x divide-primary-container/10">
       {reviews.map((r, i) => (
-        <div class={`px-6 py-8 ${i === 0 ? 'pl-0' : ''} ${i === reviews.length - 1 ? 'pr-0' : ''}`}>
+        <div
+          class={`reveal px-6 py-8 ${i === 0 ? 'pl-0' : ''} ${i === reviews.length - 1 ? 'pr-0' : ''}`}
+          style={`--reveal-delay: ${i * 130}ms`}
+        >
           <!-- Estrellas -->
           <div class="flex gap-0.5 mb-3">
             {Array.from({ length: r.stars }).map(() => (

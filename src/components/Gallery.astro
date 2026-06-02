@@ -53,7 +53,7 @@ const images = {
         data-panel={tab}
       >
         {images[tab as keyof typeof images].map((img) => (
-          <div class="aspect-square overflow-hidden rounded-xl bg-surface-container group">
+          <div class="card-lift aspect-square overflow-hidden rounded-xl bg-surface-container group">
             <img
               src={img.src}
               alt={img.alt}

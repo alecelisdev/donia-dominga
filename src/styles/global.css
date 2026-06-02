@@ -249,3 +249,67 @@ html {
 .wa-glow {
   animation: waGlow 2.8s ease-in-out infinite;
 }
+
+/* ── Card lift on hover ── */
+.card-lift {
+  transition:
+    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+.card-lift:hover {
+  transform: translateY(-7px);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.45), 0 6px 16px rgba(255, 92, 34, 0.1);
+}
+
+/* ── CTA button shimmer sweep ── */
+.btn-shine {
+  position: relative;
+  overflow: hidden;
+}
+.btn-shine::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.14) 50%,
+    transparent 65%
+  );
+  transform: translateX(-110%);
+  transition: transform 0.55s ease;
+}
+.btn-shine:hover::after {
+  transform: translateX(110%);
+}
+
+/* ── prefers-reduced-motion: desactiva todas las animaciones y transiciones ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .hero-animate {
+    opacity: 1;
+    animation: none;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .card-lift:hover {
+    transform: none;
+    box-shadow: none;
+  }
+  .btn-shine::after {
+    display: none;
+  }
+  .wa-glow {
+    animation: none;
+    box-shadow: 0 4px 24px rgba(37, 211, 102, 0.35);
+  }
+}
