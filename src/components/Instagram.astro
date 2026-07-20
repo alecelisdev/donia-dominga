@@ -1,0 +1,56 @@
+---
+const posts = [
+  { src: '/Terraza.webp', alt: 'La terraza iluminada de noche' },
+  { src: '/Evento.jpg', alt: 'Show en vivo en Doña Dominga' },
+  { src: '/menu/spritz.jpg', alt: 'Dominga Spritz, nuestro cóctel de autor' },
+  { src: '/Familia.jpg', alt: 'Momentos en familia en la terraza' },
+];
+---
+
+<section id="instagram" class="py-section-gap bg-surface-container-lowest">
+  <div class="max-w-container-max mx-auto px-margin-mobile md:px-gutter">
+
+    <!-- Header -->
+    <div class="flex flex-col items-center text-center mb-12">
+      <span class="text-primary-container text-label-sm uppercase tracking-[0.3em] font-bold block mb-4">
+        Síguenos
+      </span>
+      <h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">
+        Instagram
+      </h2>
+    </div>
+
+    <!-- Grid de posts -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+      {posts.map((post, i) => (
+        <a
+          href="https://instagram.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="reveal card-lift aspect-square overflow-hidden rounded-xl bg-surface-container group"
+          style={`--reveal-delay: ${i * 100}ms`}
+        >
+          <img
+            src={post.src}
+            alt={post.alt}
+            class="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-110"
+          />
+        </a>
+      ))}
+    </div>
+
+    <!-- Link al perfil -->
+    <div class="flex justify-center">
+      <a
+        href="https://instagram.com"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center gap-2 text-on-surface-variant text-xs uppercase tracking-widest font-bold hover:text-primary-container transition-colors border-b border-transparent hover:border-primary-container pb-1"
+      >
+        Ver perfil completo
+        <span class="material-symbols-outlined text-base">arrow_forward</span>
+      </a>
+    </div>
+
+  </div>
+</section>

@@ -1,107 +1,188 @@
 ---
-const events = [
+// Todos los eventos con su flyer real, ordenados del más reciente al más antiguo.
+// `iso` (yyyy-mm-dd) decide en qué bloque cae cada uno: futuro → "Próximo evento",
+// pasado → "Últimos eventos". La lista se corta en build y se re-verifica en el
+// navegador para que el sitio estático no quede congelado en la fecha del deploy.
+const allEvents = [
   {
-    image: '/Evento.jpg',
-    date: 'Sáb 14 Jun',
-    artist: 'Los Hermanos Bustamante',
-    genre: 'Cumbia & Folclor',
-    price: '$8.000',
-    available: true,
+    image: "/erick-berrios.jpg",
+    iso: "2026-07-15",
+    date: "Mié 15 Jul",
+    artist: "Erick Berríos",
+    genre: "Tropical & Cumbia",
+    time: "21:00",
   },
   {
-    image: '/invitado.jpg',
-    date: 'Sáb 21 Jun',
-    artist: 'Valentina Morales',
-    genre: 'Boleros & Baladas',
-    price: '$10.000',
-    available: true,
+    image: "/fiesta-a-la-chilena.jpg",
+    iso: "2026-07-04",
+    date: "Sáb 4 Jul",
+    artist: "Fiesta a la Chilena",
+    genre: "Los NN de la Cueca · Día del Cuequero",
+    time: "20:00",
   },
   {
-    image: '/fachada.webp',
-    date: 'Vie 27 Jun',
-    artist: 'Noche de Cueca',
-    genre: 'Cueca tradicional',
-    price: '$6.000',
-    available: false,
+    image: "/pedroypablo.jpg",
+    iso: "2026-06-29",
+    date: "Lun 29 Jun",
+    artist: "Celebración Pedro y Pablo",
+    genre: "Música en vivo",
+    time: "13:00",
   },
 ];
 
-const waBase = 'https://wa.me/56974131205?text=Hola!%20Quiero%20reservar%20para%20el%20evento%20';
+// Fecha local del build — NO usar toISOString (desfasa el día en Chile)
+const now = new Date();
+const pad = (n: number) => String(n).padStart(2, "0");
+const todayIso = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+
+const upcoming = allEvents
+  .filter((ev) => ev.iso >= todayIso)
+  .sort((a, b) => a.iso.localeCompare(b.iso));
+const featured = upcoming[0] ?? null;
+const past = allEvents.filter((ev) => ev.iso < todayIso);
 ---
 
-<section id="eventos" class="py-section-gap bg-surface-container-low">
+<section
+  id="eventos"
+  class="py-section-gap bg-surface-container-low"
+>
   <div class="max-w-container-max mx-auto px-margin-mobile md:px-gutter">
-
     <!-- Header -->
     <div class="text-center mb-14">
-      <span class="text-primary-container text-label-sm uppercase tracking-[0.3em] font-bold block mb-4">
+      <span
+        class="text-primary-container text-label-sm uppercase tracking-[0.3em] font-bold block mb-4"
+      >
         Cartelera
       </span>
-      <h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">
+      <h2
+        class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface"
+      >
         Próximos eventos
       </h2>
     </div>
 
-    <!-- Cards grid -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      {events.map((ev, i) => (
+    <!-- Próximo evento: un único destacado -->
+    {
+      featured && (
         <div
-          class="reveal card-lift relative group rounded-xl overflow-hidden aspect-3/4 flex flex-col justify-end"
-          style={`--reveal-delay: ${i * 120}ms`}
+          data-featured-event
+          data-event-date={featured.iso}
+          class="reveal card-lift group rounded-xl overflow-hidden bg-surface-container border border-primary-container/10 grid md:grid-cols-2 mb-20"
         >
-
-          <!-- Imagen fondo -->
-          <img
-            src={ev.image}
-            alt={ev.artist}
-            class="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
-          />
-
-          <!-- Gradiente -->
-          <div class="absolute inset-0 bg-linear-to-t from-background via-background/60 to-transparent"></div>
-
-          <!-- Contenido -->
-          <div class="relative z-10 p-6">
-            <!-- Fecha y género -->
-            <div class="flex items-center justify-between mb-3">
-              <span class="text-primary-container text-label-sm font-bold uppercase tracking-wider">{ev.date}</span>
-              <span class="glass-card text-on-surface-variant text-xs px-2 py-1 rounded-full">{ev.genre}</span>
-            </div>
-
-            <!-- Artista -->
-            <h3 class="font-headline-lg text-on-surface text-xl font-bold mb-4">{ev.artist}</h3>
-
-            <!-- Precio + botón -->
-            <div class="flex items-center justify-between">
-              <div>
-                <span class="text-on-surface-variant text-xs block">Entrada desde</span>
-                <span class="text-on-surface font-bold text-lg">{ev.price}</span>
-              </div>
-              {ev.available ? (
-                <a
-                  href={`${waBase}${encodeURIComponent(ev.artist)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="flex items-center gap-2 px-4 py-2 bg-primary-container text-on-primary-container text-sm font-semibold rounded-full hover:opacity-90 transition-opacity"
-                >
-                  <span class="material-symbols-outlined text-base">confirmation_number</span>
-                  Entradas
-                </a>
-              ) : (
-                <span class="flex items-center gap-2 px-4 py-2 bg-surface-container text-on-surface-variant text-sm font-semibold rounded-full cursor-not-allowed">
-                  Agotado
+          <div class="overflow-hidden">
+            <img
+              src={featured.image}
+              alt={featured.artist}
+              class="w-full h-auto transition-transform duration-700 group-hover:scale-105"
+            />
+          </div>
+          <div class="p-6 md:p-10 flex flex-col justify-center">
+            <span class="text-primary-container text-label-sm font-bold uppercase tracking-[0.3em] mb-4">
+              Próximo evento
+            </span>
+            <h3 class="font-headline-lg text-on-surface text-3xl md:text-4xl font-bold mb-3">
+              {featured.artist}
+            </h3>
+            <p class="text-on-surface-variant mb-6">{featured.genre}</p>
+            <div class="flex items-center gap-6 mb-8 text-on-surface">
+              <span class="inline-flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary-container">
+                  calendar_month
                 </span>
-              )}
+                {featured.date}
+              </span>
+              <span class="inline-flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary-container">
+                  schedule
+                </span>
+                {featured.time} hrs
+              </span>
             </div>
+            <a
+              href="#reserva"
+              class="btn-shine inline-block px-10 py-3 bg-primary-container text-on-primary-container text-sm font-bold tracking-widest uppercase text-center hover:brightness-110 active:scale-95 transition-all self-start"
+            >
+              Reservar
+            </a>
           </div>
         </div>
-      ))}
+      )
+    }
+
+    <!-- Estado sin eventos futuros -->
+    <div
+      data-no-events
+      class={`${featured ? "hidden " : ""}reveal rounded-xl border border-primary-container/15 bg-surface-container text-center px-6 py-14 mb-20 max-w-2xl mx-auto`}
+    >
+      <span
+        class="material-symbols-outlined text-primary-container text-4xl mb-4"
+        >calendar_month</span
+      >
+      <h3
+        class="font-headline-lg text-on-surface text-2xl md:text-3xl font-bold mb-3"
+      >
+        Estamos preparando la próxima fecha
+      </h3>
+      <p class="text-on-surface-variant mb-8 max-w-md mx-auto">
+        Muy pronto anunciaremos un nuevo show en la terraza. Escríbenos por
+        WhatsApp y te avisamos con anticipación.
+      </p>
+      <a
+        href="https://wa.me/56966192139?text=Hola!%20Quiero%20saber%20cuándo%20es%20el%20próximo%20evento"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn-shine inline-block px-10 py-3 bg-primary-container text-on-primary-container text-sm font-bold tracking-widest uppercase hover:brightness-110 active:scale-95 transition-all"
+      >
+        Avísame del próximo evento
+      </a>
+    </div>
+
+    <!-- Últimos eventos -->
+    <div class="text-center mb-10">
+      <span
+        class="text-primary-container text-label-sm uppercase tracking-[0.3em] font-bold block mb-4"
+      >
+        Así se vive la terraza
+      </span>
+      <h3
+        class="font-headline-lg text-on-surface text-2xl md:text-3xl font-bold"
+      >
+        Últimos eventos
+      </h3>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      {
+        past.map((ev, i) => (
+          <div
+            class="reveal card-lift group rounded-xl overflow-hidden bg-surface-container border border-primary-container/10 flex flex-col"
+            style={`--reveal-delay: ${i * 100}ms`}
+          >
+            <div class="overflow-hidden">
+              <img
+                src={ev.image}
+                alt={ev.artist}
+                class="w-full h-auto transition-transform duration-700 group-hover:scale-105"
+              />
+            </div>
+            <div class="p-5">
+              <span class="text-primary-container text-label-sm font-bold uppercase tracking-wider block mb-1">
+                {ev.date}
+              </span>
+              <h4 class="font-headline-lg text-on-surface text-lg font-bold">
+                {ev.artist}
+              </h4>
+              <p class="text-on-surface-variant text-sm mt-1">{ev.genre}</p>
+            </div>
+          </div>
+        ))
+      }
     </div>
 
     <!-- CTA WhatsApp -->
     <div class="text-center mt-10">
       <a
-        href="https://wa.me/56974131205?text=Hola!%20Quiero%20saber%20más%20sobre%20la%20cartelera%20de%20eventos"
+        href="https://wa.me/56966192139?text=Hola!%20Quiero%20saber%20más%20sobre%20la%20cartelera%20de%20eventos"
         target="_blank"
         rel="noopener noreferrer"
         class="inline-flex items-center gap-2 text-on-surface-variant hover:text-primary-container transition-colors text-sm"
@@ -112,3 +193,21 @@ const waBase = 'https://wa.me/56974131205?text=Hola!%20Quiero%20reservar%20para%
     </div>
   </div>
 </section>
+
+<script>
+  // Re-verifica en el navegador que el evento destacado siga siendo futuro:
+  // si la fecha ya pasó (deploy antiguo), se oculta y se muestra el estado vacío.
+  const featuredEl = document.querySelector<HTMLElement>(
+    "[data-featured-event]",
+  );
+  if (featuredEl) {
+    const iso = featuredEl.dataset.eventDate ?? "";
+    const now = new Date();
+    const pad = (n: number) => String(n).padStart(2, "0");
+    const todayIso = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+    if (iso < todayIso) {
+      featuredEl.remove();
+      document.querySelector("[data-no-events]")?.classList.remove("hidden");
+    }
+  }
+</script>

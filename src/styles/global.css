@@ -169,6 +169,25 @@ h1, h2, h3, h4, .font-headline {
   text-shadow: 0 0 15px rgba(255, 92, 34, 0.4);
 }
 
+/* Título del hero: gradiente cálido blanco → ámbar → naranja de marca */
+.text-gradient-warm {
+  background-image: linear-gradient(
+    100deg,
+    #fff8f0 0%,
+    #ffd9b8 55%,
+    #ff8a50 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Glow para texto con gradiente: text-shadow se ve a través del relleno
+   transparente de background-clip, drop-shadow no */
+.text-glow-strong {
+  filter: drop-shadow(0 0 22px rgba(255, 92, 34, 0.35));
+}
+
 .box-glow {
   box-shadow: 0 0 20px rgba(255, 92, 34, 0.15);
 }

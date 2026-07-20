@@ -23,18 +23,9 @@ const values = [
 ];
 ---
 
-<section class="py-section-gap bg-surface-container-low border-y border-primary-container/10">
-  <div class="max-w-container-max mx-auto px-margin-mobile md:px-gutter">
-
-    <!-- Header -->
-    <div class="text-center mb-16">
-      <span class="text-primary-container text-label-sm uppercase tracking-[0.3em] font-bold block mb-4">
-        Nuestro Compromiso
-      </span>
-      <h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">
-        Valores de Nuestra Tierra
-      </h2>
-    </div>
+{/* Se renderiza dentro de la sección "nosotros" compartida con About (index.astro).
+   El diseño Stitch v3 fusionado no lleva header propio: las cards siguen a la historia. */}
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-gutter">
 
     <!-- Grid de valores — sin bordes, sin glassmorphism -->
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-8">
@@ -52,5 +43,4 @@ const values = [
       ))}
     </div>
 
-  </div>
-</section>
+</div>

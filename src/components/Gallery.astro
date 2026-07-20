@@ -1,26 +1,36 @@
 ---
-const tabs = ['El Local', 'Nuestra Mesa', 'Momentos y Shows'];
+const tabs = ['El Local', 'Nuestra Mesa', 'Shows'];
 
+// 6 fotos por tab: 3 col x 2 filas en desktop, 2 col x 3 filas en mobile
 const images = {
   'El Local': [
     { src: '/fachada.webp', alt: 'Fachada de Terraza Doña Dominga' },
     { src: '/Terraza.webp', alt: 'Vista de la terraza de noche' },
     { src: '/Portada%20fb.jpg', alt: 'Portada del local' },
+    { src: '/Familia.jpg', alt: 'La familia detrás de Doña Dominga' },
+    { src: '/salon-show.jpg', alt: 'El salón principal durante un show en vivo' },
+    { src: '/comida-vino.jpg', alt: 'Una mesa servida con vista al salón' },
   ],
   'Nuestra Mesa': [
-    { src: '/Familia.jpg', alt: 'Familia disfrutando en Doña Dominga' },
-    { src: '/fachada.webp', alt: 'Mesa con productos artesanales' },
-    { src: '/Terraza.webp', alt: 'Terraza lista para la noche' },
+    { src: '/comida-vino.jpg', alt: 'Carne a la plancha con vino Doña Dominga' },
+    { src: '/menu/ceviche.png', alt: 'Ceviche del Valle' },
+    { src: '/menu/empanaditas.jpg', alt: 'Empanaditas gourmet' },
+    { src: '/menu/cafe-torta.jpg', alt: 'Café y torta de la casa' },
+    { src: '/menu/spritz.jpg', alt: 'Dominga Spritz' },
+    { src: '/menu/pisco-sour.jpg', alt: 'Pisco Sour Premium' },
   ],
-  'Momentos y Shows': [
-    { src: '/Evento.jpg', alt: 'Show en vivo en la terraza' },
-    { src: '/invitado.jpg', alt: 'Artista invitado en Doña Dominga' },
+  'Shows': [
+    { src: '/salon-show.jpg', alt: 'Erick Berríos en vivo con el salón lleno' },
+    { src: '/Evento.jpg', alt: 'Artista invitado en Doña Dominga' },
     { src: '/Portada%20fb.jpg', alt: 'Noche de música y gastronomía' },
+    { src: '/Terraza.webp', alt: 'La terraza durante un show' },
+    { src: '/Familia.jpg', alt: 'Público disfrutando la música' },
+    { src: '/fachada.webp', alt: 'Una noche de evento en Doña Dominga' },
   ],
 };
 ---
 
-<section id="galeria" class="py-section-gap bg-surface-container-low">
+<section id="galeria" class="py-section-gap bg-background border-t border-primary-container/10">
   <div class="max-w-container-max mx-auto px-margin-mobile md:px-gutter">
 
     <!-- Header -->
@@ -49,7 +59,7 @@ const images = {
     {tabs.map((tab) => (
       <div
         id={`gallery-panel-${tab.replace(/\s+/g, '-').toLowerCase()}`}
-        class={`gallery-panel grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 ${tab !== tabs[0] ? 'hidden' : ''}`}
+        class={`gallery-panel grid grid-cols-2 lg:grid-cols-3 gap-4 ${tab !== tabs[0] ? 'hidden' : ''}`}
         data-panel={tab}
       >
         {images[tab as keyof typeof images].map((img) => (

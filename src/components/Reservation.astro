@@ -1,150 +1,616 @@
 ---
+// Horarios de atención (placeholder creíble): 12:00 a 23:00, solo horas en punto
+const horas = Array.from(
+  { length: 12 },
+  (_, i) => `${String(12 + i).padStart(2, "0")}:00`,
+);
+
+const diasSemana = ["Lu", "Ma", "Mi", "Ju", "Vi", "Sá", "Do"];
 ---
 
-<section id="reserva" class="py-section-gap bg-background relative overflow-hidden">
-
+<section
+  id="reserva"
+  class="py-section-gap bg-background relative overflow-hidden"
+>
   <!-- Dot pattern background -->
   <div
     class="absolute inset-0 opacity-20"
     style="background-image: radial-gradient(circle, rgba(255,92,34,0.3) 1px, transparent 1px); background-size: 28px 28px;"
-  ></div>
+  >
+  </div>
 
-  <div class="relative z-10 max-w-container-max mx-auto px-margin-mobile md:px-gutter">
+  <div
+    class="relative z-10 max-w-container-max mx-auto px-margin-mobile md:px-gutter"
+  >
     <div class="max-w-2xl mx-auto">
-
       <!-- Header -->
       <div class="text-center mb-12">
-        <span class="text-primary-container text-label-sm uppercase tracking-[0.3em] font-bold block mb-4">
+        <span
+          class="text-primary-container text-label-sm uppercase tracking-[0.3em] font-bold block mb-4"
+        >
           Reservas
         </span>
-        <h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-4">
+        <h2
+          class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-4"
+        >
           Reserva tu mesa
         </h2>
         <p class="text-on-surface-variant text-body-md">
-          Completa el formulario y nos pondremos en contacto contigo para confirmar disponibilidad.
+          Completa los detalles y coordinaremos tu reserva de forma inmediata
+          vía WhatsApp.
         </p>
       </div>
 
       <!-- Form -->
       <form
+        id="reservation-form"
         class="glass-card rounded-2xl p-8 box-glow space-y-5"
-        onsubmit="return false;"
       >
-        <!-- Nombre y email -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div>
-            <label class="block text-on-surface-variant text-sm mb-1.5 font-medium" for="nombre">
-              Nombre completo
+            <label
+              class="block text-on-surface-variant text-sm mb-1.5 font-medium"
+              for="nombre"
+            >
+              Nombre
             </label>
             <input
               id="nombre"
               type="text"
-              placeholder="María González"
+              required
+              placeholder="Tu nombre completo"
               class="w-full bg-surface-container-high border border-outline-variant rounded-lg px-4 py-3 text-on-surface placeholder-on-surface-variant/50 focus:outline-none focus:border-primary-container transition-colors text-sm"
             />
           </div>
-          <div>
-            <label class="block text-on-surface-variant text-sm mb-1.5 font-medium" for="email">
-              Correo electrónico
-            </label>
-            <input
-              id="email"
-              type="email"
-              placeholder="maria@email.com"
-              class="w-full bg-surface-container-high border border-outline-variant rounded-lg px-4 py-3 text-on-surface placeholder-on-surface-variant/50 focus:outline-none focus:border-primary-container transition-colors text-sm"
-            />
-          </div>
-        </div>
 
-        <!-- Fecha y personas -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          <div>
-            <label class="block text-on-surface-variant text-sm mb-1.5 font-medium" for="fecha">
-              Fecha
-            </label>
-            <input
-              id="fecha"
-              type="date"
-              class="w-full bg-surface-container-high border border-outline-variant rounded-lg px-4 py-3 text-on-surface focus:outline-none focus:border-primary-container transition-colors text-sm"
-            />
-          </div>
-          <div>
-            <label class="block text-on-surface-variant text-sm mb-1.5 font-medium" for="personas">
+          <!-- Selector de personas custom -->
+          <div class="relative" id="personas-field">
+            <label
+              class="block text-on-surface-variant text-sm mb-1.5 font-medium"
+              for="personas-btn"
+            >
               Número de personas
             </label>
-            <select
-              id="personas"
-              class="w-full bg-surface-container-high border border-outline-variant rounded-lg px-4 py-3 text-on-surface focus:outline-none focus:border-primary-container transition-colors text-sm appearance-none"
+            <button
+              type="button"
+              id="personas-btn"
+              class="w-full flex items-center justify-between gap-2 bg-surface-container-high border border-outline-variant rounded-lg px-4 py-3 text-left focus:outline-none focus:border-primary-container transition-colors text-sm"
             >
-              <option value="">Seleccionar</option>
-              <option value="1">1 persona</option>
-              <option value="2">2 personas</option>
-              <option value="3">3 personas</option>
-              <option value="4">4 personas</option>
-              <option value="5-6">5-6 personas</option>
-              <option value="7-10">7-10 personas</option>
-              <option value="10+">Más de 10</option>
-            </select>
+              <span id="personas-display" class="picker-display"
+                >Seleccionar</span
+              >
+              <span
+                class="material-symbols-outlined text-on-surface-variant text-xl"
+                >group</span
+              >
+            </button>
+
+            <!-- Panel opciones -->
+            <div
+              id="personas-panel"
+              class="hidden absolute z-30 top-full left-0 mt-2 w-full bg-surface-container-high border border-outline-variant rounded-xl p-2 shadow-2xl"
+            >
+              {
+                [
+                  "1-2 personas",
+                  "3-5 personas",
+                  "6-10 personas",
+                  "Más de 10 personas",
+                ].map((p) => (
+                  <button
+                    type="button"
+                    class="personas-opt list-opt"
+                    data-value={p}
+                  >
+                    {p}
+                  </button>
+                ))
+              }
+            </div>
           </div>
         </div>
 
-        <!-- WhatsApp -->
-        <div>
-          <label class="block text-on-surface-variant text-sm mb-1.5 font-medium" for="whatsapp">
-            WhatsApp (para confirmar)
-          </label>
-          <input
-            id="whatsapp"
-            type="tel"
-            placeholder="+56 9 XXXX XXXX"
-            class="w-full bg-surface-container-high border border-outline-variant rounded-lg px-4 py-3 text-on-surface placeholder-on-surface-variant/50 focus:outline-none focus:border-primary-container transition-colors text-sm"
-          />
-        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <!-- Date picker custom -->
+          <div class="relative" id="fecha-field">
+            <label
+              class="block text-on-surface-variant text-sm mb-1.5 font-medium"
+              for="fecha-btn"
+            >
+              Fecha
+            </label>
+            <button
+              type="button"
+              id="fecha-btn"
+              class="w-full flex items-center justify-between gap-2 bg-surface-container-high border border-outline-variant rounded-lg px-4 py-3 text-left focus:outline-none focus:border-primary-container transition-colors text-sm"
+            >
+              <span id="fecha-display" class="picker-display"
+                >Seleccionar fecha</span
+              >
+              <span
+                class="material-symbols-outlined text-on-surface-variant text-xl"
+                >calendar_month</span
+              >
+            </button>
 
-        <!-- Notas -->
-        <div>
-          <label class="block text-on-surface-variant text-sm mb-1.5 font-medium" for="notas">
-            Notas o solicitudes especiales <span class="text-on-surface-variant/50">(opcional)</span>
-          </label>
-          <textarea
-            id="notas"
-            rows="3"
-            placeholder="Ej: cumpleaños, silla para bebé, alergias..."
-            class="w-full bg-surface-container-high border border-outline-variant rounded-lg px-4 py-3 text-on-surface placeholder-on-surface-variant/50 focus:outline-none focus:border-primary-container transition-colors text-sm resize-none"
-          ></textarea>
+            <!-- Panel calendario -->
+            <div
+              id="fecha-panel"
+              class="hidden absolute z-30 top-full left-0 mt-2 w-full min-w-72 bg-surface-container-high border border-outline-variant rounded-xl p-4 shadow-2xl"
+            >
+              <div class="flex items-center justify-between mb-3">
+                <button
+                  type="button"
+                  id="cal-prev"
+                  class="cal-nav"
+                  aria-label="Mes anterior"
+                >
+                  <span class="material-symbols-outlined">chevron_left</span>
+                </button>
+                <span
+                  id="cal-title"
+                  class="text-on-surface text-sm font-bold capitalize"></span>
+                <button
+                  type="button"
+                  id="cal-next"
+                  class="cal-nav"
+                  aria-label="Mes siguiente"
+                >
+                  <span class="material-symbols-outlined">chevron_right</span>
+                </button>
+              </div>
+              <div class="grid grid-cols-7 gap-1 mb-1">
+                {
+                  diasSemana.map((d) => (
+                    <span class="text-center text-on-surface-variant/60 text-xs font-bold py-1">
+                      {d}
+                    </span>
+                  ))
+                }
+              </div>
+              <div id="cal-days" class="grid grid-cols-7 gap-1"></div>
+            </div>
+          </div>
+
+          <!-- Hour picker custom (deshabilitado hasta elegir fecha) -->
+          <div class="relative" id="hora-field">
+            <label
+              class="block text-on-surface-variant text-sm mb-1.5 font-medium"
+              for="hora-btn"
+            >
+              Hora
+            </label>
+            <button
+              type="button"
+              id="hora-btn"
+              disabled
+              class="w-full flex items-center justify-between gap-2 bg-surface-container-high border border-outline-variant rounded-lg px-4 py-3 text-left focus:outline-none focus:border-primary-container transition-colors text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <span id="hora-display" class="picker-display"
+                >Elige una fecha primero</span
+              >
+              <span
+                class="material-symbols-outlined text-on-surface-variant text-xl"
+                >schedule</span
+              >
+            </button>
+
+            <!-- Panel horas -->
+            <div
+              id="hora-panel"
+              class="hidden absolute z-30 top-full left-0 mt-2 w-full bg-surface-container-high border border-outline-variant rounded-xl p-3 shadow-2xl"
+            >
+              <div class="grid grid-cols-3 gap-2">
+                {
+                  horas.map((h) => (
+                    <button type="button" class="hora-opt" data-hora={h}>
+                      {h}
+                    </button>
+                  ))
+                }
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Submit -->
         <button
           type="submit"
-          class="w-full flex items-center justify-center gap-2 py-4 bg-primary-container text-on-primary-container font-semibold rounded-full hover:opacity-90 transition-opacity box-glow text-base"
-          id="submit-btn"
+          class="btn-shine relative overflow-hidden w-full flex items-center justify-center gap-2 py-4 bg-primary-container text-on-primary-container font-bold tracking-widest uppercase text-sm hover:brightness-110 active:scale-98 transition-all box-glow"
         >
-          <span class="material-symbols-outlined">calendar_today</span>
-          Confirmar reservación
+          <span class="material-symbols-outlined">send</span>
+          Reservar
         </button>
 
-        <!-- Nota -->
-        <p class="text-center text-on-surface-variant/60 text-xs">
-          También puedes reservar directamente por
-          <a href="https://wa.me/56974131205" target="_blank" class="text-primary-container hover:underline">WhatsApp</a>
+        <p
+          class="text-center text-on-surface-variant/60 text-xs uppercase tracking-widest"
+        >
+          Atención inmediata vía WhatsApp
         </p>
       </form>
-
     </div>
   </div>
 </section>
 
+<!-- Estilos globales (prefijados) porque los días del calendario se generan por JS
+     y no reciben el atributo de scope de Astro -->
+<style is:global>
+  .picker-display {
+    color: color-mix(in srgb, var(--color-on-surface-variant) 50%, transparent);
+  }
+  .picker-display.has-value {
+    color: var(--color-on-surface);
+  }
+
+  .cal-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 0.5rem;
+    color: var(--color-on-surface-variant);
+    cursor: pointer;
+    transition:
+      background-color 0.2s,
+      color 0.2s;
+  }
+  .cal-nav:hover:not(:disabled) {
+    background-color: color-mix(
+      in srgb,
+      var(--color-primary-container) 15%,
+      transparent
+    );
+    color: var(--color-primary-container);
+  }
+  .cal-nav:disabled {
+    opacity: 0.25;
+    cursor: default;
+  }
+
+  .cal-day {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8125rem;
+    border-radius: 0.5rem;
+    color: var(--color-on-surface);
+    cursor: pointer;
+    transition:
+      background-color 0.2s,
+      color 0.2s;
+  }
+  .cal-day:hover:not(:disabled):not(.is-selected) {
+    background-color: color-mix(
+      in srgb,
+      var(--color-primary-container) 15%,
+      transparent
+    );
+    color: var(--color-primary-container);
+  }
+  .cal-day:disabled {
+    opacity: 0.25;
+    cursor: default;
+  }
+  .cal-day.is-today:not(.is-selected) {
+    border: 1px solid
+      color-mix(in srgb, var(--color-primary-container) 50%, transparent);
+    color: var(--color-primary-container);
+  }
+  .cal-day.is-selected {
+    background-color: var(--color-primary-container);
+    color: var(--color-on-primary-container);
+    font-weight: 700;
+  }
+
+  .hora-opt {
+    padding: 0.5rem 0;
+    text-align: center;
+    font-size: 0.8125rem;
+    border: 1px solid var(--color-outline-variant);
+    border-radius: 0.5rem;
+    color: var(--color-on-surface);
+    cursor: pointer;
+    transition:
+      background-color 0.2s,
+      border-color 0.2s,
+      color 0.2s;
+  }
+  .hora-opt:hover:not(:disabled):not(.is-selected) {
+    border-color: var(--color-primary-container);
+    color: var(--color-primary-container);
+  }
+  .hora-opt:disabled {
+    opacity: 0.25;
+    cursor: default;
+  }
+  .hora-opt.is-selected {
+    background-color: var(--color-primary-container);
+    border-color: var(--color-primary-container);
+    color: var(--color-on-primary-container);
+    font-weight: 700;
+  }
+
+  .list-opt {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 0.625rem 0.875rem;
+    font-size: 0.875rem;
+    border-radius: 0.5rem;
+    color: var(--color-on-surface);
+    cursor: pointer;
+    transition:
+      background-color 0.2s,
+      color 0.2s;
+  }
+  .list-opt:hover:not(.is-selected) {
+    background-color: color-mix(
+      in srgb,
+      var(--color-primary-container) 15%,
+      transparent
+    );
+    color: var(--color-primary-container);
+  }
+  .list-opt.is-selected {
+    background-color: var(--color-primary-container);
+    color: var(--color-on-primary-container);
+    font-weight: 700;
+  }
+
+  .field-error {
+    border-color: #e5484d !important;
+  }
+</style>
+
 <script>
-  const btn = document.getElementById('submit-btn');
-  btn?.addEventListener('click', () => {
-    btn.textContent = '✓ ¡Solicitud enviada!';
-    btn.classList.add('opacity-70');
-    btn.setAttribute('disabled', 'true');
-    setTimeout(() => {
-      btn.innerHTML = '<span class="material-symbols-outlined">calendar_today</span> Confirmar reservación';
-      btn.classList.remove('opacity-70');
-      btn.removeAttribute('disabled');
-    }, 3000);
+  const form = document.getElementById(
+    "reservation-form",
+  ) as HTMLFormElement | null;
+
+  const fechaField = document.getElementById("fecha-field")!;
+  const fechaBtn = document.getElementById("fecha-btn") as HTMLButtonElement;
+  const fechaPanel = document.getElementById("fecha-panel")!;
+  const fechaDisplay = document.getElementById("fecha-display")!;
+  const calPrev = document.getElementById("cal-prev") as HTMLButtonElement;
+  const calNext = document.getElementById("cal-next") as HTMLButtonElement;
+  const calTitle = document.getElementById("cal-title")!;
+  const calDays = document.getElementById("cal-days")!;
+
+  const horaField = document.getElementById("hora-field")!;
+  const horaBtn = document.getElementById("hora-btn") as HTMLButtonElement;
+  const horaPanel = document.getElementById("hora-panel")!;
+  const horaDisplay = document.getElementById("hora-display")!;
+  const horaOpts = Array.from(
+    horaPanel.querySelectorAll<HTMLButtonElement>(".hora-opt"),
+  );
+
+  const personasBtn = document.getElementById(
+    "personas-btn",
+  ) as HTMLButtonElement;
+  const personasPanel = document.getElementById("personas-panel")!;
+  const personasDisplay = document.getElementById("personas-display")!;
+  const personasOpts = Array.from(
+    personasPanel.querySelectorAll<HTMLButtonElement>(".personas-opt"),
+  );
+
+  const MESES = [
+    "enero",
+    "febrero",
+    "marzo",
+    "abril",
+    "mayo",
+    "junio",
+    "julio",
+    "agosto",
+    "septiembre",
+    "octubre",
+    "noviembre",
+    "diciembre",
+  ];
+
+  const pad = (n: number) => String(n).padStart(2, "0");
+  const hoy0 = () => {
+    const d = new Date();
+    d.setHours(0, 0, 0, 0);
+    return d;
+  };
+
+  let fechaSel: Date | null = null;
+  let horaSel = "";
+  let personasSel = "";
+  // Mes visible en el calendario (siempre día 1)
+  let vista = (() => {
+    const h = hoy0();
+    return new Date(h.getFullYear(), h.getMonth(), 1);
+  })();
+
+  // ── Calendario ─────────────────────────────────────────────────────────────
+  function renderCalendario() {
+    const hoy = hoy0();
+    calTitle.textContent = `${MESES[vista.getMonth()]} ${vista.getFullYear()}`;
+    // No permitir navegar a meses anteriores al actual
+    calPrev.disabled =
+      vista.getFullYear() === hoy.getFullYear() &&
+      vista.getMonth() === hoy.getMonth();
+
+    calDays.innerHTML = "";
+    const primerDia = new Date(vista.getFullYear(), vista.getMonth(), 1);
+    const offset = (primerDia.getDay() + 6) % 7; // semana parte en lunes
+    const totalDias = new Date(
+      vista.getFullYear(),
+      vista.getMonth() + 1,
+      0,
+    ).getDate();
+
+    for (let i = 0; i < offset; i++) {
+      calDays.appendChild(document.createElement("span"));
+    }
+    for (let d = 1; d <= totalDias; d++) {
+      const fecha = new Date(vista.getFullYear(), vista.getMonth(), d);
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "cal-day";
+      btn.textContent = String(d);
+      if (fecha < hoy) btn.disabled = true;
+      if (fecha.getTime() === hoy.getTime()) btn.classList.add("is-today");
+      if (fechaSel && fecha.getTime() === fechaSel.getTime())
+        btn.classList.add("is-selected");
+      btn.addEventListener("click", () => seleccionarFecha(fecha));
+      calDays.appendChild(btn);
+    }
+  }
+
+  function seleccionarFecha(fecha: Date) {
+    fechaSel = fecha;
+    fechaDisplay.textContent = `${pad(fecha.getDate())}-${pad(fecha.getMonth() + 1)}-${fecha.getFullYear()}`;
+    fechaDisplay.classList.add("has-value");
+    fechaBtn.classList.remove("field-error");
+    fechaPanel.classList.add("hidden");
+    // Con fecha elegida, se habilita el selector de hora
+    horaBtn.disabled = false;
+    if (!horaSel) horaDisplay.textContent = "Seleccionar hora";
+    actualizarHoras();
+  }
+
+  // ── Horas ──────────────────────────────────────────────────────────────────
+  // Deshabilita horas ya pasadas cuando la fecha elegida es hoy. Sin fecha el
+  // selector completo está deshabilitado, pero se asume hoy por si acaso.
+  function actualizarHoras() {
+    const hoy = hoy0();
+    const esHoy = fechaSel === null || fechaSel.getTime() === hoy.getTime();
+    const ahora = new Date();
+    const minutosAhora = ahora.getHours() * 60 + ahora.getMinutes();
+
+    horaOpts.forEach((opt) => {
+      const [h] = (opt.dataset.hora ?? "").split(":").map(Number);
+      opt.disabled = esHoy && h * 60 <= minutosAhora;
+    });
+
+    // Si la hora elegida quedó en el pasado, se limpia la selección
+    if (horaSel) {
+      const sel = horaOpts.find((o) => o.dataset.hora === horaSel);
+      if (sel?.disabled) {
+        horaSel = "";
+        sel.classList.remove("is-selected");
+        horaDisplay.textContent = "Seleccionar hora";
+        horaDisplay.classList.remove("has-value");
+      }
+    }
+  }
+
+  horaOpts.forEach((opt) => {
+    opt.addEventListener("click", () => {
+      horaSel = opt.dataset.hora ?? "";
+      horaOpts.forEach((o) => o.classList.remove("is-selected"));
+      opt.classList.add("is-selected");
+      horaDisplay.textContent = `${horaSel} hrs`;
+      horaDisplay.classList.add("has-value");
+      horaBtn.classList.remove("field-error");
+      horaPanel.classList.add("hidden");
+    });
+  });
+
+  // ── Personas ───────────────────────────────────────────────────────────────
+  personasOpts.forEach((opt) => {
+    opt.addEventListener("click", () => {
+      personasSel = opt.dataset.value ?? "";
+      personasOpts.forEach((o) => o.classList.remove("is-selected"));
+      opt.classList.add("is-selected");
+      personasDisplay.textContent = personasSel;
+      personasDisplay.classList.add("has-value");
+      personasBtn.classList.remove("field-error");
+      personasPanel.classList.add("hidden");
+    });
+  });
+
+  // ── Apertura / cierre de paneles ───────────────────────────────────────────
+  calPrev.addEventListener("click", () => {
+    vista = new Date(vista.getFullYear(), vista.getMonth() - 1, 1);
+    renderCalendario();
+  });
+  calNext.addEventListener("click", () => {
+    vista = new Date(vista.getFullYear(), vista.getMonth() + 1, 1);
+    renderCalendario();
+  });
+
+  fechaBtn.addEventListener("click", () => {
+    horaPanel.classList.add("hidden");
+    personasPanel.classList.add("hidden");
+    const abrir = fechaPanel.classList.contains("hidden");
+    if (abrir) renderCalendario(); // recalcula "hoy" por si la página quedó abierta pasada la medianoche
+    fechaPanel.classList.toggle("hidden", !abrir);
+  });
+
+  horaBtn.addEventListener("click", () => {
+    fechaPanel.classList.add("hidden");
+    personasPanel.classList.add("hidden");
+    const abrir = horaPanel.classList.contains("hidden");
+    if (abrir) actualizarHoras();
+    horaPanel.classList.toggle("hidden", !abrir);
+  });
+
+  personasBtn.addEventListener("click", () => {
+    fechaPanel.classList.add("hidden");
+    horaPanel.classList.add("hidden");
+    personasPanel.classList.toggle("hidden");
+  });
+
+  document.addEventListener("click", (e) => {
+    const target = e.target as HTMLElement;
+    if (!target.closest("#fecha-field")) fechaPanel.classList.add("hidden");
+    if (!target.closest("#hora-field")) horaPanel.classList.add("hidden");
+    if (!target.closest("#personas-field"))
+      personasPanel.classList.add("hidden");
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      fechaPanel.classList.add("hidden");
+      horaPanel.classList.add("hidden");
+      personasPanel.classList.add("hidden");
+    }
+  });
+
+  // ── Submit → WhatsApp ──────────────────────────────────────────────────────
+  form?.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    // Revalida por si pasó tiempo con la página abierta y la hora quedó en el pasado
+    actualizarHoras();
+
+    let valido = true;
+    if (!fechaSel) {
+      fechaBtn.classList.add("field-error");
+      valido = false;
+    }
+    if (!horaSel) {
+      horaBtn.classList.add("field-error");
+      valido = false;
+    }
+    if (!personasSel) {
+      personasBtn.classList.add("field-error");
+      valido = false;
+    }
+    if (!valido) return;
+
+    const nombre = (
+      document.getElementById("nombre") as HTMLInputElement
+    ).value.trim();
+    const fechaTexto = `${pad(fechaSel!.getDate())}-${pad(fechaSel!.getMonth() + 1)}-${fechaSel!.getFullYear()}`;
+
+    const mensaje = [
+      "¡Hola! Quiero reservar una mesa en Terraza Doña Dominga:",
+      `• Nombre: ${nombre}`,
+      `• Fecha: ${fechaTexto}`,
+      `• Hora: ${horaSel} hrs`,
+      `• Personas: ${personasSel}`,
+    ].join("\n");
+
+    window.open(
+      `https://wa.me/56966192139?text=${encodeURIComponent(mensaje)}`,
+      "_blank",
+    );
   });
 </script>

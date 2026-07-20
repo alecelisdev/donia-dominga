@@ -1,30 +1,38 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Nav from '../components/Nav.astro';
-import Hero from '../components/Hero.astro';
-import About from '../components/About.astro';
-import Values from '../components/Values.astro';
-import Events from '../components/Events.astro';
-import Menu from '../components/Menu.astro';
-import Testimonials from '../components/Testimonials.astro';
-import Reservation from '../components/Reservation.astro';
-import Gallery from '../components/Gallery.astro';
-import ContactFAQ from '../components/ContactFAQ.astro';
-import Footer from '../components/Footer.astro';
-import WhatsAppButton from '../components/WhatsAppButton.astro';
+import Layout from "../layouts/Layout.astro";
+import Nav from "../components/Nav.astro";
+import Hero from "../components/Hero.astro";
+import About from "../components/About.astro";
+import Values from "../components/Values.astro";
+import Events from "../components/Events.astro";
+import Menu from "../components/Menu.astro";
+import Testimonials from "../components/Testimonials.astro";
+import Reservation from "../components/Reservation.astro";
+import Gallery from "../components/Gallery.astro";
+import Instagram from "../components/Instagram.astro";
+import ContactFAQ from "../components/ContactFAQ.astro";
+import Footer from "../components/Footer.astro";
+import WhatsAppButton from "../components/WhatsAppButton.astro";
 ---
 
 <Layout>
   <Nav />
   <main>
     <Hero />
-    <About />
-    <Values />
     <Events />
     <Menu />
     <Testimonials />
-    <Reservation />
     <Gallery />
+    <Instagram />
+    <!-- Sobre Nosotros + Valores fusionadas en una sola sección (diseño Stitch v3) -->
+    <section
+      id="nosotros"
+      class="py-section-gap bg-surface-container-low border-y border-primary-container/10 overflow-hidden"
+    >
+      <About />
+      <Values />
+    </section>
+    <Reservation />
     <ContactFAQ />
   </main>
   <Footer />
@@ -37,15 +45,15 @@ import WhatsAppButton from '../components/WhatsAppButton.astro';
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
+          entry.target.classList.add("visible");
           revealObserver.unobserve(entry.target);
         }
       });
     },
-    { threshold: 0.12 }
+    { threshold: 0.12 },
   );
 
-  document.querySelectorAll('.reveal').forEach((el) => {
+  document.querySelectorAll(".reveal").forEach((el) => {
     revealObserver.observe(el);
   });
 
@@ -54,23 +62,26 @@ import WhatsAppButton from '../components/WhatsAppButton.astro';
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          (entry.target as HTMLElement).style.opacity = '1';
-          (entry.target as HTMLElement).style.transform = 'translateY(0)';
+          (entry.target as HTMLElement).style.opacity = "1";
+          (entry.target as HTMLElement).style.transform = "translateY(0)";
           sectionRevealObserver.unobserve(entry.target);
         }
       });
     },
-    { threshold: 0.06 }
+    { threshold: 0.06 },
   );
 
   // Selecciona secciones que no tienen hijos con .reveal (para no duplicar)
-  document.querySelectorAll<HTMLElement>('section:not(#inicio)').forEach((section) => {
-    const hasRevealChildren = section.querySelector('.reveal');
-    if (!hasRevealChildren) {
-      section.style.opacity = '0';
-      section.style.transform = 'translateY(24px)';
-      section.style.transition = 'opacity 0.75s cubic-bezier(0.16,1,0.3,1), transform 0.75s cubic-bezier(0.16,1,0.3,1)';
-      sectionRevealObserver.observe(section);
-    }
-  });
+  document
+    .querySelectorAll<HTMLElement>("section:not(#inicio)")
+    .forEach((section) => {
+      const hasRevealChildren = section.querySelector(".reveal");
+      if (!hasRevealChildren) {
+        section.style.opacity = "0";
+        section.style.transform = "translateY(24px)";
+        section.style.transition =
+          "opacity 0.75s cubic-bezier(0.16,1,0.3,1), transform 0.75s cubic-bezier(0.16,1,0.3,1)";
+        sectionRevealObserver.observe(section);
+      }
+    });
 </script>
