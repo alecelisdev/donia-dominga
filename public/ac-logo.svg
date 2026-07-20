@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <!-- Fondo oscuro redondeado -->
+  <rect width="32" height="32" rx="7" fill="#0a0a0a"/>
+  <!--
+    Monograma AC centrado en el canvas 32x32.
+    BBox del monograma en coords crudas del path: x 750-2025, y 760-1561 (1275x801).
+    Escala 0.0204 → 26px de ancho, centrado con ~3px de margen lateral.
+    (El eje Y va invertido, igual que en Logo.astro: scale(s, -s).)
+  -->
+  <g transform="translate(-12.3, 39.67) scale(0.0204, -0.0204)" stroke="none">
+    <!-- Cuerpo del monograma A+C -->
+    <path fill="white" d="M1020 1378 c-208 -458 -270 -598 -270 -608 0 -6 28 -10 69 -10 68 0
+69 0 81 33 7 17 39 87 72 154 32 68 58 127 58 133 0 20 134 310 143 307 4 -1
+23 -36 41 -77 106 -239 229 -508 242 -528 l15 -22 277 2 277 3 0 130 0 130
+-62 3 -63 3 0 -71 0 -70 -175 2 -176 3 -154 330 -155 330 -68 3 -69 3 -83
+-183z"/>
+    <!-- Acento esmeralda -->
+    <path fill="#42D392" d="M1421 1488 l-33 -72 34 -74 c18 -41 37 -75 41 -76 5 0 24 36 44 82
+l35 82 179 0 179 0 0 -70 0 -71 63 3 62 3 0 130 0 130 -286 3 -286 2 -32 -72z"/>
+  </g>
+</svg>

@@ -1,28 +1,31 @@
 ---
+import SocialIcon from "./SocialIcon.astro";
+
 const year = new Date().getFullYear();
 
 const socials = [
   {
-    icon: "photo_camera",
+    platform: "instagram" as const,
     label: "Instagram",
     href: "https://www.instagram.com/domingamallarauco_piri/",
   },
   {
-    icon: "thumb_up",
+    platform: "facebook" as const,
     label: "Facebook",
     href: "https://facebook.com",
   },
   {
-    icon: "chat",
+    platform: "whatsapp" as const,
     label: "WhatsApp",
     href: "https://wa.me/56966192139",
   },
-  {
-    icon: "map",
-    label: "Google Maps",
-    href: "https://maps.google.com/?q=Mallarauco+Region+Metropolitana+Chile",
-  },
 ];
+
+const mapsLink = {
+  icon: "map",
+  label: "Google Maps",
+  href: "https://www.google.com/maps/dir/?api=1&destination=Terraza%20Do%C3%B1a%20Dominga%2C%20Santa%20Victoria%20de%20Mallarauco%20121%2C%20Melipilla%2C%20Regi%C3%B3n%20Metropolitana",
+};
 ---
 
 <footer
@@ -104,10 +107,19 @@ const socials = [
                 aria-label={s.label}
                 class="w-10 h-10 glass-card flex items-center justify-center text-on-surface-variant hover:text-primary-container hover:border-primary-container/30 transition-all"
               >
-                <span class="material-symbols-outlined text-lg">{s.icon}</span>
+                <SocialIcon platform={s.platform} class="w-[18px] h-[18px]" />
               </a>
             ))
           }
+          <a
+            href={mapsLink.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={mapsLink.label}
+            class="w-10 h-10 glass-card flex items-center justify-center text-on-surface-variant hover:text-primary-container hover:border-primary-container/30 transition-all"
+          >
+            <span class="material-symbols-outlined text-lg">{mapsLink.icon}</span>
+          </a>
         </div>
         <a
           href="tel:+56974131205"
@@ -117,6 +129,22 @@ const socials = [
           +56 9 7413 1205
         </a>
       </div>
+    </div>
+
+    <!-- Firma -->
+    <div class="mt-10 pt-6 border-t border-primary-container/10 text-center">
+      <p class="text-on-surface-variant/40 text-xs flex items-center justify-center gap-1.5">
+        Desarrollado por
+        <a
+          href="https://www.alecelis.cl/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-1.5 hover:text-primary-container transition-colors"
+        >
+          <img src="/ac-logo.svg" alt="" class="w-4 h-4" />
+          Ale Celis
+        </a>
+      </p>
     </div>
   </div>
 </footer>

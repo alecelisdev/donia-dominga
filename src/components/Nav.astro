@@ -1,5 +1,5 @@
 ---
-
+import SocialIcon from "./SocialIcon.astro";
 ---
 
 <nav
@@ -55,6 +55,28 @@
           class="nav-link text-on-surface-variant hover:text-on-surface text-sm font-medium transition-all duration-300"
           >Contacto</a
         >
+      </div>
+
+      <!-- Redes sociales desktop -->
+      <div class="hidden md:flex items-center gap-4">
+        <a
+          href="https://www.instagram.com/domingamallarauco_piri/"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Instagram"
+          class="text-on-surface-variant hover:text-primary-container transition-colors duration-300"
+        >
+          <SocialIcon platform="instagram" class="w-5 h-5" />
+        </a>
+        <a
+          href="https://facebook.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Facebook"
+          class="text-on-surface-variant hover:text-primary-container transition-colors duration-300"
+        >
+          <SocialIcon platform="facebook" class="w-5 h-5" />
+        </a>
       </div>
 
       <!-- CTA + hamburger -->
@@ -131,6 +153,28 @@
       >
         Reservar
       </a>
+
+      <!-- Redes sociales mobile -->
+      <div class="flex items-center justify-center gap-6 mt-5">
+        <a
+          href="https://www.instagram.com/domingamallarauco_piri/"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Instagram"
+          class="text-on-surface-variant hover:text-primary-container transition-colors duration-300"
+        >
+          <SocialIcon platform="instagram" class="w-6 h-6" />
+        </a>
+        <a
+          href="https://facebook.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Facebook"
+          class="text-on-surface-variant hover:text-primary-container transition-colors duration-300"
+        >
+          <SocialIcon platform="facebook" class="w-6 h-6" />
+        </a>
+      </div>
     </div>
   </div>
 </nav>

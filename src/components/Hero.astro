@@ -1,8 +1,11 @@
 ---
+
 ---
 
-<section id="inicio" class="relative w-full min-h-screen flex items-center md:items-center items-end">
-
+<section
+  id="inicio"
+  class="relative w-full min-h-screen flex items-center md:items-center items-end"
+>
   <!-- Background image (parallax wrapper) -->
   <div class="absolute inset-0 overflow-hidden">
     <img
@@ -18,9 +21,10 @@
   <div class="hero-overlay absolute inset-0"></div>
 
   <!-- Content -->
-  <div class="relative z-10 w-full max-w-container-max mx-auto px-margin-mobile md:px-gutter pb-16 md:pb-0">
+  <div
+    class="relative z-10 w-full max-w-container-max mx-auto px-margin-mobile md:px-gutter pb-16 md:pb-0"
+  >
     <div class="max-w-2xl">
-
       <!-- Logo -->
       <img
         src="/Logo.jpg"
@@ -34,7 +38,7 @@
         class="hero-animate text-primary-container text-label-sm uppercase tracking-[0.3em] font-bold block mb-4"
         style="animation-delay: 0.2s"
       >
-        Mallarauco, Región Metropolitana
+        Santa Victoria Mallarauco, Melipilla
       </span>
 
       <!-- Título -->
@@ -58,7 +62,8 @@
         class="hero-animate text-on-surface-variant text-body-lg mb-8 max-w-sm leading-relaxed"
         style="animation-delay: 0.5s"
       >
-        Gastronomía de campo, quesos artesanales y shows en vivo bajo las estrellas de Mallarauco.
+        Gastronomía de campo, quesos artesanales y shows en vivo bajo las
+        estrellas de Mallarauco.
       </p>
 
       <!-- CTAs -->
@@ -83,29 +88,35 @@
   </div>
 
   <!-- Scroll indicator -->
-  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-2 text-on-surface-variant/50 animate-bounce">
+  <div
+    class="absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-2 text-on-surface-variant/50 animate-bounce"
+  >
     <span class="material-symbols-outlined text-xl">keyboard_arrow_down</span>
   </div>
 </section>
 
 <script>
-  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    const bg = document.getElementById('parallax-bg') as HTMLElement | null;
-    const section = document.getElementById('inicio') as HTMLElement | null;
+  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const bg = document.getElementById("parallax-bg") as HTMLElement | null;
+    const section = document.getElementById("inicio") as HTMLElement | null;
 
     if (bg && section) {
       let rafQueued = false;
 
-      window.addEventListener('scroll', () => {
-        if (rafQueued) return;
-        rafQueued = true;
-        requestAnimationFrame(() => {
-          if (section.getBoundingClientRect().bottom > 0) {
-            bg.style.transform = `translateY(${window.scrollY * 0.28}px)`;
-          }
-          rafQueued = false;
-        });
-      }, { passive: true });
+      window.addEventListener(
+        "scroll",
+        () => {
+          if (rafQueued) return;
+          rafQueued = true;
+          requestAnimationFrame(() => {
+            if (section.getBoundingClientRect().bottom > 0) {
+              bg.style.transform = `translateY(${window.scrollY * 0.28}px)`;
+            }
+            rafQueued = false;
+          });
+        },
+        { passive: true },
+      );
     }
   }
 </script>
