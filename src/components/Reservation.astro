@@ -1,7 +1,7 @@
 ---
-// Horarios de atención (placeholder creíble): 12:00 a 23:00, solo horas en punto
+// Horario real del restaurante: 12:00 a 16:30, solo horas en punto (última reserva 16:00)
 const horas = Array.from(
-  { length: 12 },
+  { length: 5 },
   (_, i) => `${String(12 + i).padStart(2, "0")}:00`,
 );
 
@@ -44,7 +44,7 @@ const diasSemana = ["Lu", "Ma", "Mi", "Ju", "Vi", "Sá", "Do"];
       <!-- Form -->
       <form
         id="reservation-form"
-        class="glass-card rounded-2xl p-8 box-glow space-y-5"
+        class="glass-card p-8 box-glow space-y-5"
       >
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div>
@@ -59,7 +59,7 @@ const diasSemana = ["Lu", "Ma", "Mi", "Ju", "Vi", "Sá", "Do"];
               type="text"
               required
               placeholder="Tu nombre completo"
-              class="w-full bg-surface-container-high border border-outline-variant rounded-lg px-4 py-3 text-on-surface placeholder-on-surface-variant/50 focus:outline-none focus:border-primary-container transition-colors text-sm"
+              class="w-full bg-surface-container-high border border-outline-variant px-4 py-3 text-on-surface placeholder-on-surface-variant/50 focus:outline-none focus:border-primary-container transition-colors text-sm"
             />
           </div>
 
@@ -74,7 +74,7 @@ const diasSemana = ["Lu", "Ma", "Mi", "Ju", "Vi", "Sá", "Do"];
             <button
               type="button"
               id="personas-btn"
-              class="w-full flex items-center justify-between gap-2 bg-surface-container-high border border-outline-variant rounded-lg px-4 py-3 text-left focus:outline-none focus:border-primary-container transition-colors text-sm"
+              class="w-full flex items-center justify-between gap-2 bg-surface-container-high border border-outline-variant px-4 py-3 text-left focus:outline-none focus:border-primary-container transition-colors text-sm"
             >
               <span id="personas-display" class="picker-display"
                 >Seleccionar</span
@@ -88,7 +88,7 @@ const diasSemana = ["Lu", "Ma", "Mi", "Ju", "Vi", "Sá", "Do"];
             <!-- Panel opciones -->
             <div
               id="personas-panel"
-              class="hidden absolute z-30 top-full left-0 mt-2 w-full bg-surface-container-high border border-outline-variant rounded-xl p-2 shadow-2xl"
+              class="hidden absolute z-30 top-full left-0 mt-2 w-full bg-surface-container-high border border-outline-variant p-2 shadow-2xl"
             >
               {
                 [
@@ -122,7 +122,7 @@ const diasSemana = ["Lu", "Ma", "Mi", "Ju", "Vi", "Sá", "Do"];
             <button
               type="button"
               id="fecha-btn"
-              class="w-full flex items-center justify-between gap-2 bg-surface-container-high border border-outline-variant rounded-lg px-4 py-3 text-left focus:outline-none focus:border-primary-container transition-colors text-sm"
+              class="w-full flex items-center justify-between gap-2 bg-surface-container-high border border-outline-variant px-4 py-3 text-left focus:outline-none focus:border-primary-container transition-colors text-sm"
             >
               <span id="fecha-display" class="picker-display"
                 >Seleccionar fecha</span
@@ -136,7 +136,7 @@ const diasSemana = ["Lu", "Ma", "Mi", "Ju", "Vi", "Sá", "Do"];
             <!-- Panel calendario -->
             <div
               id="fecha-panel"
-              class="hidden absolute z-30 top-full left-0 mt-2 w-full min-w-72 bg-surface-container-high border border-outline-variant rounded-xl p-4 shadow-2xl"
+              class="hidden absolute z-30 top-full left-0 mt-2 w-full min-w-72 bg-surface-container-high border border-outline-variant p-4 shadow-2xl"
             >
               <div class="flex items-center justify-between mb-3">
                 <button
@@ -184,7 +184,7 @@ const diasSemana = ["Lu", "Ma", "Mi", "Ju", "Vi", "Sá", "Do"];
               type="button"
               id="hora-btn"
               disabled
-              class="w-full flex items-center justify-between gap-2 bg-surface-container-high border border-outline-variant rounded-lg px-4 py-3 text-left focus:outline-none focus:border-primary-container transition-colors text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+              class="w-full flex items-center justify-between gap-2 bg-surface-container-high border border-outline-variant px-4 py-3 text-left focus:outline-none focus:border-primary-container transition-colors text-sm disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <span id="hora-display" class="picker-display"
                 >Elige una fecha primero</span
@@ -198,7 +198,7 @@ const diasSemana = ["Lu", "Ma", "Mi", "Ju", "Vi", "Sá", "Do"];
             <!-- Panel horas -->
             <div
               id="hora-panel"
-              class="hidden absolute z-30 top-full left-0 mt-2 w-full bg-surface-container-high border border-outline-variant rounded-xl p-3 shadow-2xl"
+              class="hidden absolute z-30 top-full left-0 mt-2 w-full bg-surface-container-high border border-outline-variant p-3 shadow-2xl"
             >
               <div class="grid grid-cols-3 gap-2">
                 {
@@ -248,7 +248,7 @@ const diasSemana = ["Lu", "Ma", "Mi", "Ju", "Vi", "Sá", "Do"];
     justify-content: center;
     width: 2rem;
     height: 2rem;
-    border-radius: 0.5rem;
+    border-radius: 0;
     color: var(--color-on-surface-variant);
     cursor: pointer;
     transition:
@@ -274,7 +274,7 @@ const diasSemana = ["Lu", "Ma", "Mi", "Ju", "Vi", "Sá", "Do"];
     align-items: center;
     justify-content: center;
     font-size: 0.8125rem;
-    border-radius: 0.5rem;
+    border-radius: 0;
     color: var(--color-on-surface);
     cursor: pointer;
     transition:
@@ -309,7 +309,7 @@ const diasSemana = ["Lu", "Ma", "Mi", "Ju", "Vi", "Sá", "Do"];
     text-align: center;
     font-size: 0.8125rem;
     border: 1px solid var(--color-outline-variant);
-    border-radius: 0.5rem;
+    border-radius: 0;
     color: var(--color-on-surface);
     cursor: pointer;
     transition:
@@ -338,7 +338,7 @@ const diasSemana = ["Lu", "Ma", "Mi", "Ju", "Vi", "Sá", "Do"];
     text-align: left;
     padding: 0.625rem 0.875rem;
     font-size: 0.875rem;
-    border-radius: 0.5rem;
+    border-radius: 0;
     color: var(--color-on-surface);
     cursor: pointer;
     transition:

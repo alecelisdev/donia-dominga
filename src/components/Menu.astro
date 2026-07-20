@@ -1,173 +1,21 @@
 ---
-const tabs = [
+const categories = [
   {
-    id: 'restaurant',
     label: 'Restaurant',
-    featured: {
-      img: '/menu/tabla.jpg',
-      name: 'Tabla Chorrillana',
-      desc: 'Papas fritas, salsa de la casa, pollo al pil pil y tostadas, para compartir',
-      price: '$15.000',
-    },
-    items: [
-      { img: '/menu/empanaditas.jpg', name: 'Surtido de Empanadas', price: '$15.000' },
-      { img: '/menu/ceviche.png', name: 'Tabla de Mariscos', price: '$13.000' },
-    ],
+    desc: 'Tablas, hamburguesas y platos de fondo',
+    img: '/menu/tabla.jpg',
   },
   {
-    id: 'cafeteria',
-    label: 'Cafetería',
-    featured: {
-      img: '/menu/churrasco.jpg',
-      name: 'Sándwich Churrasco',
-      desc: '2 ingredientes a elección, incluye papas fritas',
-      price: '$7.500',
-    },
-    items: [
-      { img: '/menu/cafe-torta.jpg', name: 'Cheesecake', price: '$3.200' },
-      { img: '/menu/muffin.jpg', name: 'Muffin', price: '$2.000' },
-    ],
-  },
-  {
-    id: 'cocteleria',
     label: 'Coctelería & Vinos',
-    featured: {
-      img: '/menu/mojito.jpg',
-      name: 'Mojito Tradicional',
-      desc: 'Ron, menta y limón, receta de la casa',
-      price: '$6.000',
-    },
-    items: [
-      { img: '/menu/pisco-sour.jpg', name: 'Pisco Sour de la Casa', price: '$5.000' },
-      { img: '/menu/spritz.jpg', name: 'Aperol Spritz', price: '$5.000' },
-    ],
+    desc: 'Tragos de la casa, sour y vinos de la zona',
+    img: '/menu/mojito.jpg',
+  },
+  {
+    label: 'Cafetería',
+    desc: 'Café de grano, repostería y sándwiches',
+    img: '/menu/cafe-torta.jpg',
   },
 ];
-
-const fullMenus = {
-  restaurant: {
-    groups: [
-      {
-        name: 'Hamburguesas',
-        note: 'Todas incluyen papas fritas',
-        items: [
-          { name: 'Dominga (queso fundido, palta, tomate, mayonesa)', price: '$9.500' },
-          { name: 'A lo Pobre (queso fundido, cebolla caramelizada, huevo frito)', price: '$9.500' },
-          { name: 'La Mallarauquina (lechuga, palta, tomate, cebolla morada, mayonesa)', price: '$9.500' },
-        ],
-      },
-      {
-        name: 'Platos de Fondo',
-        note: 'Con acompañamiento de arroz o papas fritas',
-        items: [
-          { name: 'Flat Iron a lo Pobre', price: '$13.000' },
-          { name: 'Filete de Pollo a la Grilla', price: '$13.000' },
-        ],
-      },
-      {
-        name: 'Bebidas y Jugos',
-        items: [
-          { name: 'Bebidas', price: '$2.800' },
-          { name: 'Jugos Naturales (piña / frutilla)', price: '$4.000' },
-        ],
-      },
-    ],
-  },
-  cafeteria: {
-    groups: [
-      {
-        name: 'Líquidos (Café)',
-        items: [
-          { name: 'Café Sabores', price: '$3.000' },
-          { name: 'Café Juan Valdés', price: '$3.200' },
-          { name: 'Té Sabores', price: '$2.000' },
-          { name: 'Café Nescafé', price: '$2.000' },
-          { name: 'Bebida', price: '$1.500' },
-          { name: 'Jugo', price: '$2.900' },
-          { name: 'Mineral', price: '$1.500' },
-        ],
-      },
-      {
-        name: 'Cafetería Helada',
-        items: [
-          { name: 'Café Helado', price: '$4.000' },
-          { name: 'Torta Biscocho', price: '$3.000' },
-          { name: 'Torta Hoja', price: '$3.800' },
-          { name: 'Kuchen', price: '$3.000' },
-          { name: 'Pie', price: '$3.000' },
-          { name: 'Cheesecake', price: '$3.200' },
-          { name: 'Donas', price: '$2.000' },
-          { name: 'Muffin', price: '$2.000' },
-          { name: 'Berlín', price: '$1.500' },
-          { name: 'Queque', price: '$1.500' },
-        ],
-      },
-      {
-        name: 'Sándwich',
-        note: 'Mechada y Churrasco son 2 ingredientes e incluyen papas fritas',
-        items: [
-          { name: 'Ave Sabores (pimiento, mayo)', price: '$3.800' },
-          { name: 'Vegetariano', price: '$4.500' },
-          { name: 'Sándwich Mechada', price: '$6.800' },
-          { name: 'Sándwich Churrasco', price: '$7.500' },
-          { name: 'Jamón Queso (fundido)', price: '$2.500' },
-          { name: 'Atún Mayo Lechuga', price: '$4.500' },
-          { name: 'Paila Huevo', price: '$3.200' },
-          { name: 'Completos de la Casa', price: '$2.800' },
-          { name: 'Empanada de la Casa (pino, queso, napolitana, chaparrita)', price: '$2.800' },
-        ],
-      },
-    ],
-  },
-  cocteleria: {
-    groups: [
-      {
-        name: 'Tragos de la Casa',
-        items: [
-          { name: 'Pisco con Bebida', price: '$5.000' },
-          { name: 'Ron con Bebida', price: '$4.500' },
-          { name: 'Mojito Tradicional', price: '$6.000' },
-          { name: 'Mojito Sabores', price: '$6.500' },
-          { name: 'Aperol Spritz', price: '$5.000' },
-          { name: 'Ramazzotti Spritz', price: '$6.500' },
-          { name: 'Caipiriña', price: '$6.000' },
-          { name: 'Tequila Margarita', price: '$6.000' },
-        ],
-      },
-      {
-        name: 'Sour',
-        items: [
-          { name: 'Pisco Sour de la Casa', price: '$5.000' },
-          { name: 'Mango Sour', price: '$5.000' },
-        ],
-      },
-      {
-        name: 'Whisky',
-        items: [
-          { name: 'Johnnie Walker Negro', price: '$7.000' },
-          { name: 'Johnnie Walker Rojo', price: '$6.000' },
-        ],
-      },
-      {
-        name: 'Vinos',
-        items: [
-          { name: 'Toro de Piedra Gran Reserva Cabernet 750cc', price: '$17.000' },
-          { name: 'Casa Silva Merlot 750cc', price: '$13.000' },
-          { name: 'Doña Dominga Gran Reserva Carménère', price: '$15.000' },
-        ],
-      },
-      {
-        name: 'Cervezas',
-        items: [
-          { name: 'Austral Calafate', price: '$4.500' },
-          { name: 'Corona', price: '$3.500' },
-          { name: 'Kuntsman Torobayo', price: '$4.500' },
-          { name: 'Michelada', price: '$5.500' },
-        ],
-      },
-    ],
-  },
-};
 ---
 
 <section id="menu" class="py-section-gap bg-background">
@@ -186,166 +34,51 @@ const fullMenus = {
       </p>
     </div>
 
-    <!-- Tabs: sticky bajo el nav (h-16) para poder cambiar de categoría sin volver a subir -->
-    <div class="sticky top-16 z-40 bg-background/95 backdrop-blur-md py-4 -mx-margin-mobile px-margin-mobile md:mx-0 md:px-0 flex flex-wrap justify-center gap-4 mb-12">
-      {tabs.map((tab, i) => (
-        <button
-          data-menu-tab={tab.id}
-          class={`menu-tab min-h-11 inline-flex items-center justify-center px-8 py-3 border border-outline-variant text-on-surface-variant font-bold uppercase text-sm tracking-widest transition-all hover:border-primary-container hover:text-primary-container ${i === 0 ? 'is-active' : ''}`}
+    <!-- Galería de categorías -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-6">
+      {categories.map((cat, i) => (
+        <div
+          class="card-lift reveal relative group overflow-hidden aspect-4/3 md:aspect-3/4"
+          style={`--reveal-delay: ${i * 130}ms`}
         >
-          {tab.label}
-        </button>
-      ))}
-    </div>
-
-    <!-- Bento por tab -->
-    {tabs.map((tab, i) => (
-      <div
-        data-menu-panel={tab.id}
-        class={`menu-panel grid grid-cols-2 md:grid-cols-4 md:grid-rows-2 gap-3 md:gap-6 md:h-150 ${i !== 0 ? 'hidden' : ''}`}
-      >
-        <!-- Card destacada -->
-        <div class="card-lift col-span-2 md:row-span-2 relative group overflow-hidden rounded-xl h-48 md:h-auto">
           <img
-            src={tab.featured.img}
-            alt={tab.featured.name}
+            src={cat.img}
+            alt={cat.label}
             class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
           />
-          <div class="absolute inset-0 bg-linear-to-t from-background/90 via-transparent to-transparent"></div>
-          <div class="absolute top-4 left-4 bg-primary-container text-on-primary-container text-[10px] font-bold uppercase tracking-widest px-3 py-1">
-            Más Pedido
+          <div class="absolute inset-0 bg-linear-to-t from-background/90 via-background/20 to-transparent"></div>
+          <div class="absolute bottom-5 left-5 right-5 md:bottom-6 md:left-6 md:right-6">
+            <h3 class="font-headline-lg text-on-surface text-xl md:text-2xl">{cat.label}</h3>
+            <p class="text-on-surface-variant text-sm mt-1">{cat.desc}</p>
           </div>
-          <div class="absolute bottom-4 left-4 right-4 md:bottom-6 md:left-6 md:right-6 flex justify-between items-end gap-4">
-            <div>
-              <h3 class="font-headline-lg text-on-surface text-xl md:text-2xl">{tab.featured.name}</h3>
-              <p class="text-on-surface-variant text-sm">{tab.featured.desc}</p>
-            </div>
-            <span class="text-primary-container font-bold text-lg md:text-xl shrink-0">{tab.featured.price}</span>
-          </div>
-        </div>
-
-        <!-- Cards secundarias -->
-        {tab.items.map((item) => (
-          <div class="card-lift md:col-span-2 relative group overflow-hidden rounded-xl aspect-square md:aspect-auto">
-            <img
-              src={item.img}
-              alt={item.name}
-              class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-            />
-            <div class="absolute inset-0 bg-linear-to-t from-background/80 to-transparent"></div>
-            <div class="absolute bottom-4 left-4 right-4 flex justify-between items-end gap-2">
-              <h4 class="font-headline-lg text-on-surface text-base md:text-lg">{item.name}</h4>
-              <span class="text-primary-container font-bold text-base md:text-lg shrink-0">{item.price}</span>
-            </div>
-          </div>
-        ))}
-      </div>
-    ))}
-
-    <!-- Happy Hour: caja rectangular, sin glass-card -->
-    <div class="mt-12 p-8 border border-primary-container/20 bg-surface-container-low flex flex-col md:flex-row items-center justify-center gap-6 text-center md:text-left">
-      <div class="w-12 h-12 bg-primary-container/10 rounded-full flex items-center justify-center shrink-0">
-        <span class="material-symbols-outlined text-primary-container text-3xl">local_bar</span>
-      </div>
-      <div>
-        <h4 class="text-xl font-bold text-on-surface mb-1">Happy Hour</h4>
-        <p class="text-on-surface-variant text-body-md">
-          Jueves y Viernes de 18:00 a 20:00. <span class="text-primary-container font-bold">2x1 en Coctelería Nacional</span>.
-        </p>
-      </div>
-    </div>
-
-    <!-- Carta completa expandible -->
-    <div class="mt-16 text-center">
-      <button
-        id="toggle-menu-btn"
-        data-label-closed="Ver carta completa"
-        data-label-open="Ver menos"
-        class="min-h-11 inline-flex items-center justify-center px-12 py-4 border border-primary-container text-primary-container hover:bg-primary-container/10 transition-all font-bold uppercase text-sm tracking-widest"
-      >
-        Ver carta completa
-      </button>
-    </div>
-
-    <div id="full-menu" class="hidden mt-16 max-w-3xl mx-auto">
-      {tabs.map((tab, i) => (
-        <div
-          data-fullmenu-panel={tab.id}
-          class={`space-y-3 ${i !== 0 ? 'hidden' : ''}`}
-        >
-          {fullMenus[tab.id].groups.map((group, gi) => (
-            <details
-              class="group border border-primary-container/15 bg-surface-container-low"
-              name={`accordion-${tab.id}`}
-              open={gi === 0}
-            >
-              <summary class="min-h-11 flex items-center justify-between gap-4 px-5 py-4 cursor-pointer list-none font-bold text-on-surface uppercase text-sm tracking-widest">
-                <span>{group.name}</span>
-                <span class="material-symbols-outlined text-primary-container transition-transform duration-300 group-open:rotate-180 shrink-0">
-                  expand_more
-                </span>
-              </summary>
-              <div class="px-5 pb-5 border-t border-primary-container/10">
-                {group.note && (
-                  <p class="text-on-surface-variant text-xs italic pt-4">{group.note}</p>
-                )}
-                <ul class="divide-y divide-primary-container/10">
-                  {group.items.map((item) => (
-                    <li class="flex items-center justify-between gap-4 py-3.5">
-                      <span class="text-on-surface text-sm md:text-base">{item.name}</span>
-                      <span class="text-primary-container font-bold text-sm md:text-base shrink-0">{item.price}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </details>
-          ))}
         </div>
       ))}
     </div>
+
+    <!-- Botones a las cartas -->
+    <div class="mt-14 flex flex-col sm:flex-row items-center justify-center gap-4">
+      <a
+        href="/carta-restaurant.html"
+        target="_blank"
+        rel="noopener"
+        class="btn-shine relative overflow-hidden min-h-11 w-full sm:w-auto inline-flex items-center justify-center gap-2 px-10 py-4 bg-primary-container text-on-primary-container hover:bg-primary-container/90 transition-all font-bold uppercase text-sm tracking-widest"
+      >
+        <span class="material-symbols-outlined text-xl">restaurant_menu</span>
+        Ver Carta Restaurant
+      </a>
+      <a
+        href="/carta-cafeteria.html"
+        target="_blank"
+        rel="noopener"
+        class="min-h-11 w-full sm:w-auto inline-flex items-center justify-center gap-2 px-10 py-4 border border-primary-container text-primary-container hover:bg-primary-container/10 transition-all font-bold uppercase text-sm tracking-widest"
+      >
+        <span class="material-symbols-outlined text-xl">local_cafe</span>
+        Ver Carta Cafetería
+      </a>
+    </div>
+    <p class="mt-5 text-center text-on-surface-variant text-xs italic">
+      La coctelería y los vinos están incluidos en la Carta Restaurant.
+    </p>
 
   </div>
 </section>
-
-<style>
-  /* Estado activo definido en CSS puro — no togglear clases Tailwind desde JS */
-  .menu-tab.is-active {
-    background-color: var(--color-primary-container);
-    border-color: var(--color-primary-container);
-    color: var(--color-on-primary-container);
-  }
-</style>
-
-<script>
-  const menuTabs = document.querySelectorAll<HTMLButtonElement>('.menu-tab');
-  const menuPanels = document.querySelectorAll<HTMLElement>('.menu-panel');
-  const fullMenuPanels = document.querySelectorAll<HTMLElement>('[data-fullmenu-panel]');
-  const toggleBtn = document.getElementById('toggle-menu-btn');
-  const fullMenuEl = document.getElementById('full-menu');
-
-  const setToggleLabel = () => {
-    if (!toggleBtn) return;
-    const isOpen = !fullMenuEl?.classList.contains('hidden');
-    toggleBtn.textContent = isOpen
-      ? (toggleBtn.dataset.labelOpen ?? 'Ver menos')
-      : (toggleBtn.dataset.labelClosed ?? 'Ver carta completa');
-  };
-
-  menuTabs.forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const target = btn.dataset.menuTab;
-      menuTabs.forEach((b) => b.classList.toggle('is-active', b === btn));
-      menuPanels.forEach((panel) => {
-        panel.classList.toggle('hidden', panel.dataset.menuPanel !== target);
-      });
-      fullMenuPanels.forEach((panel) => {
-        panel.classList.toggle('hidden', panel.dataset.fullmenuPanel !== target);
-      });
-    });
-  });
-
-  toggleBtn?.addEventListener('click', () => {
-    fullMenuEl?.classList.toggle('hidden');
-    setToggleLabel();
-  });
-</script>

@@ -67,7 +67,7 @@ const past = allEvents.filter((ev) => ev.iso < todayIso);
         <div
           data-featured-event
           data-event-date={featured.iso}
-          class="reveal card-lift group rounded-xl overflow-hidden bg-surface-container border border-primary-container/10 grid md:grid-cols-2 mb-20"
+          class="reveal card-lift group overflow-hidden bg-surface-container border border-primary-container/10 grid md:grid-cols-2 mb-20"
         >
           <div class="overflow-hidden">
             <img
@@ -112,7 +112,7 @@ const past = allEvents.filter((ev) => ev.iso < todayIso);
     <!-- Estado sin eventos futuros -->
     <div
       data-no-events
-      class={`${featured ? "hidden " : ""}reveal rounded-xl border border-primary-container/15 bg-surface-container text-center px-6 py-14 mb-20 max-w-2xl mx-auto`}
+      class={`${featured ? "hidden " : ""}reveal border border-primary-container/15 bg-surface-container text-center px-6 py-14 mb-20 max-w-2xl mx-auto`}
     >
       <span
         class="material-symbols-outlined text-primary-container text-4xl mb-4"
@@ -155,7 +155,7 @@ const past = allEvents.filter((ev) => ev.iso < todayIso);
       {
         past.map((ev, i) => (
           <div
-            class="reveal card-lift group rounded-xl overflow-hidden bg-surface-container border border-primary-container/10 flex flex-col"
+            class="reveal card-lift group overflow-hidden bg-surface-container border border-primary-container/10 flex flex-col"
             style={`--reveal-delay: ${i * 100}ms`}
           >
             <div class="overflow-hidden">

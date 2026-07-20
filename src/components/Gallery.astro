@@ -48,7 +48,7 @@ const images = {
       {tabs.map((tab, i) => (
         <button
           data-tab={tab}
-          class={`gallery-tab px-5 py-2.5 rounded-full text-sm font-semibold transition-all ${i === 0 ? 'bg-primary-container text-on-primary-container' : 'bg-surface-container text-on-surface-variant hover:text-on-surface border border-outline-variant/30'}`}
+          class={`gallery-tab px-5 py-2.5 text-sm font-semibold transition-all ${i === 0 ? 'bg-primary-container text-on-primary-container' : 'bg-surface-container text-on-surface-variant hover:text-on-surface border border-outline-variant/30'}`}
         >
           {tab}
         </button>
@@ -63,7 +63,7 @@ const images = {
         data-panel={tab}
       >
         {images[tab as keyof typeof images].map((img) => (
-          <div class="card-lift aspect-square overflow-hidden rounded-xl bg-surface-container group">
+          <div class="card-lift aspect-square overflow-hidden bg-surface-container group">
             <img
               src={img.src}
               alt={img.alt}

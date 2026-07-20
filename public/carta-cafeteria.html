@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carta Cafetería — Doña Dominga</title>
+  <link rel="icon" type="image/jpeg" href="/Logo.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,400;1,600&family=Manrope:wght@400;500;700;800&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #161311;
+      --surface: #1f1b19;
+      --ink: #eae1dd;
+      --muted: #d0c5af;
+      --accent: #ff5c22;
+      --accent-soft: #ffb68c;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Manrope', sans-serif;
+      padding: 0 0 60px 0;
+    }
+
+    .wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 28px;
+    }
+
+    .masthead {
+      text-align: center;
+      padding: 56px 24px 34px 24px;
+      border-bottom: 1px solid rgba(255, 92, 34, 0.18);
+      margin-bottom: 38px;
+    }
+
+    .masthead .logo {
+      width: 96px;
+      height: 96px;
+      object-fit: cover;
+      border: 2px solid rgba(255, 92, 34, 0.45);
+      margin-bottom: 14px;
+    }
+
+    .masthead .brand {
+      font-family: 'Playfair Display', serif;
+      line-height: 1;
+      margin: 0;
+    }
+
+    .masthead .brand .eyebrow-word {
+      display: block;
+      font-style: italic;
+      font-weight: 600;
+      font-size: 20px;
+      letter-spacing: 0.3px;
+      color: color-mix(in srgb, var(--ink) 90%, transparent);
+      margin-bottom: 8px;
+    }
+
+    .masthead .brand .name-word {
+      display: block;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      font-size: 44px;
+      background-image: linear-gradient(100deg, #fff8f0 0%, #ffd9b8 55%, #ff8a50 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 0 18px rgba(255, 92, 34, 0.35));
+      padding-bottom: 0.15em;
+      margin-bottom: -0.15em;
+    }
+
+    .masthead .place {
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    .masthead .doctitle {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 20px;
+      color: var(--accent-soft);
+      margin-top: 22px;
+    }
+
+    .masthead .tagline {
+      font-size: 12.5px;
+      color: var(--muted);
+      max-width: 420px;
+      margin: 8px auto 0 auto;
+      line-height: 1.5;
+    }
+
+    .section {
+      margin-bottom: 36px;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Manrope', sans-serif;
+      font-weight: 800;
+      font-size: 14px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--ink);
+      border-left: 4px solid var(--accent);
+      padding-left: 12px;
+      margin-bottom: 16px;
+    }
+
+    .section-note {
+      font-size: 11px;
+      color: var(--accent-soft);
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      margin: -8px 0 14px 16px;
+      text-transform: none;
+    }
+
+    .item {
+      margin-bottom: 14px;
+    }
+
+    .item-row {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .item-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 16px;
+      color: var(--ink);
+      white-space: nowrap;
+    }
+
+    .item-slash {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .leader {
+      flex: 1;
+      border-bottom: 1px dotted rgba(208, 197, 175, 0.4);
+      margin: 0 2px;
+      transform: translateY(-3px);
+      min-width: 20px;
+    }
+
+    .item-price {
+      font-family: 'Manrope', sans-serif;
+      font-weight: 800;
+      font-size: 15px;
+      color: var(--accent-soft);
+      white-space: nowrap;
+    }
+
+    .item-desc {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+      font-style: italic;
+      line-height: 1.4;
+    }
+
+    .callout {
+      border: 1px solid rgba(255, 92, 34, 0.25);
+      background: var(--surface);
+      padding: 14px 18px;
+      font-size: 12.5px;
+      color: var(--muted);
+      text-align: center;
+      margin: 10px 0 36px 0;
+    }
+
+    .callout b {
+      color: var(--accent-soft);
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px 24px 0 24px;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #6b6259;
+    }
+
+    footer .fline {
+      width: 60px;
+      height: 1px;
+      background: var(--accent);
+      margin: 0 auto 16px auto;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="masthead">
+      <img class="logo" src="/Logo.jpg" alt="Doña Dominga" />
+      <h1 class="brand"><span class="eyebrow-word">Terraza</span><span class="name-word">Doña Dominga</span></h1>
+      <div class="place">Santa Victoria - Mallarauco &middot; Desde 1993</div>
+      <p class="doctitle">&ldquo;Carta Cafetería&rdquo;</p>
+      <!-- <p class="tagline">Café de grano, repostería de la casa y sándwiches para las tardes tranquilas en la terraza.</p> -->
+    </div>
+    <div class="section">
+      <div class="section-title">Café</div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">Café Sabores</span><span class="leader"></span><span
+            class="item-price">$3.000</span></div>
+      </div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">Café Juan Valdés</span><span class="leader"></span><span
+            class="item-price">$3.200</span></div>
+      </div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">Té Sabores</span><span class="leader"></span><span
+            class="item-price">$2.000</span></div>
+      </div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">Café Nescafé</span><span class="leader"></span><span
+            class="item-price">$2.000</span></div>
+      </div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">Bebida</span><span class="leader"></span><span
+            class="item-price">$1.500</span></div>
+      </div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">Jugo</span><span class="leader"></span><span
+            class="item-price">$2.900</span></div>
+      </div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">Mineral</span><span class="leader"></span><span
+            class="item-price">$1.500</span></div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-title">Cafetería Helada</div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">Café Helado</span><span class="leader"></span><span
+            class="item-price">$4.000</span></div>
+      </div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">Torta Biscocho</span><span class="leader"></span><span
+            class="item-price">$3.000</span></div>
+      </div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">Torta Hoja</span><span class="leader"></span><span
+            class="item-price">$3.800</span></div>
+      </div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">Kuchen</span><span class="leader"></span><span
+            class="item-price">$3.000</span></div>
+      </div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">Pie</span><span class="leader"></span><span
+            class="item-price">$3.000</span></div>
+      </div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">Cheesecake</span><span class="leader"></span><span
+            class="item-price">$3.200</span></div>
+      </div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">Donas</span><span class="leader"></span><span
+            class="item-price">$2.000</span></div>
+      </div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">Muffin</span><span class="leader"></span><span
+            class="item-price">$2.000</span></div>
+      </div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">Berlín</span><span class="leader"></span><span
+            class="item-price">$1.500</span></div>
+      </div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">Queque</span><span class="leader"></span><span
+            class="item-price">$1.500</span></div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-title">Sándwich</div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">Ave Sabores</span><span class="leader"></span><span
+            class="item-price">$3.800</span></div>
+        <div class="item-desc">Pimiento · mayo</div>
+      </div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">Vegetariano</span><span class="leader"></span><span
+            class="item-price">$4.500</span></div>
+      </div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">Sándwich Mechada</span><span class="leader"></span><span
+            class="item-price">$6.800</span></div>
+        <div class="item-desc">2 ingredientes · incluye papas</div>
+      </div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">Sándwich Churrasco</span><span class="leader"></span><span
+            class="item-price">$7.500</span></div>
+        <div class="item-desc">2 ingredientes · incluye papas</div>
+      </div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">Jamón Queso Fundido</span><span class="leader"></span><span
+            class="item-price">$2.500</span></div>
+      </div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">Atún Mayo Lechuga</span><span class="leader"></span><span
+            class="item-price">$4.500</span></div>
+      </div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">Paila Huevo</span><span class="leader"></span><span
+            class="item-price">$3.200</span></div>
+      </div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">Completos de la Casa</span><span class="leader"></span><span
+            class="item-price">$2.800</span></div>
+      </div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">Empanada de la Casa</span><span class="leader"></span><span
+            class="item-price">$2.800</span></div>
+        <div class="item-desc">Pino · queso · napolitana · chaparrita</div>
+      </div>
+    </div>
+    <footer>
+      <div class="fline"></div>
+      Precios en pesos chilenos (CLP) &middot; sujetos a cambio sin previo aviso
+    </footer>
+  </div>
+</body>
+
+</html>

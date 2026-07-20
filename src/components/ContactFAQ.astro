@@ -1,78 +1,128 @@
 ---
 const faqs = [
+  // Pagos / reserva
   {
-    q: '¿Tienen estacionamiento?',
-    a: 'Sí, contamos con un amplio estacionamiento privado y seguro para todos nuestros clientes sin costo adicional.',
+    q: "¿Aceptan tarjetas o solo efectivo/transferencia?",
+    a: "Sí. Aceptamos tarjetas de crédito y débito (incluyendo pago sin contacto), efectivo y transferencias.",
   },
   {
-    q: '¿Cómo reservar para grupos grandes?',
-    a: 'Para grupos de más de 10 personas, recomendamos contactarnos directamente vía WhatsApp con al menos 48 horas de anticipación para asegurar la mejor ubicación.',
+    q: "¿Necesito reservar con anticipación o puedo llegar sin reserva?",
+    a: "Puedes llegar sin reserva. Para noches con artista en vivo recomendamos reservar con anticipación por WhatsApp, ya que el aforo es limitado.",
   },
   {
-    q: '¿Los shows tienen costo adicional?',
-    a: 'El valor de la entrada o cover varía según el artista. Generalmente los precios están indicados en nuestra cartelera de eventos.',
+    q: "¿Tienen estacionamiento?",
+    a: "Sí, contamos con un amplio estacionamiento privado y seguro para todos nuestros clientes sin costo adicional.",
+  },
+  // Grupos / niños / vegetarianos
+  {
+    q: "¿Reciben grupos grandes o cumpleaños?",
+    a: "Sí, recibimos grupos y celebraciones. Para grupos numerosos te recomendamos avisarnos antes por WhatsApp para preparar tu mesa.",
+  },
+  {
+    q: "¿Es apto para niños?",
+    a: "Sí, es un espacio familiar. Ten en cuenta que en noches de shows el ambiente es más de música en vivo hasta tarde.",
+  },
+  {
+    q: "¿Tienen opciones vegetarianas?",
+    a: "Sí, contamos con sándwich vegetariano, empanadas de queso y una variada selección de tortas y kuchen en nuestra cafetería.",
+  },
+  // Eventos
+  {
+    q: "¿Los shows tienen costo adicional?",
+    a: "El valor de la entrada o cover varía según el artista. Generalmente los precios están indicados en nuestra cartelera de eventos.",
+  },
+  {
+    q: "¿Cómo compro entradas para los shows?",
+    a: "Por WhatsApp, directamente con nosotros.",
   },
 ];
 ---
 
-<section id="contacto" class="py-section-gap bg-surface-container-low">
+<section
+  id="contacto"
+  class="py-section-gap bg-surface-container-low"
+>
   <div class="max-w-container-max mx-auto px-margin-mobile md:px-gutter">
-
     <!-- Header -->
     <div class="text-center mb-16">
-      <span class="text-primary-container text-label-sm uppercase tracking-[0.3em] font-bold block mb-4">
+      <span
+        class="text-primary-container text-label-sm uppercase tracking-[0.3em] font-bold block mb-4"
+      >
         Asistencia
       </span>
-      <h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">
+      <h2
+        class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface"
+      >
         Contacto y Ayuda
       </h2>
     </div>
 
     <!-- 2 columnas: mapa + info -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-20">
-
-      <!-- Columna izquierda: mapa placeholder -->
+      <!-- Columna izquierda: mapa -->
       <div class="flex flex-col gap-5">
-        <div class="aspect-video bg-surface-container rounded-xl flex flex-col items-center justify-center gap-3 border border-primary-container/10">
-          <span class="material-symbols-outlined text-5xl text-primary-container/40">location_on</span>
-          <span class="text-on-surface-variant text-sm text-center px-6">Terraza Doña Dominga<br />Mallarauco, Región Metropolitana</span>
+        <div
+          class="aspect-video bg-surface-container border border-primary-container/10 overflow-hidden"
+        >
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13295.827291557234!2d-71.05137517830273!3d-33.58047029673312!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9662fb0002a75101%3A0xdbb8ef1e41045032!2sTerraza%20Do%C3%B1a%20Dominga!5e0!3m2!1ses-419!2scl!4v1784588332215!5m2!1ses-419!2scl"
+            width="100%"
+            height="100%"
+            style="border:0;"
+            allowfullscreen
+            loading="lazy"
+            referrerpolicy="strict-origin-when-cross-origin"
+            title="Ubicación de Terraza Doña Dominga en Google Maps"
+          ></iframe>
         </div>
         <a
-          href="https://maps.google.com/?q=Mallarauco+Region+Metropolitana+Chile"
+          href="https://maps.app.goo.gl/g7Twu3AjbdEfJQEL6"
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center justify-center gap-2 px-6 py-3 border border-primary-container/40 text-on-surface rounded-full hover:bg-primary-container/10 hover:border-primary-container/70 transition-all text-sm font-semibold"
+          class="inline-flex items-center justify-center gap-2 px-6 py-3 border border-primary-container/40 text-on-surface hover:bg-primary-container/10 hover:border-primary-container/70 transition-all text-sm font-semibold"
         >
-          <span class="material-symbols-outlined text-base text-primary-container">directions</span>
+          <span
+            class="material-symbols-outlined text-base text-primary-container"
+            >directions</span
+          >
           Cómo llegar
         </a>
       </div>
 
       <!-- Columna derecha: horarios + teléfono + cita -->
       <div class="flex flex-col gap-6">
-
         <!-- Horarios -->
-        <div class="glass-card rounded-xl p-6">
-          <h3 class="font-headline-lg text-on-surface font-semibold text-lg mb-4 flex items-center gap-2">
-            <span class="material-symbols-outlined text-primary-container text-xl">schedule</span>
+        <div class="glass-card p-6">
+          <h3
+            class="font-headline-lg text-on-surface font-semibold text-lg mb-4 flex items-center gap-2"
+          >
+            <span
+              class="material-symbols-outlined text-primary-container text-xl"
+              >schedule</span
+            >
             Horarios
           </h3>
           <ul class="space-y-2 text-on-surface-variant text-sm">
             <li class="flex justify-between">
-              <span>Jueves a Sábado</span>
-              <span class="text-on-surface font-medium">19:00 - 03:00 hrs</span>
+              <span>Amasandería</span>
+              <span class="text-on-surface font-medium">7:30 - 19:00 hrs</span>
             </li>
-            <li class="flex justify-between text-on-surface-variant/50">
-              <span>Domingo - Miércoles</span>
-              <span>Cerrado</span>
+            <li class="flex justify-between">
+              <span>Restaurante (Lu-Do)</span>
+              <span class="text-on-surface font-medium">12:00 - 16:30 hrs</span>
             </li>
           </ul>
         </div>
 
         <!-- Teléfono -->
-        <div class="glass-card rounded-xl p-6">
-          <h3 class="font-headline-lg text-on-surface font-semibold text-lg mb-4 flex items-center gap-2">
-            <span class="material-symbols-outlined text-primary-container text-xl">phone</span>
+        <div class="glass-card p-6">
+          <h3
+            class="font-headline-lg text-on-surface font-semibold text-lg mb-4 flex items-center gap-2"
+          >
+            <span
+              class="material-symbols-outlined text-primary-container text-xl"
+              >phone</span
+            >
             Teléfono
           </h3>
           <a
@@ -81,39 +131,49 @@ const faqs = [
           >
             +56 9 7413 1205
           </a>
-          <p class="text-on-surface-variant text-xs mt-1">También por WhatsApp</p>
+          <p class="text-on-surface-variant text-xs mt-1">
+            También por WhatsApp
+          </p>
         </div>
 
         <!-- Cita destacada -->
         <div class="border-l-4 border-primary-container pl-5 py-2">
           <p class="text-on-surface-variant italic text-sm leading-relaxed">
-            "Cada visita a Doña Dominga es una experiencia que se lleva en el corazón. Venimos a crear recuerdos."
+            "Cada visita a Doña Dominga es una experiencia que se lleva en el
+            corazón. Venimos a crear recuerdos."
           </p>
-          <span class="text-primary-container text-label-sm font-semibold mt-2 block">— La familia Dominga</span>
+          <span
+            class="text-primary-container text-label-sm font-semibold mt-2 block"
+            >— La familia Dominga</span
+          >
         </div>
-
       </div>
     </div>
 
     <!-- FAQ accordion -->
     <div class="max-w-3xl mx-auto space-y-3">
-      <h3 class="font-headline-lg text-on-surface text-center text-xl font-semibold mb-6">
+      <h3
+        class="font-headline-lg text-on-surface text-center text-xl font-semibold mb-6"
+      >
         Preguntas frecuentes
       </h3>
-      {faqs.map((faq) => (
-        <details class="group glass-card overflow-hidden rounded-xl">
-          <summary class="flex justify-between items-center p-6 cursor-pointer list-none">
-            <span class="font-semibold text-on-surface text-sm md:text-base">{faq.q}</span>
-            <span class="material-symbols-outlined text-on-surface-variant transition-transform duration-300 group-open:rotate-180 flex-shrink-0 ml-4">
-              expand_more
-            </span>
-          </summary>
-          <div class="px-6 pb-6 pt-0 text-on-surface-variant text-sm leading-relaxed border-t border-primary-container/10">
-            {faq.a}
-          </div>
-        </details>
-      ))}
+      {
+        faqs.map((faq) => (
+          <details class="group glass-card overflow-hidden">
+            <summary class="flex justify-between items-center p-6 cursor-pointer list-none">
+              <span class="font-semibold text-on-surface text-sm md:text-base">
+                {faq.q}
+              </span>
+              <span class="material-symbols-outlined text-on-surface-variant transition-transform duration-300 group-open:rotate-180 flex-shrink-0 ml-4">
+                expand_more
+              </span>
+            </summary>
+            <div class="px-6 pb-6 pt-0 text-on-surface-variant text-sm leading-relaxed border-t border-primary-container/10">
+              {faq.a}
+            </div>
+          </details>
+        ))
+      }
     </div>
-
   </div>
 </section>

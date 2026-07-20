@@ -1,28 +1,22 @@
 ---
+// Reseñas reales de Google Maps (4.8★ / 66 opiniones) — solo tienen texto corto,
+// sin título/cuerpo separado como los placeholders anteriores.
 const reviews = [
   {
     stars: 5,
-    title: 'Una noche perfecta',
-    quote: 'Fuimos en aniversario y quedamos encantados. La música en vivo, los quesos artesanales y la atención hicieron de esa noche algo muy especial.',
-    user: '@carolina_rm',
+    quote: 'Excelente lugar muy bien atendido y la comida exquisita',
   },
   {
     stars: 5,
-    title: 'El mejor plan del fin de semana',
-    quote: 'Llevamos a toda la familia y cada uno encontró algo que amar. Los niños con las empanadas, los grandes con el vino y el show. ¡Volveremos!',
-    user: '@familiaconcha2024',
+    quote: 'Muy buenas empanadas de pino sabrosas y ricos helados artesanales',
   },
   {
     stars: 5,
-    title: 'Auténtico y delicioso',
-    quote: 'Rara vez encuentras un lugar tan genuino. La comida sabe a campo de verdad y el ambiente te hace olvidar que estás cerca de Santiago.',
-    user: '@javierandres_v',
+    quote: 'Expedito y excelente lugar para almorzar con amigos o familiares',
   },
   {
     stars: 5,
-    title: 'Un descubrimiento único',
-    quote: 'Me lo recomendaron y no lo podía creer. Un lugar así, tan cercano a la ciudad pero con toda la esencia del campo chileno. Sorprendente.',
-    user: '@patrizialopez',
+    quote: 'Excelente lugar, muy buena atención y la comida excelente. Lo mejor de la zona.',
   },
 ];
 ---
@@ -44,7 +38,7 @@ const reviews = [
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-0 divide-y md:divide-y-0 md:divide-x divide-primary-container/10">
       {reviews.map((r, i) => (
         <div
-          class={`reveal px-6 py-8 ${i === 0 ? 'pl-0' : ''} ${i === reviews.length - 1 ? 'pr-0' : ''}`}
+          class={`reveal px-6 py-8 flex flex-col min-h-44 ${i === 0 ? 'pl-0' : ''} ${i === reviews.length - 1 ? 'pr-0' : ''}`}
           style={`--reveal-delay: ${i * 130}ms`}
         >
           <!-- Estrellas -->
@@ -54,18 +48,10 @@ const reviews = [
             ))}
           </div>
 
-          <!-- Título -->
-          <h3 class="font-headline-lg text-on-surface italic font-semibold text-base mb-3">
-            "{r.title}"
-          </h3>
-
           <!-- Cita -->
-          <p class="text-on-surface-variant text-sm leading-relaxed mb-4">
-            {r.quote}
+          <p class="font-headline-lg text-on-surface italic font-semibold text-base leading-relaxed mb-4 flex-1">
+            "{r.quote}"
           </p>
-
-          <!-- Usuario -->
-          <span class="text-primary-container text-label-sm font-semibold">{r.user}</span>
         </div>
       ))}
     </div>
