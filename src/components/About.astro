@@ -1,60 +1,97 @@
 ---
+import { Image } from "astro:assets";
+import doñaDomingaImg from "../assets/about/doña-dominga.png";
 ---
 
-{/* Se renderiza dentro de la sección "nosotros" compartida con Values (index.astro) */}
+{
+  /* Se renderiza dentro de la sección "nosotros" compartida con Values (index.astro) */
+}
 <div class="max-w-container-max mx-auto px-margin-mobile md:px-gutter mb-24">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-
-      <!-- Imagen con frame decorativo -->
-      <div class="relative">
-        <!-- Frame decorativo -->
-        <div class="absolute -top-4 -left-4 w-2/3 h-2/3 border-l-4 border-t-4 border-primary-container/30 pointer-events-none z-10"></div>
-        <div class="absolute -bottom-4 -right-4 w-2/3 h-2/3 border-r-4 border-b-4 border-primary-container/10 pointer-events-none z-10"></div>
-
-        <!-- Imagen -->
-        <img
-          src="/Familia.jpg"
-          alt="La familia detrás de Terraza Doña Dominga"
-          class="w-full h-[480px] object-cover relative z-0"
-        />
-
-        <!-- Badge flotante -->
-        <div class="absolute bottom-6 right-6 z-20 glass-card px-4 py-3 text-center box-glow">
-          <span class="block text-display-lg font-headline-lg text-primary-container font-bold leading-none">30+</span>
-          <span class="block text-label-sm text-on-surface-variant uppercase tracking-wider mt-1">Años de historia</span>
-        </div>
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+    <!-- Imagen con frame decorativo -->
+    <div class="relative">
+      <!-- Frame decorativo -->
+      <div
+        class="absolute -top-4 -left-4 w-2/3 h-2/3 border-l-4 border-t-4 border-primary-container/30 pointer-events-none z-10"
+      >
+      </div>
+      <div
+        class="absolute -bottom-4 -right-4 w-2/3 h-2/3 border-r-4 border-b-4 border-primary-container/10 pointer-events-none z-10"
+      >
       </div>
 
-      <!-- Texto -->
-      <div>
-        <span class="text-primary-container text-label-sm uppercase tracking-[0.3em] font-bold block mb-4">
-          Quiénes somos
-        </span>
+      <!-- Imagen -->
+      <Image
+        src={doñaDomingaImg}
+        alt="El corazón de Doña Dominga"
+        class="w-full h-120 object-cover relative z-0"
+      />
 
-        <h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-6">
-          Un legado en<br />Mallarauco
-        </h2>
-
-        <div class="space-y-4 text-on-surface-variant text-body-md leading-relaxed mb-8">
-          <p>
-            Terraza Doña Dominga nació del corazón de una familia con raíces profundas en la tierra de Mallarauco. Lo que comenzó como una reunión entre amigos y vecinos, se convirtió en el lugar de encuentro más querido de la zona.
-          </p>
-          <p>
-            Cada noche ofrecemos una experiencia única: gastronomía casera con productos del campo, quesos artesanales elaborados con tradición, y una selección de tragos preparados con dedicación. Y cuando cae el sol, la terraza cobra vida con artistas en vivo que llenan el aire de música y emoción.
-          </p>
-          <p>
-            Aquí cada detalle importa — desde la luz cálida de las velas hasta el sonido de la música en vivo. Venimos a crear recuerdos que duran toda la vida.
-          </p>
-        </div>
-
-        <!-- Estrellas -->
-        <div class="flex items-center gap-1 mb-2">
-          {Array.from({ length: 5 }).map(() => (
-            <span class="material-symbols-outlined icon-filled text-primary-container text-xl">star</span>
-          ))}
-        </div>
-        <p class="text-on-surface-variant text-label-sm">+500 familias nos han visitado</p>
+      <!-- Badge flotante -->
+      <div
+        class="absolute bottom-6 right-6 z-20 glass-card px-4 py-3 text-center box-glow"
+      >
+        <span
+          class="block text-display-lg font-headline-lg text-primary-container font-bold leading-none"
+          >30+</span
+        >
+        <span
+          class="block text-label-sm text-on-surface-variant uppercase tracking-wider mt-1"
+          >Años de historia</span
+        >
       </div>
-
     </div>
+
+    <!-- Texto -->
+    <div>
+      <span
+        class="text-primary-container text-label-sm uppercase tracking-[0.3em] font-bold block mb-4"
+      >
+        Quiénes somos
+      </span>
+
+      <h2
+        class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-6"
+      >
+        Un legado en<br />Mallarauco
+      </h2>
+
+      <div
+        class="space-y-4 text-on-surface-variant text-body-md leading-relaxed mb-8"
+      >
+        <p>
+          Terraza Doña Dominga nació del corazón de una familia con raíces
+          profundas en la tierra de Mallarauco. Lo que comenzó como una reunión
+          entre amigos y vecinos, se convirtió en el lugar de encuentro más
+          querido de la zona.
+        </p>
+        <p>
+          Cada noche ofrecemos una experiencia única: gastronomía casera con
+          productos del campo, quesos artesanales elaborados con tradición, y
+          una selección de tragos preparados con dedicación. Y cuando cae el
+          sol, la terraza cobra vida con artistas en vivo que llenan el aire de
+          música y emoción.
+        </p>
+        <p>
+          Aquí cada detalle importa — desde la luz cálida de las velas hasta el
+          sonido de la música en vivo. Venimos a crear recuerdos que duran toda
+          la vida.
+        </p>
+      </div>
+
+      <!-- Estrellas -->
+      <div class="flex items-center gap-1 mb-2">
+        {
+          Array.from({ length: 5 }).map(() => (
+            <span class="material-symbols-outlined icon-filled text-primary-container text-xl">
+              star
+            </span>
+          ))
+        }
+      </div>
+      <p class="text-on-surface-variant text-label-sm">
+        +500 familias nos han visitado
+      </p>
+    </div>
+  </div>
 </div>

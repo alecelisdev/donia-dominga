@@ -8,6 +8,22 @@ const reviews = [
   },
   {
     stars: 5,
+    quote: 'Comida tradicional chilena, excelente relación precio calidad y atención familiar.',
+  },
+  {
+    stars: 5,
+    quote: 'El servicio muy amable y cordial. La comida estaba demasiado rica y la verdad muy satisfecho con la cantidad también. Incluso a precio bastante asequible.',
+  },
+  {
+    stars: 5,
+    quote: 'Excelente lugar, muy buena atención y la comida excelente. Lo mejor de la zona.',
+  },
+  {
+    stars: 5,
+    quote: 'Muy buen lugar para carretear y pasar un rato agradable',
+  },
+  {
+    stars: 5,
     quote: 'Muy buenas empanadas de pino sabrosas y ricos helados artesanales',
   },
   {
@@ -16,9 +32,13 @@ const reviews = [
   },
   {
     stars: 5,
-    quote: 'Excelente lugar, muy buena atención y la comida excelente. Lo mejor de la zona.',
+    quote: 'El lugar muy bueno y la comida súper contundente!',
   },
 ];
+
+// Carrusel infinito: se duplica el set para que el track pueda recorrer
+// exactamente -50% de su ancho y volver a quedar idéntico (loop perfecto).
+const track = [...reviews, ...reviews];
 ---
 
 <section class="py-section-gap bg-surface-container-low">
@@ -34,26 +54,27 @@ const reviews = [
       </h2>
     </div>
 
-    <!-- Reviews grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-0 divide-y md:divide-y-0 md:divide-x divide-primary-container/10">
-      {reviews.map((r, i) => (
-        <div
-          class={`reveal px-6 py-8 flex flex-col min-h-44 ${i === 0 ? 'pl-0' : ''} ${i === reviews.length - 1 ? 'pr-0' : ''}`}
-          style={`--reveal-delay: ${i * 130}ms`}
-        >
-          <!-- Estrellas -->
-          <div class="flex gap-0.5 mb-3">
-            {Array.from({ length: r.stars }).map(() => (
-              <span class="material-symbols-outlined icon-filled text-primary-container text-base">star</span>
-            ))}
-          </div>
+    <!-- Reviews: carrusel infinito -->
+    <div class="testimonial-marquee">
+      <div class="testimonial-track">
+        {track.map((r, i) => (
+          <div
+            class={`px-6 py-8 flex flex-col min-h-44 w-80 md:w-96 shrink-0 border-primary-container/10 ${i === track.length - 1 ? '' : 'border-r'}`}
+          >
+            <!-- Estrellas -->
+            <div class="flex gap-0.5 mb-3">
+              {Array.from({ length: r.stars }).map(() => (
+                <span class="material-symbols-outlined icon-filled text-primary-container text-base">star</span>
+              ))}
+            </div>
 
-          <!-- Cita -->
-          <p class="font-headline-lg text-on-surface italic font-semibold text-base leading-relaxed mb-4 flex-1">
-            "{r.quote}"
-          </p>
-        </div>
-      ))}
+            <!-- Cita -->
+            <p class="font-headline-lg text-on-surface italic font-semibold text-base leading-relaxed mb-4 flex-1">
+              "{r.quote}"
+            </p>
+          </div>
+        ))}
+      </div>
     </div>
 
   </div>

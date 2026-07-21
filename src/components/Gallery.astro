@@ -1,98 +1,147 @@
 ---
-const tabs = ['El Local', 'Nuestra Mesa', 'Shows'];
+import { Image } from "astro:assets";
 
-// 6 fotos por tab: 3 col x 2 filas en desktop, 2 col x 3 filas en mobile
+// El Local
+import fachadaImg from "../assets/gallery/local/fachada.webp";
+import localImg from "../assets/gallery/local/local.webp";
+import local18Img from "../assets/gallery/local/local-18.jpg";
+import terrazaLocalImg from "../assets/gallery/local/terraza.webp";
+import terraza2Img from "../assets/gallery/local/terraza2.webp";
+import local2180Img from "../assets/gallery/local/IMG_2180.jpeg";
+
+// Nuestra Mesa
+import carneImg from "../assets/gallery/nuestra-mesa/carne.jpg";
+import polloImg from "../assets/gallery/nuestra-mesa/pollo.jpg";
+import pastelChocloImg from "../assets/gallery/nuestra-mesa/pastel-de-choclo.jpg";
+import porotosImg from "../assets/gallery/nuestra-mesa/porotos.jpg";
+import sopaipillasImg from "../assets/gallery/nuestra-mesa/sopaipillas.jpg";
+import tortaImg from "../assets/gallery/nuestra-mesa/torta.jpg";
+
+// Shows
+import folclorImg from "../assets/gallery/show/folclor.jpg";
+import pabloHerreraImg from "../assets/gallery/show/pablo-herrera.jpg";
+import pamelaLeivaImg from "../assets/gallery/show/pamela-leiva.jpg";
+import pamelaLeiva2Img from "../assets/gallery/show/pamela-leiva2.jpg";
+import salonShowImg from "../assets/gallery/show/salon-show.jpg";
+import melonMelameImg from "../assets/gallery/show/show-melon-y-melame.jpg";
+
+const tabs = ["El Local", "Nuestra Mesa", "Shows"];
+
+// 6 fotos reales por tab: 3 col x 2 filas en desktop, 2 col x 3 filas en mobile
 const images = {
-  'El Local': [
-    { src: '/fachada.webp', alt: 'Fachada de Terraza Doña Dominga' },
-    { src: '/Terraza.webp', alt: 'Vista de la terraza de noche' },
-    { src: '/Portada%20fb.jpg', alt: 'Portada del local' },
-    { src: '/Familia.jpg', alt: 'La familia detrás de Doña Dominga' },
-    { src: '/salon-show.jpg', alt: 'El salón principal durante un show en vivo' },
-    { src: '/comida-vino.jpg', alt: 'Una mesa servida con vista al salón' },
+  "El Local": [
+    { src: fachadaImg, alt: "Fachada de Terraza Doña Dominga" },
+    { src: terrazaLocalImg, alt: "La terraza de noche" },
+    { src: localImg, alt: "El salón principal del local" },
+    { src: terraza2Img, alt: "Vista de la terraza iluminada" },
+    { src: local18Img, alt: "Ambiente interior de Doña Dominga" },
+    { src: local2180Img, alt: "Un rincón de la terraza" },
   ],
-  'Nuestra Mesa': [
-    { src: '/comida-vino.jpg', alt: 'Carne a la plancha con vino Doña Dominga' },
-    { src: '/menu/ceviche.png', alt: 'Ceviche del Valle' },
-    { src: '/menu/empanaditas.jpg', alt: 'Empanaditas gourmet' },
-    { src: '/menu/cafe-torta.jpg', alt: 'Café y torta de la casa' },
-    { src: '/menu/spritz.jpg', alt: 'Dominga Spritz' },
-    { src: '/menu/pisco-sour.jpg', alt: 'Pisco Sour Premium' },
+  "Nuestra Mesa": [
+    { src: carneImg, alt: "Corte de carne a la parrilla" },
+    { src: polloImg, alt: "Plato de pollo de la casa" },
+    { src: pastelChocloImg, alt: "Pastel de choclo casero" },
+    { src: porotosImg, alt: "Porotos granados a la chilena" },
+    { src: sopaipillasImg, alt: "Sopaipillas caseras" },
+    { src: tortaImg, alt: "Torta de la casa" },
   ],
-  'Shows': [
-    { src: '/salon-show.jpg', alt: 'Erick Berríos en vivo con el salón lleno' },
-    { src: '/Evento.jpg', alt: 'Artista invitado en Doña Dominga' },
-    { src: '/Portada%20fb.jpg', alt: 'Noche de música y gastronomía' },
-    { src: '/Terraza.webp', alt: 'La terraza durante un show' },
-    { src: '/Familia.jpg', alt: 'Público disfrutando la música' },
-    { src: '/fachada.webp', alt: 'Una noche de evento en Doña Dominga' },
+  Shows: [
+    { src: folclorImg, alt: "Show de folclor en vivo" },
+    { src: pabloHerreraImg, alt: "Pablo Herrera en vivo en Doña Dominga" },
+    { src: pamelaLeivaImg, alt: "Pamela Leiva en el escenario" },
+    { src: pamelaLeiva2Img, alt: "Pamela Leiva durante su show" },
+    { src: salonShowImg, alt: "El salón lleno durante un show en vivo" },
+    { src: melonMelameImg, alt: "Show de Melón y Melame en la terraza" },
   ],
 };
 ---
 
-<section id="galeria" class="py-section-gap bg-background border-t border-primary-container/10">
+<section
+  id="galeria"
+  class="py-section-gap bg-background border-t border-primary-container/10"
+>
   <div class="max-w-container-max mx-auto px-margin-mobile md:px-gutter">
-
     <!-- Header -->
     <div class="text-center mb-10">
-      <span class="text-primary-container text-label-sm uppercase tracking-[0.3em] font-bold block mb-4">
+      <span
+        class="text-primary-container text-label-sm uppercase tracking-[0.3em] font-bold block mb-4"
+      >
         Galería
       </span>
-      <h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">
+      <h2
+        class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface"
+      >
         Una imagen vale más que mil palabras
       </h2>
     </div>
 
     <!-- Tabs -->
-    <div class="flex justify-center gap-2 mb-10 flex-wrap" id="gallery-tabs">
-      {tabs.map((tab, i) => (
-        <button
-          data-tab={tab}
-          class={`gallery-tab px-5 py-2.5 text-sm font-semibold transition-all ${i === 0 ? 'bg-primary-container text-on-primary-container' : 'bg-surface-container text-on-surface-variant hover:text-on-surface border border-outline-variant/30'}`}
-        >
-          {tab}
-        </button>
-      ))}
+    <div
+      class="flex justify-center gap-2 mb-10 flex-wrap"
+      id="gallery-tabs"
+    >
+      {
+        tabs.map((tab, i) => (
+          <button
+            data-tab={tab}
+            class={`gallery-tab px-5 py-2.5 text-sm font-semibold transition-all ${i === 0 ? "bg-primary-container text-on-primary-container" : "bg-surface-container text-on-surface-variant hover:text-on-surface border border-outline-variant/30"}`}
+          >
+            {tab}
+          </button>
+        ))
+      }
     </div>
 
     <!-- Grid -->
-    {tabs.map((tab) => (
-      <div
-        id={`gallery-panel-${tab.replace(/\s+/g, '-').toLowerCase()}`}
-        class={`gallery-panel grid grid-cols-2 lg:grid-cols-3 gap-4 ${tab !== tabs[0] ? 'hidden' : ''}`}
-        data-panel={tab}
-      >
-        {images[tab as keyof typeof images].map((img) => (
-          <div class="card-lift aspect-square overflow-hidden bg-surface-container group">
-            <img
-              src={img.src}
-              alt={img.alt}
-              class="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-110"
-            />
-          </div>
-        ))}
-      </div>
-    ))}
+    {
+      tabs.map((tab) => (
+        <div
+          id={`gallery-panel-${tab.replace(/\s+/g, "-").toLowerCase()}`}
+          class={`gallery-panel grid grid-cols-2 lg:grid-cols-3 gap-4 ${tab !== tabs[0] ? "hidden" : ""}`}
+          data-panel={tab}
+        >
+          {images[tab as keyof typeof images].map((img) => (
+            <div class="card-lift aspect-square overflow-hidden bg-surface-container group">
+              <Image
+                src={img.src}
+                alt={img.alt}
+                class="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-110"
+              />
+            </div>
+          ))}
+        </div>
+      ))
+    }
   </div>
 </section>
 
 <script>
-  const tabBtns = document.querySelectorAll<HTMLButtonElement>('.gallery-tab');
-  const panels = document.querySelectorAll<HTMLElement>('.gallery-panel');
+  const tabBtns = document.querySelectorAll<HTMLButtonElement>(".gallery-tab");
+  const panels = document.querySelectorAll<HTMLElement>(".gallery-panel");
 
-  tabBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
+  tabBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
       const target = btn.dataset.tab;
 
-      tabBtns.forEach(b => {
-        b.classList.remove('bg-primary-container', 'text-on-primary-container');
-        b.classList.add('bg-surface-container', 'text-on-surface-variant', 'border', 'border-outline-variant/30');
+      tabBtns.forEach((b) => {
+        b.classList.remove("bg-primary-container", "text-on-primary-container");
+        b.classList.add(
+          "bg-surface-container",
+          "text-on-surface-variant",
+          "border",
+          "border-outline-variant/30",
+        );
       });
-      btn.classList.add('bg-primary-container', 'text-on-primary-container');
-      btn.classList.remove('bg-surface-container', 'text-on-surface-variant', 'border', 'border-outline-variant/30');
+      btn.classList.add("bg-primary-container", "text-on-primary-container");
+      btn.classList.remove(
+        "bg-surface-container",
+        "text-on-surface-variant",
+        "border",
+        "border-outline-variant/30",
+      );
 
-      panels.forEach(panel => {
-        panel.classList.toggle('hidden', panel.dataset.panel !== target);
+      panels.forEach((panel) => {
+        panel.classList.toggle("hidden", panel.dataset.panel !== target);
       });
     });
   });

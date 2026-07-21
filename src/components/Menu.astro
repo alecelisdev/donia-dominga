@@ -1,62 +1,82 @@
 ---
+import { Image } from "astro:assets";
+import restaurantImg from "../assets/menu/restaurant.webp";
+import coctelesImg from "../assets/menu/cocteles.webp";
+import cafeteriaImg from "../assets/menu/cafeteria.webp";
+
 const categories = [
   {
-    label: 'Restaurant',
-    desc: 'Tablas, hamburguesas y platos de fondo',
-    img: '/menu/tabla.jpg',
+    label: "Restaurant",
+    desc: "Tablas, hamburguesas y platos de fondo",
+    img: restaurantImg,
   },
   {
-    label: 'Coctelería & Vinos',
-    desc: 'Tragos de la casa, sour y vinos de la zona',
-    img: '/menu/mojito.jpg',
+    label: "Coctelería & Vinos",
+    desc: "Tragos de la casa, sour y vinos de la zona",
+    img: coctelesImg,
   },
   {
-    label: 'Cafetería',
-    desc: 'Café de grano, repostería y sándwiches',
-    img: '/menu/cafe-torta.jpg',
+    label: "Cafetería",
+    desc: "Café de grano, repostería y sándwiches",
+    img: cafeteriaImg,
   },
 ];
 ---
 
-<section id="menu" class="py-section-gap bg-background">
+<section
+  id="menu"
+  class="py-section-gap bg-background"
+>
   <div class="max-w-container-max mx-auto px-margin-mobile md:px-gutter">
-
     <!-- Header -->
     <div class="text-center mb-16">
-      <span class="text-primary-container text-label-sm uppercase tracking-[0.3em] font-bold block mb-4">
+      <span
+        class="text-primary-container text-label-sm uppercase tracking-[0.3em] font-bold block mb-4"
+      >
         Gastronomía
       </span>
-      <h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-6">
+      <h2
+        class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-6"
+      >
         Nuestra Carta
       </h2>
-      <p class="text-on-surface-variant text-body-md max-w-2xl mx-auto leading-relaxed">
-        Una selección curada que celebra los ingredientes locales de Mallarauco. Sabores tradicionales diseñados para acompañar nuestras noches de show.
+      <p
+        class="text-on-surface-variant text-body-md max-w-2xl mx-auto leading-relaxed"
+      >
+        Una selección curada que celebra los ingredientes locales de Mallarauco.
+        Sabores tradicionales diseñados para acompañar nuestras noches de show.
       </p>
     </div>
 
     <!-- Galería de categorías -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-6">
-      {categories.map((cat, i) => (
-        <div
-          class="card-lift reveal relative group overflow-hidden aspect-4/3 md:aspect-3/4"
-          style={`--reveal-delay: ${i * 130}ms`}
-        >
-          <img
-            src={cat.img}
-            alt={cat.label}
-            class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-          />
-          <div class="absolute inset-0 bg-linear-to-t from-background/90 via-background/20 to-transparent"></div>
-          <div class="absolute bottom-5 left-5 right-5 md:bottom-6 md:left-6 md:right-6">
-            <h3 class="font-headline-lg text-on-surface text-xl md:text-2xl">{cat.label}</h3>
-            <p class="text-on-surface-variant text-sm mt-1">{cat.desc}</p>
+      {
+        categories.map((cat, i) => (
+          <div
+            class="card-lift reveal relative group overflow-hidden aspect-4/3 md:aspect-3/4"
+            style={`--reveal-delay: ${i * 130}ms`}
+          >
+            <Image
+              src={cat.img}
+              alt={cat.label}
+              class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            />
+            <div class="absolute inset-0 bg-linear-to-t from-background/90 via-background/20 to-transparent" />
+            <div class="absolute bottom-5 left-5 right-5 md:bottom-6 md:left-6 md:right-6">
+              <h3 class="font-headline-lg text-on-surface text-xl md:text-2xl">
+                {cat.label}
+              </h3>
+              <p class="text-on-surface-variant text-sm mt-1">{cat.desc}</p>
+            </div>
           </div>
-        </div>
-      ))}
+        ))
+      }
     </div>
 
     <!-- Botones a las cartas -->
-    <div class="mt-14 flex flex-col sm:flex-row items-center justify-center gap-4">
+    <div
+      class="mt-14 flex flex-col sm:flex-row items-center justify-center gap-4"
+    >
       <a
         href="/carta-restaurant.html"
         target="_blank"
@@ -79,6 +99,5 @@ const categories = [
     <p class="mt-5 text-center text-on-surface-variant text-xs italic">
       La coctelería y los vinos están incluidos en la Carta Restaurant.
     </p>
-
   </div>
 </section>

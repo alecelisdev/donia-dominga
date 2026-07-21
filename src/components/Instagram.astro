@@ -1,9 +1,15 @@
 ---
+import { Image } from "astro:assets";
+import terrazaImg from "../assets/hero/terraza.webp";
+import eventoImg from "../assets/gallery/evento.jpg";
+import spritzImg from "../assets/menu/spritz.jpg";
+import familiaImg from "../assets/about/familia.jpg";
+
 const posts = [
-  { src: "/Terraza.webp", alt: "La terraza iluminada de noche" },
-  { src: "/Evento.jpg", alt: "Show en vivo en Doña Dominga" },
-  { src: "/menu/spritz.jpg", alt: "Dominga Spritz, nuestro cóctel de autor" },
-  { src: "/Familia.jpg", alt: "Momentos en familia en la terraza" },
+  { src: terrazaImg, alt: "La terraza iluminada de noche" },
+  { src: eventoImg, alt: "Show en vivo en Doña Dominga" },
+  { src: spritzImg, alt: "Dominga Spritz, nuestro cóctel de autor" },
+  { src: familiaImg, alt: "Momentos en familia en la terraza" },
 ];
 ---
 
@@ -37,7 +43,7 @@ const posts = [
             class="reveal card-lift aspect-square overflow-hidden bg-surface-container group"
             style={`--reveal-delay: ${i * 100}ms`}
           >
-            <img
+            <Image
               src={post.src}
               alt={post.alt}
               class="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-110"
