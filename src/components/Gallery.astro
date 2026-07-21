@@ -1,5 +1,6 @@
 ---
 import { Image } from "astro:assets";
+import SocialIcon from "./SocialIcon.astro";
 
 // El Local
 import fachadaImg from "../assets/gallery/local/fachada.webp";
@@ -112,6 +113,35 @@ const images = {
         </div>
       ))
     }
+
+    <!-- CTA Instagram -->
+    <div
+      class="glass-card mt-8 p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-5 text-center md:text-left"
+    >
+      <div class="flex items-center gap-4">
+        <div>
+          <h3 class="font-headline-lg text-on-surface font-semibold text-lg">
+            ¿Quieres ver más?
+          </h3>
+          <p class="text-on-surface-variant text-sm">
+            Síguenos en Instagram y descubre más fotos de la terraza, los platos
+            y los shows en vivo.
+          </p>
+        </div>
+      </div>
+      <a
+        href="https://www.instagram.com/domingamallarauco_piri/"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn-shine inline-flex items-center gap-2 px-8 py-3 bg-primary-container text-on-primary-container text-sm font-bold tracking-widest uppercase hover:brightness-110 active:scale-95 transition-all shrink-0"
+      >
+        <SocialIcon
+          platform="instagram"
+          class="w-4 h-4"
+        />
+        Ver Instagram
+      </a>
+    </div>
   </div>
 </section>
 
