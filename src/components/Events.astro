@@ -134,7 +134,7 @@ const past = allEvents.filter((ev) => ev.iso < todayIso);
         WhatsApp y te avisamos con anticipación.
       </p>
       <a
-        href="https://wa.me/56966192139?text=Hola!%20Quiero%20saber%20cuándo%20es%20el%20próximo%20evento"
+        href="https://wa.me/56974131205?text=Hola!%20Quiero%20saber%20cuándo%20es%20el%20próximo%20evento"
         target="_blank"
         rel="noopener noreferrer"
         class="btn-shine inline-block px-10 py-3 bg-primary-container text-on-primary-container text-sm font-bold tracking-widest uppercase hover:brightness-110 active:scale-95 transition-all"
@@ -188,13 +188,19 @@ const past = allEvents.filter((ev) => ev.iso < todayIso);
     <!-- CTA WhatsApp -->
     <div class="text-center mt-10">
       <a
-        href="https://wa.me/56966192139?text=Hola!%20Quiero%20saber%20más%20sobre%20la%20cartelera%20de%20eventos"
+        href="https://wa.me/56974131205?text=Hola!%20Quiero%20saber%20más%20sobre%20la%20cartelera%20de%20eventos"
         target="_blank"
         rel="noopener noreferrer"
-        class="inline-flex items-center gap-2 text-on-surface-variant hover:text-primary-container transition-colors text-sm"
+        class="group inline-flex items-center gap-2 hover:gap-3 text-primary-container font-semibold text-base md:text-lg hover:brightness-110 transition-all"
       >
-        <SocialIcon platform="whatsapp" class="w-4 h-4" />
-        Consultar por más fechas vía WhatsApp
+        <SocialIcon
+          platform="whatsapp"
+          class="w-5 h-5 shrink-0"
+        />
+        <span
+          class="underline underline-offset-4 decoration-primary-container/40 group-hover:decoration-primary-container transition-colors"
+          >Consultar por más fechas vía WhatsApp</span
+        >
       </a>
     </div>
   </div>

@@ -38,12 +38,53 @@ import WhatsAppButton from "../components/WhatsAppButton.astro";
 </Layout>
 
 <script>
-  // ── Scroll reveal para elementos .reveal ──────────────────────────────────
+  const prefersReduced = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
+
+  // ── Number counters (badge "30+", "+500") ─────────────────────────────────
+  const counters =
+    document.querySelectorAll<HTMLElement>("[data-count-to]");
+
+  function animateCounter(el: HTMLElement) {
+    const target = parseInt(el.dataset.countTo ?? "0", 10);
+    const prefix = el.dataset.countPrefix ?? "";
+    const suffix = el.dataset.countSuffix ?? "";
+    if (prefersReduced || !Number.isFinite(target)) {
+      el.textContent = `${prefix}${target}${suffix}`;
+      return;
+    }
+    const duration = 1800;
+    const start = performance.now();
+    function tick(now: number) {
+      const p = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - p, 3); // ease-out cubic
+      el.textContent = `${prefix}${Math.round(eased * target)}${suffix}`;
+      if (p < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+
+  // Parten en 0 (sólo si vamos a animar; con reduced-motion se dejan en el valor real del HTML)
+  if (!prefersReduced) {
+    counters.forEach((el) => {
+      const prefix = el.dataset.countPrefix ?? "";
+      const suffix = el.dataset.countSuffix ?? "";
+      el.textContent = `${prefix}0${suffix}`;
+    });
+  }
+
+  // ── Scroll reveal para elementos .reveal (+ dispara los counters) ─────────
   const revealObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          entry.target.classList.add("visible");
+          const el = entry.target as HTMLElement;
+          if (el.hasAttribute("data-count-to")) {
+            animateCounter(el);
+          } else {
+            el.classList.add("visible");
+          }
           revealObserver.unobserve(entry.target);
         }
       });
@@ -54,6 +95,7 @@ import WhatsAppButton from "../components/WhatsAppButton.astro";
   document.querySelectorAll(".reveal").forEach((el) => {
     revealObserver.observe(el);
   });
+  counters.forEach((el) => revealObserver.observe(el));
 
   // ── Reveal de secciones completas (About, Menu, Testimonials, etc.) ───────
   const sectionRevealObserver = new IntersectionObserver(

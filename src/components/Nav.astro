@@ -24,7 +24,10 @@ import SocialIcon from "./SocialIcon.astro";
       </a>
 
       <!-- Links desktop -->
-      <div class="hidden md:flex items-center gap-8">
+      <div
+        id="nav-links-desktop"
+        class="hidden md:flex items-center gap-8 relative"
+      >
         <a
           href="#eventos"
           data-nav-link="eventos"
@@ -55,6 +58,12 @@ import SocialIcon from "./SocialIcon.astro";
           class="nav-link text-on-surface-variant hover:text-on-surface text-sm font-medium transition-all duration-300"
           >Contacto</a
         >
+        <!-- Indicador activo deslizante -->
+        <span
+          id="nav-indicator"
+          class="nav-indicator"
+          aria-hidden="true"
+        ></span>
       </div>
 
       <!-- Redes sociales desktop -->
@@ -66,7 +75,10 @@ import SocialIcon from "./SocialIcon.astro";
           aria-label="Instagram"
           class="text-on-surface-variant hover:text-primary-container transition-colors duration-300"
         >
-          <SocialIcon platform="instagram" class="w-5 h-5" />
+          <SocialIcon
+            platform="instagram"
+            class="w-5 h-5"
+          />
         </a>
         <a
           href="https://facebook.com"
@@ -75,7 +87,10 @@ import SocialIcon from "./SocialIcon.astro";
           aria-label="Facebook"
           class="text-on-surface-variant hover:text-primary-container transition-colors duration-300"
         >
-          <SocialIcon platform="facebook" class="w-5 h-5" />
+          <SocialIcon
+            platform="facebook"
+            class="w-5 h-5"
+          />
         </a>
       </div>
 
@@ -163,7 +178,10 @@ import SocialIcon from "./SocialIcon.astro";
           aria-label="Instagram"
           class="text-on-surface-variant hover:text-primary-container transition-colors duration-300"
         >
-          <SocialIcon platform="instagram" class="w-6 h-6" />
+          <SocialIcon
+            platform="instagram"
+            class="w-6 h-6"
+          />
         </a>
         <a
           href="https://facebook.com"
@@ -172,7 +190,10 @@ import SocialIcon from "./SocialIcon.astro";
           aria-label="Facebook"
           class="text-on-surface-variant hover:text-primary-container transition-colors duration-300"
         >
-          <SocialIcon platform="facebook" class="w-6 h-6" />
+          <SocialIcon
+            platform="facebook"
+            class="w-6 h-6"
+          />
         </a>
       </div>
     </div>
@@ -216,12 +237,39 @@ import SocialIcon from "./SocialIcon.astro";
     "reserva",
   ];
 
+  // Indicador deslizante (sólo desktop)
+  const navIndicator = document.getElementById("nav-indicator");
+  const desktopLinks = document.querySelectorAll<HTMLAnchorElement>(
+    "#nav-links-desktop [data-nav-link]",
+  );
+  let activeId: string | null = null;
+
+  function moveIndicator() {
+    if (!navIndicator) return;
+    const active = Array.from(desktopLinks).find(
+      (l) => l.dataset.navLink === activeId,
+    );
+    if (!active) {
+      navIndicator.style.opacity = "0";
+      navIndicator.style.width = "0";
+      return;
+    }
+    navIndicator.style.opacity = "1";
+    navIndicator.style.width = `${active.offsetWidth}px`;
+    navIndicator.style.transform = `translateX(${active.offsetLeft}px)`;
+  }
+
   function setActive(id: string) {
+    activeId = id;
     navLinks.forEach((link) => {
       const matches = link.dataset.navLink === id;
       link.classList.toggle("is-active", matches);
     });
+    moveIndicator();
   }
+
+  // Reposiciona el indicador si cambia el ancho de la ventana
+  window.addEventListener("resize", moveIndicator, { passive: true });
 
   // rootMargin: sólo activa la sección que está en la banda 20%-60% del viewport
   const sectionObserver = new IntersectionObserver(
@@ -243,6 +291,8 @@ import SocialIcon from "./SocialIcon.astro";
     (entries) => {
       if (entries[0].isIntersecting) {
         navLinks.forEach((l) => l.classList.remove("is-active"));
+        activeId = null;
+        moveIndicator();
       }
     },
     { rootMargin: "0px 0px -85% 0px", threshold: 0 },

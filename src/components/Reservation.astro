@@ -64,7 +64,10 @@ const diasSemana = ["Lu", "Ma", "Mi", "Ju", "Vi", "Sá", "Do"];
           </div>
 
           <!-- Selector de personas custom -->
-          <div class="relative" id="personas-field">
+          <div
+            class="relative"
+            id="personas-field"
+          >
             <label
               class="block text-on-surface-variant text-sm mb-1.5 font-medium"
               for="personas-btn"
@@ -76,7 +79,9 @@ const diasSemana = ["Lu", "Ma", "Mi", "Ju", "Vi", "Sá", "Do"];
               id="personas-btn"
               class="w-full flex items-center justify-between gap-2 bg-surface-container-high border border-outline-variant px-4 py-3 text-left focus:outline-none focus:border-primary-container transition-colors text-sm"
             >
-              <span id="personas-display" class="picker-display"
+              <span
+                id="personas-display"
+                class="picker-display"
                 >Seleccionar</span
               >
               <span
@@ -112,7 +117,10 @@ const diasSemana = ["Lu", "Ma", "Mi", "Ju", "Vi", "Sá", "Do"];
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <!-- Date picker custom -->
-          <div class="relative" id="fecha-field">
+          <div
+            class="relative"
+            id="fecha-field"
+          >
             <label
               class="block text-on-surface-variant text-sm mb-1.5 font-medium"
               for="fecha-btn"
@@ -124,7 +132,9 @@ const diasSemana = ["Lu", "Ma", "Mi", "Ju", "Vi", "Sá", "Do"];
               id="fecha-btn"
               class="w-full flex items-center justify-between gap-2 bg-surface-container-high border border-outline-variant px-4 py-3 text-left focus:outline-none focus:border-primary-container transition-colors text-sm"
             >
-              <span id="fecha-display" class="picker-display"
+              <span
+                id="fecha-display"
+                class="picker-display"
                 >Seleccionar fecha</span
               >
               <span
@@ -149,7 +159,8 @@ const diasSemana = ["Lu", "Ma", "Mi", "Ju", "Vi", "Sá", "Do"];
                 </button>
                 <span
                   id="cal-title"
-                  class="text-on-surface text-sm font-bold capitalize"></span>
+                  class="text-on-surface text-sm font-bold capitalize"
+                ></span>
                 <button
                   type="button"
                   id="cal-next"
@@ -168,12 +179,19 @@ const diasSemana = ["Lu", "Ma", "Mi", "Ju", "Vi", "Sá", "Do"];
                   ))
                 }
               </div>
-              <div id="cal-days" class="grid grid-cols-7 gap-1"></div>
+              <div
+                id="cal-days"
+                class="grid grid-cols-7 gap-1"
+              >
+              </div>
             </div>
           </div>
 
           <!-- Hour picker custom (deshabilitado hasta elegir fecha) -->
-          <div class="relative" id="hora-field">
+          <div
+            class="relative"
+            id="hora-field"
+          >
             <label
               class="block text-on-surface-variant text-sm mb-1.5 font-medium"
               for="hora-btn"
@@ -186,7 +204,9 @@ const diasSemana = ["Lu", "Ma", "Mi", "Ju", "Vi", "Sá", "Do"];
               disabled
               class="w-full flex items-center justify-between gap-2 bg-surface-container-high border border-outline-variant px-4 py-3 text-left focus:outline-none focus:border-primary-container transition-colors text-sm disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <span id="hora-display" class="picker-display"
+              <span
+                id="hora-display"
+                class="picker-display"
                 >Elige una fecha primero</span
               >
               <span
@@ -203,7 +223,11 @@ const diasSemana = ["Lu", "Ma", "Mi", "Ju", "Vi", "Sá", "Do"];
               <div class="grid grid-cols-3 gap-2">
                 {
                   horas.map((h) => (
-                    <button type="button" class="hora-opt" data-hora={h}>
+                    <button
+                      type="button"
+                      class="hora-opt"
+                      data-hora={h}
+                    >
                       {h}
                     </button>
                   ))
@@ -214,13 +238,23 @@ const diasSemana = ["Lu", "Ma", "Mi", "Ju", "Vi", "Sá", "Do"];
         </div>
 
         <!-- Submit -->
-        <button
-          type="submit"
-          class="btn-shine relative overflow-hidden w-full flex items-center justify-center gap-2 py-4 bg-primary-container text-on-primary-container font-bold tracking-widest uppercase text-sm hover:brightness-110 active:scale-98 transition-all box-glow"
-        >
-          <span class="material-symbols-outlined">send</span>
-          Reservar
-        </button>
+        <div class="relative">
+          <button
+            type="submit"
+            class="btn-shine relative overflow-hidden w-full flex items-center justify-center gap-2 py-4 bg-primary-container text-on-primary-container font-bold tracking-widest uppercase text-sm hover:brightness-110 active:scale-98 transition-all box-glow"
+          >
+            <span class="material-symbols-outlined">send</span>
+            Reservar
+          </button>
+          <!-- Check de confirmación (scale-in antes de abrir WhatsApp) -->
+          <div
+            id="reserva-check"
+            class="reserva-check"
+            aria-hidden="true"
+          >
+            <span class="material-symbols-outlined">check</span>
+          </div>
+        </div>
 
         <p
           class="text-center text-on-surface-variant/60 text-xs uppercase tracking-widest"
@@ -361,6 +395,35 @@ const diasSemana = ["Lu", "Ma", "Mi", "Ju", "Vi", "Sá", "Do"];
 
   .field-error {
     border-color: #e5484d !important;
+  }
+
+  /* Check de confirmación sobre el botón submit */
+  .reserva-check {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #25d366;
+    color: #fff;
+    opacity: 0;
+    transform: scale(0.4);
+    pointer-events: none;
+    transition:
+      opacity 0.18s ease,
+      transform 0.26s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .reserva-check.is-visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+  .reserva-check .material-symbols-outlined {
+    font-size: 30px;
+    font-variation-settings:
+      "FILL" 1,
+      "wght" 700,
+      "GRAD" 0,
+      "opsz" 24;
   }
 </style>
 
@@ -608,9 +671,22 @@ const diasSemana = ["Lu", "Ma", "Mi", "Ju", "Vi", "Sá", "Do"];
       `• Personas: ${personasSel}`,
     ].join("\n");
 
-    window.open(
-      `https://wa.me/56966192139?text=${encodeURIComponent(mensaje)}`,
-      "_blank",
-    );
+    const url = `https://wa.me/56974131205?text=${encodeURIComponent(mensaje)}`;
+
+    // Feedback visual (✓ verde scale-in) antes de abrir WhatsApp
+    const check = document.getElementById("reserva-check");
+    const prefersReduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    if (check && !prefersReduced) {
+      check.classList.add("is-visible");
+      window.setTimeout(() => {
+        window.open(url, "_blank");
+        window.setTimeout(() => check.classList.remove("is-visible"), 600);
+      }, 300);
+    } else {
+      window.open(url, "_blank");
+    }
   });
 </script>

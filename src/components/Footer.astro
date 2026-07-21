@@ -17,7 +17,7 @@ const socials = [
   {
     platform: "whatsapp" as const,
     label: "WhatsApp",
-    href: "https://wa.me/56966192139",
+    href: "https://wa.me/56974131205",
   },
 ];
 
@@ -107,7 +107,10 @@ const mapsLink = {
                 aria-label={s.label}
                 class="w-10 h-10 glass-card flex items-center justify-center text-on-surface-variant hover:text-primary-container hover:border-primary-container/30 transition-all"
               >
-                <SocialIcon platform={s.platform} class="w-[18px] h-[18px]" />
+                <SocialIcon
+                  platform={s.platform}
+                  class="w-[18px] h-[18px]"
+                />
               </a>
             ))
           }
@@ -118,7 +121,9 @@ const mapsLink = {
             aria-label={mapsLink.label}
             class="w-10 h-10 glass-card flex items-center justify-center text-on-surface-variant hover:text-primary-container hover:border-primary-container/30 transition-all"
           >
-            <span class="material-symbols-outlined text-lg">{mapsLink.icon}</span>
+            <span class="material-symbols-outlined text-lg"
+              >{mapsLink.icon}</span
+            >
           </a>
         </div>
         <a
@@ -133,16 +138,22 @@ const mapsLink = {
 
     <!-- Firma -->
     <div class="mt-10 pt-6 border-t border-primary-container/10 text-center">
-      <p class="text-on-surface-variant/40 text-xs flex items-center justify-center gap-1.5">
+      <p
+        class="text-on-surface-variant/40 text-sm flex items-center justify-center gap-1.5"
+      >
         Desarrollado por
         <a
           href="https://www.alecelis.cl/"
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center gap-1.5 hover:text-primary-container transition-colors"
+          class="inline-flex items-center gap-1.5 text-primary-container/80 hover:text-primary-container transition-colors"
         >
-          <img src="/ac-logo.svg" alt="" class="w-4 h-4" />
-          Ale Celis
+          <img
+            src="/ac-logo.svg"
+            alt=""
+            class="w-4 h-4"
+          />
+          <span class="underline-offset-2">Ale Celis</span>
         </a>
       </p>
     </div>
