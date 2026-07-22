@@ -426,6 +426,23 @@ html {
   animation: assistantBubbleIn 0.22s ease-out;
 }
 
+/* ── Asistente: puntos de "Domi está escribiendo…" antes de cada respuesta ── */
+@keyframes assistantTypingBounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+  30%           { transform: translateY(-4px); opacity: 1; }
+}
+
+.assistant-typing-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background-color: var(--color-on-surface-variant);
+  animation: assistantTypingBounce 1s ease-in-out infinite;
+}
+
+.assistant-typing-dot:nth-child(2) { animation-delay: 0.15s; }
+.assistant-typing-dot:nth-child(3) { animation-delay: 0.3s; }
+
 /* ── Asistente: rebote de entrada + badge de notificación (llama la atención
    desde que carga la página hasta que el usuario abre a Domi) ── */
 @keyframes assistantAttentionBounce {

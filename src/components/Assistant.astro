@@ -169,6 +169,41 @@
       messagesEl!.scrollTop = messagesEl!.scrollHeight;
     }
 
+    function showTyping() {
+      const row = document.createElement("div");
+      row.id = "assistant-typing";
+      row.className = "flex justify-start";
+      const bubble = document.createElement("div");
+      bubble.className =
+        "assistant-bubble bg-surface-container-high px-4 py-3.5 flex items-center gap-1.5";
+      bubble.setAttribute("aria-label", "Domi está escribiendo");
+      for (let i = 0; i < 3; i++) {
+        const dot = document.createElement("span");
+        dot.className = "assistant-typing-dot";
+        bubble.appendChild(dot);
+      }
+      row.appendChild(bubble);
+      messagesEl!.appendChild(row);
+      messagesEl!.scrollTop = messagesEl!.scrollHeight;
+    }
+
+    function hideTyping() {
+      document.getElementById("assistant-typing")?.remove();
+    }
+
+    // Simula que Domi "está escribiendo" antes de responder: limpia las
+    // opciones anteriores de inmediato (evita doble clic durante la espera),
+    // muestra los puntos animados y recién después de `delay` corre `run`
+    // (que agrega el/los mensaje(s) de bot y las nuevas opciones).
+    function botReply(run: () => void, delay = 600) {
+      optionsEl!.innerHTML = "";
+      showTyping();
+      window.setTimeout(() => {
+        hideTyping();
+        run();
+      }, delay);
+    }
+
     function setOptions(
       options: { label: string; onClick: () => void }[],
       variant: "chip" | "list" = "chip",
@@ -215,12 +250,14 @@
     function startNoche() {
       addMessage("Arma nuestra noche", "user");
       state = {};
-      addMessage("¿Cuántas personas van?", "bot");
-      setOptions([
-        { label: "2 personas", onClick: () => choosePersonas(2) },
-        { label: "4 personas", onClick: () => choosePersonas(4) },
-        { label: "6 o más", onClick: () => choosePersonas(6) },
-      ]);
+      botReply(() => {
+        addMessage("¿Cuántas personas van?", "bot");
+        setOptions([
+          { label: "2 personas", onClick: () => choosePersonas(2) },
+          { label: "4 personas", onClick: () => choosePersonas(4) },
+          { label: "6 o más", onClick: () => choosePersonas(6) },
+        ]);
+      });
     }
 
     function choosePersonas(personas: Personas) {
@@ -229,21 +266,23 @@
         personas === 6 ? "6 o más personas" : `${personas} personas`,
         "user",
       );
-      addMessage("¿Qué tipo de salida prefieres?", "bot");
-      setOptions([
-        {
-          label: "Picoteo y tragos",
-          onClick: () => chooseTipoSalida("picoteo"),
-        },
-        { label: "Cena", onClick: () => chooseTipoSalida("cena") },
-        { label: "Cafetería", onClick: () => chooseTipoSalida("cafeteria") },
-      ]);
+      botReply(() => {
+        addMessage("¿Qué tipo de salida prefieres?", "bot");
+        setOptions([
+          {
+            label: "Picoteo y tragos",
+            onClick: () => chooseTipoSalida("picoteo"),
+          },
+          { label: "Cena", onClick: () => chooseTipoSalida("cena") },
+          { label: "Cafetería", onClick: () => chooseTipoSalida("cafeteria") },
+        ]);
+      });
     }
 
     function chooseTipoSalida(tipoSalida: TipoSalida) {
       state.tipoSalida = tipoSalida;
       addMessage(TIPO_LABEL[tipoSalida], "user");
-      showComboResult();
+      botReply(() => showComboResult(), 900);
     }
 
     function showComboResult() {
@@ -287,12 +326,14 @@
     // ── Flujo "Recomiéndame algo" ────────────────────────────────────────
     function startRecomienda() {
       addMessage("Recomiéndame algo", "user");
-      addMessage("¿Qué se te antoja?", "bot");
-      setOptions([
-        { label: "🧂 Salado", onClick: () => chooseAntojo("salado") },
-        { label: "🍰 Dulce", onClick: () => chooseAntojo("dulce") },
-        { label: "🍹 Trago", onClick: () => chooseAntojo("trago") },
-      ]);
+      botReply(() => {
+        addMessage("¿Qué se te antoja?", "bot");
+        setOptions([
+          { label: "🧂 Salado", onClick: () => chooseAntojo("salado") },
+          { label: "🍰 Dulce", onClick: () => chooseAntojo("dulce") },
+          { label: "🍹 Trago", onClick: () => chooseAntojo("trago") },
+        ]);
+      });
     }
 
     function chooseAntojo(antojo: Antojo) {
@@ -301,34 +342,56 @@
         "user",
       );
       if (antojo === "salado") {
-        addMessage("¿Para compartir o algo individual?", "bot");
-        setOptions([
-          {
-            label: "Para compartir",
-            onClick: () =>
-              showRecommendation("salado-compartir", "para compartir"),
-          },
-          {
-            label: "Individual",
-            onClick: () =>
-              showRecommendation("salado-individual", "individual"),
-          },
-        ]);
+        botReply(() => {
+          addMessage("¿Para compartir o algo individual?", "bot");
+          setOptions([
+            {
+              label: "Para compartir",
+              onClick: () =>
+                botReply(
+                  () =>
+                    showRecommendation("salado-compartir", "para compartir"),
+                  900,
+                ),
+            },
+            {
+              label: "Individual",
+              onClick: () =>
+                botReply(
+                  () => showRecommendation("salado-individual", "individual"),
+                  900,
+                ),
+            },
+          ]);
+        });
       } else if (antojo === "dulce") {
-        showRecommendation("dulce", "dulce");
+        botReply(() => showRecommendation("dulce", "dulce"), 900);
       } else {
-        addMessage("¿Prefieres algo refrescante o directo?", "bot");
-        setOptions([
-          {
-            label: "Refrescante",
-            onClick: () =>
-              showRecommendation("trago-refrescante", "trago refrescante"),
-          },
-          {
-            label: "Directo",
-            onClick: () => showRecommendation("trago-directo", "trago directo"),
-          },
-        ]);
+        botReply(() => {
+          addMessage("¿Prefieres algo refrescante o directo?", "bot");
+          setOptions([
+            {
+              label: "Refrescante",
+              onClick: () =>
+                botReply(
+                  () =>
+                    showRecommendation(
+                      "trago-refrescante",
+                      "trago refrescante",
+                    ),
+                  900,
+                ),
+            },
+            {
+              label: "Directo",
+              onClick: () =>
+                botReply(
+                  () => showRecommendation("trago-directo", "trago directo"),
+                  900,
+                ),
+            },
+          ]);
+        });
       }
     }
 
@@ -355,40 +418,46 @@
     // ── Flujo "Preguntas frecuentes" ─────────────────────────────────────
     function startFAQ() {
       addMessage("Preguntas frecuentes", "user");
-      addMessage("¿Sobre qué tienes dudas? Elige una pregunta:", "bot");
-      setOptions(
-        faqs.map((faq) => ({
-          label: faq.q,
-          onClick: () => showFAQAnswer(faq),
-        })),
-        "list",
-      );
+      botReply(() => {
+        addMessage("¿Sobre qué tienes dudas? Elige una pregunta:", "bot");
+        setOptions(
+          faqs.map((faq) => ({
+            label: faq.q,
+            onClick: () => showFAQAnswer(faq),
+          })),
+          "list",
+        );
+      });
     }
 
     function showFAQAnswer(faq: FaqItem) {
       addMessage(faq.q, "user");
-      addMessage(faq.a, "bot");
-      setOptions([
-        { label: "Ver otra pregunta", onClick: startFAQ },
-        { label: "↺ Menú principal", onClick: showMainMenu },
-      ]);
+      botReply(() => {
+        addMessage(faq.a, "bot");
+        setOptions([
+          { label: "Ver otra pregunta", onClick: startFAQ },
+          { label: "↺ Menú principal", onClick: showMainMenu },
+        ]);
+      });
     }
 
     // ── Menú principal ────────────────────────────────────────────────────
     function showMainMenu() {
-      addMessage(
-        "¡Hola! Soy Domi 👋 Puedo ayudarte a armar tu noche, recomendarte algo de la carta, resolver tus dudas o pasarte directo a WhatsApp. ¿Qué prefieres?",
-        "bot",
-      );
-      setOptions([
-        { label: "🌙 Arma nuestra noche", onClick: startNoche },
-        { label: "🍽️ Recomiéndame algo", onClick: startRecomienda },
-        { label: "❓ Preguntas frecuentes", onClick: startFAQ },
-        {
-          label: "📲 Hablar por WhatsApp",
-          onClick: () => openWhatsApp(DEFAULT_WHATSAPP_MESSAGE),
-        },
-      ]);
+      botReply(() => {
+        addMessage(
+          "¡Hola! Soy Domi 👋 Puedo ayudarte a armar tu noche, recomendarte algo de la carta, resolver tus dudas o pasarte directo a WhatsApp. ¿Qué prefieres?",
+          "bot",
+        );
+        setOptions([
+          { label: "🌙 Arma nuestra noche", onClick: startNoche },
+          { label: "🍽️ Recomiéndame algo", onClick: startRecomienda },
+          { label: "❓ Preguntas frecuentes", onClick: startFAQ },
+          {
+            label: "📲 Hablar por WhatsApp",
+            onClick: () => openWhatsApp(DEFAULT_WHATSAPP_MESSAGE),
+          },
+        ]);
+      }, 450);
     }
 
     function resetFlow() {
