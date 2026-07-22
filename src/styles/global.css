@@ -416,6 +416,67 @@ html {
   animation: panelFadeIn 0.18s ease-out;
 }
 
+/* ── Asistente: fade/slide de cada burbuja al aparecer ── */
+@keyframes assistantBubbleIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.assistant-bubble {
+  animation: assistantBubbleIn 0.22s ease-out;
+}
+
+/* ── Asistente: rebote de entrada + badge de notificación (llama la atención
+   desde que carga la página hasta que el usuario abre a Domi) ── */
+@keyframes assistantAttentionBounce {
+  0%, 55%, 100% { transform: translateY(0); }
+  10%           { transform: translateY(-10px); }
+  20%           { transform: translateY(0); }
+  30%           { transform: translateY(-6px); }
+  40%           { transform: translateY(0); }
+}
+
+.assistant-toggle.assistant-attention {
+  animation: assistantAttentionBounce 3s ease-in-out infinite;
+}
+
+/* ── Asistente: el botón se ve como una burbuja de chat (colita apuntando
+   hacia abajo), para que se lea como mensaje desde el primer vistazo ──
+   `.assistant-toggle` ya es `position: fixed` (utilidad Tailwind en el HTML),
+   así que ya es containing block para el ::before — NO agregar aquí
+   `position: relative`, pisaría el `fixed` (misma especificidad, gana la
+   regla que se declara después en el CSS) y el botón se iría al flujo normal
+   del documento. */
+.assistant-toggle::before {
+  content: '';
+  position: absolute;
+  bottom: -7px;
+  left: 22px;
+  width: 14px;
+  height: 14px;
+  background-color: var(--color-primary-container);
+  transform: rotate(45deg);
+}
+
+@keyframes assistantBadgePop {
+  from { opacity: 0; transform: scale(0); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.assistant-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 14px;
+  height: 14px;
+  background-color: #ff3b30;
+  border: 2px solid var(--color-background);
+}
+
+.assistant-badge:not(.hidden) {
+  animation: assistantBadgePop 0.3s ease-out;
+}
+
 /* ── prefers-reduced-motion: desactiva todas las animaciones y transiciones ── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

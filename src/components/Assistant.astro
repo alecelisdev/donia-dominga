@@ -1,0 +1,454 @@
+---
+// Asistente conversacional básico: árbol de decisiones con botones (sin texto
+// libre, sin IA, sin llamadas a APIs externas). Toda la carta viene de
+// src/data/menu.ts, la misma fuente que alimenta las cartas reales del sitio.
+---
+
+<button
+  id="assistant-toggle"
+  aria-label="Abrir el asistente Domi"
+  aria-expanded="false"
+  aria-controls="assistant-panel"
+  class="assistant-toggle fixed bottom-8 right-8 z-60 flex items-center gap-3 bg-primary-container text-on-primary-container px-5 py-3.5 hover:brightness-110 active:scale-95 transition-all"
+>
+  <span class="material-symbols-outlined text-2xl shrink-0"
+    >local_fire_department</span
+  >
+  <span class="whitespace-nowrap text-sm font-semibold">Habla con Domi</span>
+  <span
+    id="assistant-badge"
+    class="assistant-badge hidden"
+    aria-hidden="true"
+  ></span>
+</button>
+
+<div
+  id="assistant-panel"
+  role="dialog"
+  aria-label="Domi, asistente de Doña Dominga"
+  class="hidden fixed inset-x-4 bottom-24 z-60 md:inset-x-auto md:right-8 md:w-[34rem]"
+>
+  <div
+    class="flex flex-col h-[70vh] max-h-[520px] bg-surface-container border border-primary-container/20 shadow-2xl"
+  >
+    <!-- Header -->
+    <header
+      class="flex items-center justify-between gap-3 px-5 py-4 border-b border-primary-container/10 bg-surface-container-low shrink-0"
+    >
+      <div class="flex items-center gap-3">
+        <span
+          class="flex items-center justify-center w-9 h-9 bg-primary-container text-on-primary-container shrink-0"
+        >
+          <span class="material-symbols-outlined text-lg"
+            >local_fire_department</span
+          >
+        </span>
+        <div>
+          <p
+            class="font-headline-lg text-on-surface text-sm font-semibold leading-none"
+          >
+            Domi · Asistente de Doña Dominga
+          </p>
+        </div>
+      </div>
+      <button
+        id="assistant-restart"
+        type="button"
+        aria-label="Reiniciar conversación"
+        class="flex items-center justify-center w-8 h-8 border border-primary-container/30 text-on-surface-variant hover:text-primary-container hover:border-primary-container transition-colors shrink-0"
+      >
+        <span class="material-symbols-outlined text-lg">restart_alt</span>
+      </button>
+    </header>
+
+    <!-- Mensajes -->
+    <div
+      id="assistant-messages"
+      class="flex-1 overflow-y-auto px-4 py-4 space-y-3"
+    >
+    </div>
+
+    <!-- Opciones (botones, nunca texto libre) -->
+    <div
+      id="assistant-options"
+      class="px-4 pb-4 pt-3 border-t border-primary-container/10 flex flex-wrap gap-2 shrink-0"
+    >
+    </div>
+  </div>
+</div>
+
+<script>
+  import { getMenuItem, formatCLP, type MenuItem } from "../data/menu";
+  import { faqs, type FaqItem } from "../data/faq";
+
+  const WHATSAPP_NUMBER = "56974131205";
+  const DEFAULT_WHATSAPP_MESSAGE =
+    "Hola Doña Dominga! Me gustaría hacer una consulta.";
+
+  type Personas = 2 | 4 | 6;
+  type TipoSalida = "picoteo" | "cena" | "cafeteria";
+  type Antojo = "salado" | "dulce" | "trago";
+
+  interface ComboLine {
+    itemId: string;
+    qty: (personas: Personas) => number;
+  }
+
+  // ── Combo real por tipo de salida ────────────────────────────────────────
+  // Sólo referencian ids que existen en src/data/menu.ts (misma carta real
+  // que usan Menu.astro / las cartas HTML) — nunca ítems o precios inventados.
+  const COMBOS_BY_TIPO: Record<TipoSalida, ComboLine[]> = {
+    cena: [
+      { itemId: "flat-iron-a-lo-pobre", qty: (p) => p },
+      { itemId: "bebida-restaurant", qty: (p) => p },
+      { itemId: "tortas-kuchen-restaurant", qty: (p) => p },
+    ],
+    picoteo: [
+      { itemId: "chorrillana", qty: (p) => Math.ceil(p / 4) },
+      { itemId: "mojito-tradicional", qty: (p) => p },
+    ],
+    cafeteria: [
+      { itemId: "cafe-sabores", qty: (p) => p },
+      { itemId: "torta-hoja", qty: (p) => p },
+    ],
+  };
+
+  const TIPO_LABEL: Record<TipoSalida, string> = {
+    picoteo: "Picoteo y tragos",
+    cena: "Cena",
+    cafeteria: "Cafetería",
+  };
+
+  // ── Recomendaciones reales por antojo ────────────────────────────────────
+  const RECOMENDACIONES: Record<string, string[]> = {
+    "salado-compartir": ["chorrillana", "surtido-empanadas", "corte-parrilla"],
+    "salado-individual": ["dominga", "la-mallarauquina", "sandwich-churrasco"],
+    dulce: ["tortas-kuchen-restaurant", "cheesecake", "donas"],
+    "trago-refrescante": ["mojito-tradicional", "mango-sour", "aperol-spritz"],
+    "trago-directo": ["jw-negro", "pisco-bebida", "ron-bebida"],
+  };
+
+  // ── DOM refs ──────────────────────────────────────────────────────────────
+  const toggleBtn = document.getElementById("assistant-toggle");
+  const panel = document.getElementById("assistant-panel");
+  const restartBtn = document.getElementById("assistant-restart");
+  const messagesEl = document.getElementById("assistant-messages");
+  const optionsEl = document.getElementById("assistant-options");
+  const badge = document.getElementById("assistant-badge");
+
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
+
+  if (toggleBtn && panel && restartBtn && messagesEl && optionsEl) {
+    let started = false;
+    let state: {
+      personas?: Personas;
+      tipoSalida?: TipoSalida;
+    } = {};
+
+    function addMessage(text: string, from: "bot" | "user") {
+      const row = document.createElement("div");
+      row.className = `flex ${from === "user" ? "justify-end" : "justify-start"}`;
+      const bubble = document.createElement("div");
+      bubble.className =
+        from === "user"
+          ? "assistant-bubble max-w-[85%] bg-primary-container text-on-primary-container text-sm leading-relaxed px-4 py-2.5 whitespace-pre-line"
+          : "assistant-bubble max-w-[85%] bg-surface-container-high text-on-surface text-sm leading-relaxed px-4 py-2.5 whitespace-pre-line";
+      bubble.textContent = text;
+      row.appendChild(bubble);
+      messagesEl!.appendChild(row);
+      messagesEl!.scrollTop = messagesEl!.scrollHeight;
+    }
+
+    function setOptions(
+      options: { label: string; onClick: () => void }[],
+      variant: "chip" | "list" = "chip",
+    ) {
+      optionsEl!.innerHTML = "";
+      optionsEl!.className =
+        variant === "list"
+          ? "px-4 pb-4 pt-3 border-t border-primary-container/10 shrink-0 max-h-48 overflow-y-auto flex flex-col gap-2"
+          : "px-4 pb-4 pt-3 border-t border-primary-container/10 shrink-0 max-h-48 overflow-y-auto grid grid-cols-1 md:grid-cols-2 gap-2";
+      options.forEach((opt) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className =
+          variant === "list"
+            ? "w-full text-left px-4 py-2.5 bg-surface-container-low border border-primary-container/30 text-on-surface text-sm hover:bg-primary-container hover:text-on-primary-container hover:border-primary-container transition-colors"
+            : "w-full px-4 py-2.5 bg-surface-container-low border border-primary-container/30 text-on-surface text-sm font-medium hover:bg-primary-container hover:text-on-primary-container hover:border-primary-container transition-colors";
+        btn.textContent = opt.label;
+        btn.addEventListener("click", (e) => {
+          // El propio onClick puede vaciar #assistant-options (nuevas
+          // opciones) y desconectar este botón del DOM antes de que el
+          // click termine de propagarse — sin stopPropagation, el listener
+          // de "click afuera" ve un target ya desconectado y cierra el panel.
+          e.stopPropagation();
+          opt.onClick();
+        });
+        optionsEl!.appendChild(btn);
+      });
+    }
+
+    function openWhatsApp(message: string) {
+      const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+      window.open(url, "_blank");
+    }
+
+    function showFinalActions(waMessage: string) {
+      setOptions([
+        {
+          label: "📲 Reservar por WhatsApp",
+          onClick: () => openWhatsApp(waMessage),
+        },
+        { label: "↺ Reiniciar", onClick: resetFlow },
+      ]);
+    }
+
+    // ── Flujo "Arma tu noche" ─────────────────────────────────────────────
+    function startNoche() {
+      addMessage("Arma nuestra noche", "user");
+      state = {};
+      addMessage("¿Cuántas personas van?", "bot");
+      setOptions([
+        { label: "2 personas", onClick: () => choosePersonas(2) },
+        { label: "4 personas", onClick: () => choosePersonas(4) },
+        { label: "6 o más", onClick: () => choosePersonas(6) },
+      ]);
+    }
+
+    function choosePersonas(personas: Personas) {
+      state.personas = personas;
+      addMessage(
+        personas === 6 ? "6 o más personas" : `${personas} personas`,
+        "user",
+      );
+      addMessage("¿Qué tipo de salida prefieres?", "bot");
+      setOptions([
+        {
+          label: "Picoteo y tragos",
+          onClick: () => chooseTipoSalida("picoteo"),
+        },
+        { label: "Cena", onClick: () => chooseTipoSalida("cena") },
+        { label: "Cafetería", onClick: () => chooseTipoSalida("cafeteria") },
+      ]);
+    }
+
+    function chooseTipoSalida(tipoSalida: TipoSalida) {
+      state.tipoSalida = tipoSalida;
+      addMessage(TIPO_LABEL[tipoSalida], "user");
+      showComboResult();
+    }
+
+    function showComboResult() {
+      const { personas, tipoSalida } = state;
+      if (!personas || !tipoSalida) return;
+
+      const resolved = COMBOS_BY_TIPO[tipoSalida].map((line) => {
+        const item = getMenuItem(line.itemId);
+        const qty = line.qty(personas);
+        return { item, qty, subtotal: item.price * qty };
+      });
+      const total = resolved.reduce((sum, r) => sum + r.subtotal, 0);
+      const perPerson = total / personas;
+
+      const detail = resolved
+        .map((r) => `${r.qty}x ${r.item.name} — ${formatCLP(r.subtotal)}`)
+        .join("\n");
+
+      addMessage(
+        `Este es un combo real armado con nuestra carta:\n\n${detail}\n\nTotal aprox: ${formatCLP(total)} (${formatCLP(perPerson)} por persona)`,
+        "bot",
+      );
+
+      const waMessage = [
+        "Hola! Quiero reservar 🎉 Armé mi noche con el asistente de la web:",
+        "",
+        `Personas: ${personas === 6 ? "6 o más" : personas}`,
+        `Tipo de salida: ${TIPO_LABEL[tipoSalida]}`,
+        "",
+        "Combo sugerido:",
+        ...resolved.map(
+          (r) => `- ${r.qty}x ${r.item.name} (${formatCLP(r.subtotal)})`,
+        ),
+        "",
+        `Total aprox: ${formatCLP(total)} (${formatCLP(perPerson)} por persona)`,
+      ].join("\n");
+
+      showFinalActions(waMessage);
+    }
+
+    // ── Flujo "Recomiéndame algo" ────────────────────────────────────────
+    function startRecomienda() {
+      addMessage("Recomiéndame algo", "user");
+      addMessage("¿Qué se te antoja?", "bot");
+      setOptions([
+        { label: "🧂 Salado", onClick: () => chooseAntojo("salado") },
+        { label: "🍰 Dulce", onClick: () => chooseAntojo("dulce") },
+        { label: "🍹 Trago", onClick: () => chooseAntojo("trago") },
+      ]);
+    }
+
+    function chooseAntojo(antojo: Antojo) {
+      addMessage(
+        { salado: "Salado", dulce: "Dulce", trago: "Trago" }[antojo],
+        "user",
+      );
+      if (antojo === "salado") {
+        addMessage("¿Para compartir o algo individual?", "bot");
+        setOptions([
+          {
+            label: "Para compartir",
+            onClick: () =>
+              showRecommendation("salado-compartir", "para compartir"),
+          },
+          {
+            label: "Individual",
+            onClick: () =>
+              showRecommendation("salado-individual", "individual"),
+          },
+        ]);
+      } else if (antojo === "dulce") {
+        showRecommendation("dulce", "dulce");
+      } else {
+        addMessage("¿Prefieres algo refrescante o directo?", "bot");
+        setOptions([
+          {
+            label: "Refrescante",
+            onClick: () =>
+              showRecommendation("trago-refrescante", "trago refrescante"),
+          },
+          {
+            label: "Directo",
+            onClick: () => showRecommendation("trago-directo", "trago directo"),
+          },
+        ]);
+      }
+    }
+
+    function showRecommendation(key: string, contextLabel: string) {
+      const items: MenuItem[] = RECOMENDACIONES[key].map(getMenuItem);
+      const detail = items
+        .map(
+          (i) =>
+            `${i.name} — ${formatCLP(i.price)}${i.desc ? `\n${i.desc}` : ""}`,
+        )
+        .join("\n\n");
+
+      addMessage(`Te recomiendo esto (${contextLabel}):\n\n${detail}`, "bot");
+
+      const waMessage = [
+        "Hola! El asistente de la web me recomendó esto y quiero pedirlo:",
+        "",
+        ...items.map((i) => `- ${i.name} (${formatCLP(i.price)})`),
+      ].join("\n");
+
+      showFinalActions(waMessage);
+    }
+
+    // ── Flujo "Preguntas frecuentes" ─────────────────────────────────────
+    function startFAQ() {
+      addMessage("Preguntas frecuentes", "user");
+      addMessage("¿Sobre qué tienes dudas? Elige una pregunta:", "bot");
+      setOptions(
+        faqs.map((faq) => ({
+          label: faq.q,
+          onClick: () => showFAQAnswer(faq),
+        })),
+        "list",
+      );
+    }
+
+    function showFAQAnswer(faq: FaqItem) {
+      addMessage(faq.q, "user");
+      addMessage(faq.a, "bot");
+      setOptions([
+        { label: "Ver otra pregunta", onClick: startFAQ },
+        { label: "↺ Menú principal", onClick: showMainMenu },
+      ]);
+    }
+
+    // ── Menú principal ────────────────────────────────────────────────────
+    function showMainMenu() {
+      addMessage(
+        "¡Hola! Soy Domi 👋 Puedo ayudarte a armar tu noche, recomendarte algo de la carta, resolver tus dudas o pasarte directo a WhatsApp. ¿Qué prefieres?",
+        "bot",
+      );
+      setOptions([
+        { label: "🌙 Arma nuestra noche", onClick: startNoche },
+        { label: "🍽️ Recomiéndame algo", onClick: startRecomienda },
+        { label: "❓ Preguntas frecuentes", onClick: startFAQ },
+        {
+          label: "📲 Hablar por WhatsApp",
+          onClick: () => openWhatsApp(DEFAULT_WHATSAPP_MESSAGE),
+        },
+      ]);
+    }
+
+    function resetFlow() {
+      messagesEl!.innerHTML = "";
+      state = {};
+      showMainMenu();
+    }
+
+    // ── Notificación de entrada: llama la atención a los pocos segundos ────
+    function showAttention() {
+      if (started) return;
+      badge?.classList.remove("hidden");
+      if (!prefersReducedMotion) {
+        toggleBtn!.classList.add("assistant-attention");
+      }
+    }
+
+    function clearAttention() {
+      badge?.classList.add("hidden");
+      toggleBtn!.classList.remove("assistant-attention");
+    }
+
+    window.setTimeout(showAttention, 1500);
+
+    // ── Apertura / cierre del panel ───────────────────────────────────────
+    function openPanel() {
+      panel!.classList.remove("hidden");
+      toggleBtn!.setAttribute("aria-expanded", "true");
+      clearAttention();
+      if (!started) {
+        started = true;
+        showMainMenu();
+      }
+    }
+
+    function closePanel() {
+      panel!.classList.add("hidden");
+      toggleBtn!.setAttribute("aria-expanded", "false");
+    }
+
+    toggleBtn.addEventListener("click", () => {
+      const isOpen = !panel!.classList.contains("hidden");
+      if (isOpen) closePanel();
+      else openPanel();
+    });
+
+    restartBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      resetFlow();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !panel!.classList.contains("hidden")) {
+        closePanel();
+      }
+    });
+
+    document.addEventListener("click", (e) => {
+      const target = e.target as Node;
+      if (
+        !panel!.classList.contains("hidden") &&
+        !panel!.contains(target) &&
+        !toggleBtn!.contains(target)
+      ) {
+        closePanel();
+      }
+    });
+  }
+</script>
