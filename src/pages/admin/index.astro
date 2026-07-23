@@ -1,0 +1,88 @@
+---
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout title="Admin — Doña Dominga" noindex={true}>
+  <main class="min-h-screen flex items-center justify-center px-4">
+    <div class="w-full max-w-sm bg-surface-container-low border border-primary-container/20 p-6 space-y-5">
+      <div>
+        <h1 class="font-headline-lg text-2xl font-bold text-on-background">Panel Admin</h1>
+        <p class="text-sm text-on-surface-variant">Terraza Doña Dominga</p>
+      </div>
+
+      <form id="login-form" class="space-y-4">
+        <div class="space-y-1">
+          <label for="email" class="text-xs uppercase tracking-wide text-on-surface-variant">Email</label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            required
+            autocomplete="email"
+            class="w-full bg-surface-container px-3 py-2.5 text-on-surface border border-primary-container/20 focus:border-primary-container focus:outline-none"
+          />
+        </div>
+        <div class="space-y-1">
+          <label for="password" class="text-xs uppercase tracking-wide text-on-surface-variant">Contraseña</label>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            required
+            autocomplete="current-password"
+            class="w-full bg-surface-container px-3 py-2.5 text-on-surface border border-primary-container/20 focus:border-primary-container focus:outline-none"
+          />
+        </div>
+
+        <p id="login-error" class="hidden text-sm text-error"></p>
+
+        <button
+          type="submit"
+          id="login-submit"
+          class="w-full bg-primary-container text-on-primary-container font-semibold py-2.5 hover:brightness-110 active:scale-95 transition-all disabled:opacity-50"
+        >
+          Entrar
+        </button>
+      </form>
+    </div>
+  </main>
+</Layout>
+
+<script>
+  import { supabase } from "../../lib/supabase";
+
+  const form = document.getElementById("login-form") as HTMLFormElement | null;
+  const errorEl = document.getElementById("login-error") as HTMLParagraphElement | null;
+  const submitBtn = document.getElementById("login-submit") as HTMLButtonElement | null;
+
+  async function redirectIfLoggedIn() {
+    const { data } = await supabase.auth.getSession();
+    if (data.session) {
+      window.location.href = "/admin/eventos";
+    }
+  }
+  redirectIfLoggedIn();
+
+  form?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    errorEl?.classList.add("hidden");
+    if (submitBtn) submitBtn.disabled = true;
+
+    const formData = new FormData(form);
+    const email = String(formData.get("email") ?? "");
+    const password = String(formData.get("password") ?? "");
+
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+
+    if (error) {
+      if (errorEl) {
+        errorEl.textContent = "Email o contraseña incorrectos.";
+        errorEl.classList.remove("hidden");
+      }
+      if (submitBtn) submitBtn.disabled = false;
+      return;
+    }
+
+    window.location.href = "/admin/eventos";
+  });
+</script>

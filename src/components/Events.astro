@@ -6,10 +6,8 @@ import { allEvents, todayIso } from "../data/events";
 // Fecha local del build — NO usar toISOString (desfasa el día en Chile)
 const buildTodayIso = todayIso();
 
-const upcoming = allEvents
-  .filter((ev) => ev.iso >= buildTodayIso)
-  .sort((a, b) => a.iso.localeCompare(b.iso));
-const featured = upcoming[0] ?? null;
+// El próximo evento ahora viene de Supabase (client-side, ver <script> abajo).
+// Los "últimos eventos" (curados a mano) siguen estáticos en events.ts.
 const past = allEvents.filter((ev) => ev.iso < buildTodayIso);
 ---
 
@@ -32,58 +30,38 @@ const past = allEvents.filter((ev) => ev.iso < buildTodayIso);
       </h2>
     </div>
 
-    <!-- Próximo evento: un único destacado -->
-    {
-      featured && (
-        <div
-          data-featured-event
-          data-event-date={featured.iso}
-          class="reveal card-lift group overflow-hidden bg-surface-container border border-primary-container/10 grid md:grid-cols-2 mb-20"
+    <!-- Próximo evento: un único destacado, poblado client-side desde Supabase -->
+    <div
+      data-featured-event
+      class="hidden reveal card-lift group overflow-hidden bg-surface-container border border-primary-container/10 flex flex-col max-w-sm md:max-w-md mx-auto mb-20"
+    >
+      <div class="overflow-hidden">
+        <img
+          data-featured-image
+          alt=""
+          class="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
+        />
+      </div>
+      <div class="p-5 md:p-6">
+        <span class="text-primary-container text-label-sm font-bold uppercase tracking-wider block mb-1">
+          Próximo evento
+        </span>
+        <h3 class="font-headline-lg text-on-surface text-lg md:text-xl font-bold" data-featured-artist>
+        </h3>
+        <p class="text-on-surface-variant text-sm mt-1" data-featured-meta></p>
+        <a
+          href="#reserva"
+          class="btn-shine inline-block mt-4 px-6 py-2 bg-primary-container text-on-primary-container text-xs font-bold tracking-widest uppercase text-center hover:brightness-110 active:scale-95 transition-all"
         >
-          <div class="overflow-hidden">
-            <Image
-              src={featured.image}
-              alt={featured.artist}
-              class="w-full h-auto transition-transform duration-700 group-hover:scale-105"
-            />
-          </div>
-          <div class="p-6 md:p-10 flex flex-col justify-center">
-            <span class="text-primary-container text-label-sm font-bold uppercase tracking-[0.3em] mb-4">
-              Próximo evento
-            </span>
-            <h3 class="font-headline-lg text-on-surface text-3xl md:text-4xl font-bold mb-3">
-              {featured.artist}
-            </h3>
-            <p class="text-on-surface-variant mb-6">{featured.genre}</p>
-            <div class="flex items-center gap-6 mb-8 text-on-surface">
-              <span class="inline-flex items-center gap-2">
-                <span class="material-symbols-outlined text-primary-container">
-                  calendar_month
-                </span>
-                {featured.date}
-              </span>
-              <span class="inline-flex items-center gap-2">
-                <span class="material-symbols-outlined text-primary-container">
-                  schedule
-                </span>
-                {featured.time} hrs
-              </span>
-            </div>
-            <a
-              href="#reserva"
-              class="btn-shine inline-block px-10 py-3 bg-primary-container text-on-primary-container text-sm font-bold tracking-widest uppercase text-center hover:brightness-110 active:scale-95 transition-all self-start"
-            >
-              Reservar
-            </a>
-          </div>
-        </div>
-      )
-    }
+          Reservar
+        </a>
+      </div>
+    </div>
 
-    <!-- Estado sin eventos futuros -->
+    <!-- Estado sin eventos futuros: visible por defecto (degradación honesta si JS falla/tarda) -->
     <div
       data-no-events
-      class={`${featured ? "hidden " : ""}reveal border border-primary-container/15 bg-surface-container text-center px-6 py-14 mb-20 max-w-2xl mx-auto`}
+      class="reveal border border-primary-container/15 bg-surface-container text-center px-6 py-14 mb-20 max-w-2xl mx-auto"
     >
       <span
         class="material-symbols-outlined text-primary-container text-4xl mb-4"
@@ -172,18 +150,67 @@ const past = allEvents.filter((ev) => ev.iso < buildTodayIso);
 </section>
 
 <script>
-  import { todayIso } from "../data/events";
+  import { supabase } from "../lib/supabase";
 
-  // Re-verifica en el navegador que el evento destacado siga siendo futuro:
-  // si la fecha ya pasó (deploy antiguo), se oculta y se muestra el estado vacío.
-  const featuredEl = document.querySelector<HTMLElement>(
-    "[data-featured-event]",
-  );
-  if (featuredEl) {
-    const iso = featuredEl.dataset.eventDate ?? "";
-    if (iso < todayIso()) {
-      featuredEl.remove();
-      document.querySelector("[data-no-events]")?.classList.remove("hidden");
-    }
+  interface Evento {
+    artista: string;
+    genero: string | null;
+    fecha: string;
+    hora: string;
+    descripcion: string | null;
+    imagen_url: string | null;
   }
+
+  function formatFecha(iso: string): string {
+    const [y, m, d] = iso.split("-").map(Number);
+    const date = new Date(y, m - 1, d);
+    const label = date.toLocaleDateString("es-CL", {
+      weekday: "short",
+      day: "numeric",
+      month: "short",
+    });
+    return label.charAt(0).toUpperCase() + label.slice(1).replace(".", "");
+  }
+
+  async function loadFeaturedEvent() {
+    const featuredEl = document.querySelector<HTMLElement>("[data-featured-event]");
+    const noEventsEl = document.querySelector<HTMLElement>("[data-no-events]");
+    if (!featuredEl) return;
+
+    const today = new Date().toISOString().slice(0, 10);
+    const { data, error } = await supabase
+      .from("eventos")
+      .select("artista, genero, fecha, hora, descripcion, imagen_url")
+      .gte("fecha", today)
+      .order("fecha", { ascending: true })
+      .order("hora", { ascending: true })
+      .limit(1);
+
+    if (error || !data || data.length === 0) return;
+
+    const ev = data[0] as Evento;
+
+    const img = featuredEl.querySelector<HTMLImageElement>("[data-featured-image]");
+    if (img && ev.imagen_url) {
+      img.src = ev.imagen_url;
+      img.alt = ev.artista;
+    }
+    const artistaEl = featuredEl.querySelector("[data-featured-artist]");
+    if (artistaEl) artistaEl.textContent = ev.artista;
+    const metaEl = featuredEl.querySelector("[data-featured-meta]");
+    if (metaEl) {
+      const genero = ev.genero ?? ev.descripcion;
+      const fechaHora = `${formatFecha(ev.fecha)} · ${ev.hora.slice(0, 5)} hrs`;
+      metaEl.textContent = genero ? `${genero} · ${fechaHora}` : fechaHora;
+    }
+
+    if (!ev.imagen_url) {
+      featuredEl.querySelector<HTMLElement>("[data-featured-image]")?.parentElement?.classList.add("hidden");
+    }
+
+    featuredEl.classList.remove("hidden");
+    noEventsEl?.classList.add("hidden");
+  }
+
+  loadFeaturedEvent();
 </script>

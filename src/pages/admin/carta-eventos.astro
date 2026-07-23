@@ -1,0 +1,268 @@
+---
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout title="Carta de Eventos — Admin Doña Dominga" noindex={true}>
+  <main class="min-h-screen px-4 py-8 max-w-2xl mx-auto space-y-8">
+    <header class="flex items-center justify-between">
+      <div>
+        <h1 class="font-headline-lg text-2xl font-bold text-on-background">Carta de Eventos</h1>
+        <p class="text-sm text-on-surface-variant">Panel Admin — Doña Dominga</p>
+      </div>
+      <div class="flex items-center gap-3 text-sm">
+        <a href="/admin/eventos" class="text-primary-container hover:underline">← Eventos</a>
+        <button
+          id="logout-btn"
+          type="button"
+          class="text-on-surface-variant hover:text-on-surface border border-primary-container/20 px-3 py-1.5"
+        >
+          Salir
+        </button>
+      </div>
+    </header>
+
+    <section class="bg-surface-container-low border border-primary-container/20 p-5 space-y-4">
+      <h2 class="font-headline-lg text-lg font-semibold text-on-surface" id="form-title">Nuevo ítem</h2>
+      <form id="item-form" class="space-y-4">
+        <input type="hidden" id="item-id" name="id" />
+
+        <div class="space-y-1">
+          <label for="name" class="text-xs uppercase tracking-wide text-on-surface-variant">Nombre</label>
+          <input id="name" name="name" type="text" required class="w-full bg-surface-container px-3 py-2.5 text-on-surface border border-primary-container/20 focus:border-primary-container focus:outline-none" />
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div class="space-y-1">
+            <label for="price" class="text-xs uppercase tracking-wide text-on-surface-variant">Precio (CLP)</label>
+            <input id="price" name="price" type="number" min="0" step="1" required class="w-full bg-surface-container px-3 py-2.5 text-on-surface border border-primary-container/20 focus:border-primary-container focus:outline-none" />
+          </div>
+          <div class="space-y-1">
+            <label for="group" class="text-xs uppercase tracking-wide text-on-surface-variant">Grupo</label>
+            <input id="group" name="group" type="text" required placeholder="Ej: Hamburguesas" class="w-full bg-surface-container px-3 py-2.5 text-on-surface border border-primary-container/20 focus:border-primary-container focus:outline-none" />
+          </div>
+        </div>
+
+        <div class="space-y-1">
+          <label for="description" class="text-xs uppercase tracking-wide text-on-surface-variant">Descripción (opcional)</label>
+          <textarea id="description" name="description" rows="2" class="w-full bg-surface-container px-3 py-2.5 text-on-surface border border-primary-container/20 focus:border-primary-container focus:outline-none"></textarea>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 items-end">
+          <div class="space-y-1">
+            <label for="sort_order" class="text-xs uppercase tracking-wide text-on-surface-variant">Orden</label>
+            <input id="sort_order" name="sort_order" type="number" step="1" value="0" class="w-full bg-surface-container px-3 py-2.5 text-on-surface border border-primary-container/20 focus:border-primary-container focus:outline-none" />
+          </div>
+          <label class="flex items-center gap-2 text-sm text-on-surface pb-2.5">
+            <input id="available" name="available" type="checkbox" checked class="w-4 h-4 accent-[color:var(--color-primary-container)]" />
+            Disponible
+          </label>
+        </div>
+
+        <p id="form-error" class="hidden text-sm text-error"></p>
+        <p id="form-status" class="hidden text-sm text-tertiary"></p>
+
+        <div class="flex gap-3">
+          <button type="submit" id="form-submit" class="bg-primary-container text-on-primary-container font-semibold px-5 py-2.5 hover:brightness-110 active:scale-95 transition-all disabled:opacity-50">
+            Guardar
+          </button>
+          <button type="button" id="form-cancel" class="hidden text-on-surface-variant border border-primary-container/20 px-5 py-2.5 hover:bg-surface-container">
+            Cancelar edición
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <section class="space-y-3">
+      <h2 class="font-headline-lg text-lg font-semibold text-on-surface">Listado</h2>
+      <div id="items-list" class="space-y-6">
+        <p class="text-sm text-on-surface-variant">Cargando...</p>
+      </div>
+    </section>
+  </main>
+</Layout>
+
+<script>
+  import { supabase } from "../../lib/supabase";
+
+  interface CartaItem {
+    id: string;
+    name: string;
+    price: number;
+    description: string | null;
+    group: string;
+    available: boolean;
+    sort_order: number;
+  }
+
+  const form = document.getElementById("item-form") as HTMLFormElement | null;
+  const formTitle = document.getElementById("form-title") as HTMLHeadingElement | null;
+  const idInput = document.getElementById("item-id") as HTMLInputElement | null;
+  const nameInput = document.getElementById("name") as HTMLInputElement | null;
+  const priceInput = document.getElementById("price") as HTMLInputElement | null;
+  const groupInput = document.getElementById("group") as HTMLInputElement | null;
+  const descriptionInput = document.getElementById("description") as HTMLTextAreaElement | null;
+  const sortOrderInput = document.getElementById("sort_order") as HTMLInputElement | null;
+  const availableInput = document.getElementById("available") as HTMLInputElement | null;
+  const errorEl = document.getElementById("form-error") as HTMLParagraphElement | null;
+  const statusEl = document.getElementById("form-status") as HTMLParagraphElement | null;
+  const submitBtn = document.getElementById("form-submit") as HTMLButtonElement | null;
+  const cancelBtn = document.getElementById("form-cancel") as HTMLButtonElement | null;
+  const listEl = document.getElementById("items-list") as HTMLDivElement | null;
+  const logoutBtn = document.getElementById("logout-btn") as HTMLButtonElement | null;
+
+  function formatCLP(amount: number): string {
+    return amount.toLocaleString("es-CL", { style: "currency", currency: "CLP", maximumFractionDigits: 0 });
+  }
+
+  async function requireSession() {
+    const { data } = await supabase.auth.getSession();
+    if (!data.session) {
+      window.location.href = "/admin";
+    }
+  }
+  requireSession();
+
+  logoutBtn?.addEventListener("click", async () => {
+    await supabase.auth.signOut();
+    window.location.href = "/admin";
+  });
+
+  function resetForm() {
+    form?.reset();
+    if (idInput) idInput.value = "";
+    if (availableInput) availableInput.checked = true;
+    if (sortOrderInput) sortOrderInput.value = "0";
+    if (formTitle) formTitle.textContent = "Nuevo ítem";
+    cancelBtn?.classList.add("hidden");
+    errorEl?.classList.add("hidden");
+    statusEl?.classList.add("hidden");
+  }
+
+  cancelBtn?.addEventListener("click", resetForm);
+
+  function showError(msg: string) {
+    if (errorEl) {
+      errorEl.textContent = msg;
+      errorEl.classList.remove("hidden");
+    }
+  }
+
+  function showStatus(msg: string) {
+    if (statusEl) {
+      statusEl.textContent = msg;
+      statusEl.classList.remove("hidden");
+    }
+  }
+
+  async function loadItems() {
+    if (!listEl) return;
+    const { data, error } = await supabase
+      .from("carta_eventos_items")
+      .select("*")
+      .order("group", { ascending: true })
+      .order("sort_order", { ascending: true });
+
+    if (error) {
+      listEl.innerHTML = `<p class="text-sm text-error">Error cargando la carta: ${error.message}</p>`;
+      return;
+    }
+
+    const items = (data ?? []) as CartaItem[];
+    if (items.length === 0) {
+      listEl.innerHTML = `<p class="text-sm text-on-surface-variant">Sin ítems registrados.</p>`;
+      return;
+    }
+
+    const groups = new Map<string, CartaItem[]>();
+    items.forEach((item) => {
+      if (!groups.has(item.group)) groups.set(item.group, []);
+      groups.get(item.group)!.push(item);
+    });
+
+    listEl.innerHTML = "";
+    groups.forEach((groupItems, groupName) => {
+      const groupEl = document.createElement("div");
+      groupEl.className = "space-y-2";
+      groupEl.innerHTML = `<h3 class="text-xs uppercase tracking-wide text-primary-container font-semibold">${groupName}</h3>`;
+
+      groupItems.forEach((item) => {
+        const row = document.createElement("div");
+        row.className = "flex items-center justify-between gap-3 bg-surface-container-low border border-primary-container/10 px-4 py-3";
+        row.innerHTML = `
+          <div class="min-w-0">
+            <p class="text-on-surface font-semibold truncate">${item.name}${item.available ? "" : ' <span class="text-xs text-on-surface-variant">(no disponible)</span>'}</p>
+            <p class="text-xs text-on-surface-variant">${formatCLP(item.price)}${item.description ? " · " + item.description : ""}</p>
+          </div>
+          <div class="flex gap-2 shrink-0">
+            <button type="button" data-edit="${item.id}" class="text-xs text-primary-container border border-primary-container/30 px-2.5 py-1.5 hover:bg-primary-container hover:text-on-primary-container transition-colors">Editar</button>
+            <button type="button" data-delete="${item.id}" class="text-xs text-error border border-error/30 px-2.5 py-1.5 hover:bg-error hover:text-on-error transition-colors">Borrar</button>
+          </div>
+        `;
+        groupEl.appendChild(row);
+
+        row.querySelector(`[data-edit="${item.id}"]`)?.addEventListener("click", () => editItem(item));
+        row.querySelector(`[data-delete="${item.id}"]`)?.addEventListener("click", () => deleteItem(item.id));
+      });
+
+      listEl.appendChild(groupEl);
+    });
+  }
+
+  function editItem(item: CartaItem) {
+    if (idInput) idInput.value = item.id;
+    if (nameInput) nameInput.value = item.name;
+    if (priceInput) priceInput.value = String(item.price);
+    if (groupInput) groupInput.value = item.group;
+    if (descriptionInput) descriptionInput.value = item.description ?? "";
+    if (sortOrderInput) sortOrderInput.value = String(item.sort_order);
+    if (availableInput) availableInput.checked = item.available;
+    if (formTitle) formTitle.textContent = "Editar ítem";
+    cancelBtn?.classList.remove("hidden");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  async function deleteItem(id: string) {
+    if (!window.confirm("¿Borrar este ítem?")) return;
+    const { error } = await supabase.from("carta_eventos_items").delete().eq("id", id);
+    if (error) {
+      window.alert("No se pudo borrar: " + error.message);
+      return;
+    }
+    loadItems();
+  }
+
+  form?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    errorEl?.classList.add("hidden");
+    statusEl?.classList.add("hidden");
+    if (submitBtn) submitBtn.disabled = true;
+
+    try {
+      const payload = {
+        name: nameInput?.value ?? "",
+        price: Number(priceInput?.value ?? 0),
+        group: groupInput?.value ?? "",
+        description: descriptionInput?.value || null,
+        sort_order: Number(sortOrderInput?.value ?? 0),
+        available: availableInput?.checked ?? true,
+      };
+
+      const id = idInput?.value;
+      const { error } = id
+        ? await supabase.from("carta_eventos_items").update(payload).eq("id", id)
+        : await supabase.from("carta_eventos_items").insert(payload);
+
+      if (error) throw error;
+
+      showStatus(id ? "Ítem actualizado." : "Ítem creado.");
+      resetForm();
+      loadItems();
+    } catch (err) {
+      showError(err instanceof Error ? err.message : "Error al guardar el ítem.");
+    } finally {
+      if (submitBtn) submitBtn.disabled = false;
+    }
+  });
+
+  loadItems();
+</script>

@@ -4,11 +4,13 @@ import '../styles/global.css';
 interface Props {
   title?: string;
   description?: string;
+  noindex?: boolean;
 }
 
 const {
   title = 'Terraza Doña Dominga — Mallarauco',
   description = 'Restaurant con shows de artistas en vivo en Mallarauco, Región Metropolitana. Reserva tu mesa y vive una noche inolvidable.',
+  noindex = false,
 } = Astro.props;
 ---
 
@@ -20,6 +22,7 @@ const {
     <meta name="description" content={description} />
     <link rel="icon" type="image/jpeg" href="/Logo.jpg" />
     <title>{title}</title>
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
