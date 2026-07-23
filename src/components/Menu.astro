@@ -1,25 +1,50 @@
 ---
 import { Image } from "astro:assets";
+import platosImg from "../assets/gallery/nuestra-mesa/pollo.jpg";
+import bebidasImg from "../assets/menu/cocteles.webp";
+import carneImg from "../assets/gallery/nuestra-mesa/carne.jpg";
+import pastelImg from "../assets/gallery/nuestra-mesa/pastel-de-choclo.jpg";
+import porotosImg from "../assets/gallery/nuestra-mesa/porotos.jpg";
+import sopaipillasImg from "../assets/gallery/nuestra-mesa/sopaipillas.jpg";
+import tortaImg from "../assets/gallery/nuestra-mesa/torta.jpg";
 import restaurantImg from "../assets/menu/restaurant.webp";
-import coctelesImg from "../assets/menu/cocteles.webp";
-import cafeteriaImg from "../assets/menu/cafeteria.webp";
+import { getMenuItem, formatCLP } from "../data/menu";
 
-const categories = [
+const platosIds = [
+  "dominga",
+  "chorrillana",
+  "corte-parrilla",
+  "filete-pollo-grilla",
+];
+const bebidasIds = [
+  "mojito-tradicional",
+  "pisco-sour",
+  "aperol-spritz",
+  "vino-dona-dominga",
+];
+
+const columns = [
   {
-    label: "Restaurant",
-    desc: "Tablas, hamburguesas y platos de fondo",
-    img: restaurantImg,
+    title: "Platos de la Casa",
+    img: platosImg,
+    alt: "Chuleta con huevo, papas y vino Doña Dominga servidos en la mesa",
+    ids: platosIds,
   },
   {
-    label: "Coctelería & Vinos",
-    desc: "Tragos de la casa, sour y vinos de la zona",
-    img: coctelesImg,
+    title: "Bebidas & Tragos",
+    img: bebidasImg,
+    alt: "Selección de cócteles y tragos de la casa",
+    ids: bebidasIds,
   },
-  {
-    label: "Cafetería",
-    desc: "Café de grano, repostería y sándwiches",
-    img: cafeteriaImg,
-  },
+];
+
+const galleryPhotos = [
+  { img: carneImg, alt: "Carne a la parrilla servida con guarniciones", span: "col-span-4 row-span-2 md:col-span-2 md:row-span-2" },
+  { img: sopaipillasImg, alt: "Sopaipillas caseras con pebre", span: "col-span-2 md:col-span-1" },
+  { img: pastelImg, alt: "Pastel de choclo casero", span: "col-span-2 md:col-span-1" },
+  { img: porotosImg, alt: "Porotos granados de la casa", span: "col-span-2 row-span-2 md:col-span-1 md:row-span-2" },
+  { img: tortaImg, alt: "Torta casera de la repostería", span: "col-span-2 md:col-span-1" },
+  { img: restaurantImg, alt: "Selección de platos del restaurant", span: "col-span-2 md:col-span-1" },
 ];
 ---
 
@@ -48,34 +73,81 @@ const categories = [
       </p>
     </div>
 
-    <!-- Galería de categorías -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-6">
+    <!-- Top Menu: platos destacados con foto + lista -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 mb-20 md:mb-24">
       {
-        categories.map((cat, i) => (
-          <div
-            class="card-lift reveal relative group overflow-hidden aspect-4/3 md:aspect-3/4"
-            style={`--reveal-delay: ${i * 130}ms`}
-          >
-            <Image
-              src={cat.img}
-              alt={cat.label}
-              class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-            />
-            <div class="absolute inset-0 bg-linear-to-t from-background/90 via-background/20 to-transparent" />
-            <div class="absolute bottom-5 left-5 right-5 md:bottom-6 md:left-6 md:right-6">
-              <h3 class="font-headline-lg text-on-surface text-xl md:text-2xl">
-                {cat.label}
-              </h3>
-              <p class="text-on-surface-variant text-sm mt-1">{cat.desc}</p>
+        columns.map((col, i) => (
+          <div class="reveal" style={`--reveal-delay: ${i * 150}ms`}>
+            <div class="aspect-4/3 overflow-hidden mb-6">
+              <Image
+                src={col.img}
+                alt={col.alt}
+                class="w-full h-full object-cover"
+              />
             </div>
+            <h3 class="font-headline-lg text-on-surface text-2xl mb-5">
+              {col.title}
+            </h3>
+            <ul class="space-y-5">
+              {col.ids.map((id) => {
+                const item = getMenuItem(id);
+                return (
+                  <li>
+                    <div class="flex items-baseline">
+                      <span class="font-headline-lg text-on-surface text-lg">
+                        {item.name}
+                      </span>
+                      <span class="dotted-leader" />
+                      <span class="text-primary-container font-semibold">
+                        {formatCLP(item.price)}
+                      </span>
+                    </div>
+                    {item.desc && (
+                      <p class="text-on-surface-variant text-sm mt-1">
+                        {item.desc}
+                      </p>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
           </div>
         ))
       }
     </div>
 
-    <!-- Botones a las cartas -->
+    <!-- Galería de platos -->
+    <div class="text-center mb-10">
+      <span
+        class="text-primary-container text-label-sm uppercase tracking-[0.3em] font-bold block mb-3"
+      >
+        Galería
+      </span>
+      <h3 class="font-headline-lg text-on-surface text-2xl md:text-3xl">
+        Un vistazo a nuestros platos
+      </h3>
+    </div>
+
+    <div class="grid grid-cols-4 grid-flow-dense auto-rows-[110px] md:auto-rows-[140px] gap-3 md:gap-4 mb-14">
+      {
+        galleryPhotos.map((photo, i) => (
+          <div
+            class={`card-lift reveal relative overflow-hidden ${photo.span}`}
+            style={`--reveal-delay: ${i * 110}ms`}
+          >
+            <Image
+              src={photo.img}
+              alt={photo.alt}
+              class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+            />
+          </div>
+        ))
+      }
+    </div>
+
+    <!-- CTA: ver menú completo -->
     <div
-      class="mt-14 flex flex-col sm:flex-row items-center justify-center gap-4"
+      class="flex flex-col sm:flex-row items-center justify-center gap-4"
     >
       <a
         href="/carta-restaurant.html"
