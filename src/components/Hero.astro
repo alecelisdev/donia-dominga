@@ -1,40 +1,40 @@
 ---
 import { Image } from "astro:assets";
-import terrazaImg from "../assets/hero/terraza.webp";
+import heroImg from "../assets/hero/hero-comida.png";
 ---
 
 <section
   id="inicio"
-  class="relative w-full min-h-[85vh] md:min-h-screen flex md:items-center items-end overflow-x-clip"
+  class="relative w-full min-h-[85vh] md:min-h-screen flex items-center justify-center overflow-x-clip"
 >
-  <!-- Background image (parallax wrapper) -->
+  <!-- Background image (estático) -->
   <div class="absolute inset-0 overflow-hidden">
-    <div class="absolute inset-0 hero-kenburns-wrapper">
-      <Image
-        id="parallax-bg"
-        src={terrazaImg}
-        alt="Terraza Doña Dominga de noche"
-        class="hero-bg-treated absolute left-0 right-0 w-full object-cover object-center will-change-transform"
-        style="height: 115%; top: -7.5%"
-      />
-    </div>
+    <Image
+      src={heroImg}
+      alt="Selección de platos de Terraza Doña Dominga servidos sobre la mesa"
+      class="hero-bg-treated absolute inset-0 h-full w-full max-w-none object-cover object-center"
+      loading="eager"
+      fetchpriority="high"
+      quality="max"
+    />
   </div>
 
   <!-- Overlay -->
   <div class="hero-overlay absolute inset-0"></div>
+  <div class="absolute inset-0 bg-background/35 pointer-events-none"></div>
 
   <!-- Content -->
   <div
-    class="relative z-10 w-full max-w-container-max mx-auto px-margin-mobile md:px-gutter pb-16 md:pb-0"
+    class="relative z-10 w-full max-w-container-max mx-auto px-margin-mobile md:px-gutter"
   >
-    <div class="max-w-2xl hero-content-glow">
+    <div class="max-w-2xl mx-auto text-center hero-content-glow">
       <!-- Logo -->
-      <img
+      <!-- <img
         src="/Logo.jpg"
         alt="Logo Terraza Doña Dominga"
-        class="hero-animate h-24 w-24 md:h-36 md:w-36 object-cover mb-6 md:mb-8 border-2 border-primary-container/30 box-glow"
+        class="hero-animate mx-auto h-24 w-24 md:h-36 md:w-36 object-cover mb-6 md:mb-8 border-2 border-primary-container/30 box-glow"
         style="animation-delay: 0.05s"
-      />
+      /> -->
 
       <!-- Título -->
       <div
@@ -46,36 +46,45 @@ import terrazaImg from "../assets/hero/terraza.webp";
         >
           Bienvenidos a
         </p>
-        <h1
-          class="block font-extrabold tracking-tight text-5xl md:text-8xl text-gradient-warm text-glow-strong"
-          style="padding-bottom: 0.15em; margin-bottom: -0.15em"
-        >
-          Terraza <br />Doña Dominga
-        </h1>
+        <div class="hero-title-frame">
+          <span
+            class="hero-title-line"
+            aria-hidden="true"
+          ></span>
+          <h1
+            class="block font-extrabold tracking-tight text-5xl md:text-8xl text-gradient-warm text-glow-strong"
+            style="padding-bottom: 0.15em; margin-bottom: -0.15em"
+          >
+            Terraza <br />Doña Dominga
+          </h1>
+          <span
+            class="hero-title-line"
+            aria-hidden="true"
+          ></span>
+        </div>
       </div>
 
       <p
-        class="hero-animate text-on-surface-variant text-body-lg mb-8 max-w-sm leading-relaxed"
+        class="hero-animate mx-auto text-on-surface-variant text-body-lg mb-8 max-w-sm leading-relaxed"
         style="animation-delay: 0.5s"
       >
-        Comida casera, buena música y la mejor compañía, en el corazón de
-        Mallarauco.
+        Cocina de campo, sabor de casa, en el corazón de Mallarauco.
       </p>
 
       <!-- CTAs -->
       <div
-        class="hero-animate flex flex-col sm:flex-row gap-stack-md"
+        class="hero-animate flex flex-col sm:flex-row justify-center gap-stack-md"
         style="animation-delay: 0.65s"
       >
         <a
-          href="#reserva"
+          href="#menu"
           class="btn-shine inline-flex items-center justify-center px-10 py-4 bg-primary-container text-on-primary-container text-sm font-bold tracking-[0.2em] uppercase hover:brightness-110 active:scale-[0.98] transition-all"
         >
-          Reservar Mesa
+          Ver Menú
         </a>
         <a
           href="#eventos"
-          class="btn-shine inline-flex items-center justify-center px-10 py-4 border border-primary-container text-primary-container text-sm font-bold tracking-[0.2em] uppercase hover:bg-primary-container/10 active:scale-[0.98] transition-all"
+          class="btn-shine inline-flex items-center justify-center px-10 py-4 bg-background/50 backdrop-blur-sm border border-primary-container text-primary-container text-sm font-bold tracking-[0.2em] uppercase hover:bg-primary-container/10 active:scale-[0.98] transition-all"
         >
           Ver Eventos
         </a>
@@ -85,34 +94,8 @@ import terrazaImg from "../assets/hero/terraza.webp";
 
   <!-- Scroll indicator -->
   <div
-    class="absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-2 text-on-surface-variant/50 animate-bounce"
+    class="absolute bottom-20 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-2 text-on-surface-variant/50 animate-bounce"
   >
     <span class="material-symbols-outlined text-xl">keyboard_arrow_down</span>
   </div>
 </section>
-
-<script>
-  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    const bg = document.getElementById("parallax-bg") as HTMLElement | null;
-    const section = document.getElementById("inicio") as HTMLElement | null;
-
-    if (bg && section) {
-      let rafQueued = false;
-
-      window.addEventListener(
-        "scroll",
-        () => {
-          if (rafQueued) return;
-          rafQueued = true;
-          requestAnimationFrame(() => {
-            if (section.getBoundingClientRect().bottom > 0) {
-              bg.style.transform = `translateY(${window.scrollY * 0.28}px)`;
-            }
-            rafQueued = false;
-          });
-        },
-        { passive: true },
-      );
-    }
-  }
-</script>
