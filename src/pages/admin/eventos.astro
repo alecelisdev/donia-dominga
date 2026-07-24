@@ -65,9 +65,6 @@ import Layout from "../../layouts/Layout.astro";
           <img id="imagen-preview" class="hidden mt-2 max-h-40 border border-primary-container/20" />
         </div>
 
-        <p id="form-error" class="hidden text-sm text-error"></p>
-        <p id="form-status" class="hidden text-sm text-tertiary"></p>
-
         <div class="flex gap-3">
           <button type="submit" id="form-submit" class="bg-primary-container text-on-primary-container font-semibold px-5 py-2.5 hover:brightness-110 active:scale-95 transition-all disabled:opacity-50">
             Guardar
@@ -85,6 +82,27 @@ import Layout from "../../layouts/Layout.astro";
         <p class="text-sm text-on-surface-variant">Cargando...</p>
       </div>
     </section>
+
+    <div
+      id="toast"
+      class="fixed bottom-6 right-6 z-50 flex items-start gap-3 bg-surface-container-high border border-primary-container/20 shadow-[0_20px_50px_rgba(0,0,0,0.5)] px-4 py-3.5 min-w-[280px] max-w-sm opacity-0 translate-y-4 pointer-events-none transition-all duration-300 ease-out"
+      role="status"
+      aria-live="polite"
+    >
+      <div id="toast-icon" class="shrink-0 pt-0.5"></div>
+      <div class="min-w-0 flex-1">
+        <p id="toast-title" class="text-sm font-semibold text-on-surface"></p>
+        <p id="toast-detail" class="text-xs text-on-surface-variant mt-0.5"></p>
+      </div>
+      <button
+        type="button"
+        id="toast-close"
+        aria-label="Cerrar"
+        class="shrink-0 text-on-surface-variant hover:text-on-surface"
+      >
+        <span class="material-symbols-outlined text-lg">close</span>
+      </button>
+    </div>
   </main>
 </Layout>
 
@@ -111,14 +129,19 @@ import Layout from "../../layouts/Layout.astro";
   const descripcionInput = document.getElementById("descripcion") as HTMLTextAreaElement | null;
   const imagenInput = document.getElementById("imagen") as HTMLInputElement | null;
   const imagenPreview = document.getElementById("imagen-preview") as HTMLImageElement | null;
-  const errorEl = document.getElementById("form-error") as HTMLParagraphElement | null;
-  const statusEl = document.getElementById("form-status") as HTMLParagraphElement | null;
   const submitBtn = document.getElementById("form-submit") as HTMLButtonElement | null;
   const cancelBtn = document.getElementById("form-cancel") as HTMLButtonElement | null;
   const listEl = document.getElementById("eventos-list") as HTMLDivElement | null;
   const logoutBtn = document.getElementById("logout-btn") as HTMLButtonElement | null;
 
+  const toastEl = document.getElementById("toast") as HTMLDivElement | null;
+  const toastIconEl = document.getElementById("toast-icon") as HTMLDivElement | null;
+  const toastTitleEl = document.getElementById("toast-title") as HTMLParagraphElement | null;
+  const toastDetailEl = document.getElementById("toast-detail") as HTMLParagraphElement | null;
+  const toastCloseBtn = document.getElementById("toast-close") as HTMLButtonElement | null;
+
   let currentImagenUrl: string | null = null;
+  let toastHideTimeout: ReturnType<typeof setTimeout> | undefined;
 
   async function requireSession() {
     const { data } = await supabase.auth.getSession();
@@ -140,25 +163,39 @@ import Layout from "../../layouts/Layout.astro";
     cancelBtn?.classList.add("hidden");
     imagenPreview?.classList.add("hidden");
     currentImagenUrl = null;
-    errorEl?.classList.add("hidden");
-    statusEl?.classList.add("hidden");
   }
 
-  cancelBtn?.addEventListener("click", resetForm);
+  function hideToast() {
+    clearTimeout(toastHideTimeout);
+    toastEl?.classList.add("opacity-0", "translate-y-4", "pointer-events-none");
+    toastEl?.classList.remove("opacity-100", "translate-y-0", "pointer-events-auto");
+  }
 
-  function showError(msg: string) {
-    if (errorEl) {
-      errorEl.textContent = msg;
-      errorEl.classList.remove("hidden");
+  function showToast(kind: "loading" | "success" | "error", title: string, detail?: string) {
+    clearTimeout(toastHideTimeout);
+    if (toastIconEl) {
+      toastIconEl.innerHTML =
+        kind === "loading"
+          ? '<span class="material-symbols-outlined animate-spin text-primary-container">progress_activity</span>'
+          : kind === "success"
+            ? '<span class="material-symbols-outlined icon-filled text-tertiary">check_circle</span>'
+            : '<span class="material-symbols-outlined icon-filled text-error">error</span>';
+    }
+    if (toastTitleEl) toastTitleEl.textContent = title;
+    if (toastDetailEl) toastDetailEl.textContent = detail ?? "";
+    toastEl?.classList.remove("opacity-0", "translate-y-4", "pointer-events-none");
+    toastEl?.classList.add("opacity-100", "translate-y-0", "pointer-events-auto");
+    if (kind === "success") {
+      toastHideTimeout = setTimeout(hideToast, 4000);
     }
   }
 
-  function showStatus(msg: string) {
-    if (statusEl) {
-      statusEl.textContent = msg;
-      statusEl.classList.remove("hidden");
-    }
-  }
+  toastCloseBtn?.addEventListener("click", hideToast);
+
+  cancelBtn?.addEventListener("click", () => {
+    resetForm();
+    hideToast();
+  });
 
   async function loadEventos() {
     if (!listEl) return;
@@ -222,11 +259,13 @@ import Layout from "../../layouts/Layout.astro";
 
   async function deleteEvento(id: string) {
     if (!window.confirm("¿Borrar este evento?")) return;
+    showToast("loading", "Borrando evento…");
     const { error } = await supabase.from("eventos").delete().eq("id", id);
     if (error) {
-      window.alert("No se pudo borrar: " + error.message);
+      showToast("error", "No se pudo borrar.", error.message);
       return;
     }
+    showToast("success", "Evento borrado.");
     loadEventos();
   }
 
@@ -239,9 +278,11 @@ import Layout from "../../layouts/Layout.astro";
 
   form?.addEventListener("submit", async (e) => {
     e.preventDefault();
-    errorEl?.classList.add("hidden");
-    statusEl?.classList.add("hidden");
+    hideToast();
     if (submitBtn) submitBtn.disabled = true;
+
+    const id = idInput?.value;
+    showToast("loading", id ? "Guardando cambios…" : "Creando evento…");
 
     try {
       let imagenUrl = currentImagenUrl;
@@ -263,18 +304,17 @@ import Layout from "../../layouts/Layout.astro";
         imagen_url: imagenUrl,
       };
 
-      const id = idInput?.value;
       const { error } = id
         ? await supabase.from("eventos").update(payload).eq("id", id)
         : await supabase.from("eventos").insert(payload);
 
       if (error) throw error;
 
-      showStatus(id ? "Evento actualizado." : "Evento creado.");
+      showToast("success", id ? "Evento actualizado." : "Evento creado.", artistaInput?.value);
       resetForm();
       loadEventos();
     } catch (err) {
-      showError(err instanceof Error ? err.message : "Error al guardar el evento.");
+      showToast("error", "No se pudo guardar.", err instanceof Error ? err.message : undefined);
     } finally {
       if (submitBtn) submitBtn.disabled = false;
     }
