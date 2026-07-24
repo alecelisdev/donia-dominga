@@ -1,0 +1,130 @@
+---
+import { Image } from "astro:assets";
+import terrazaImg from "../assets/ambientes/terraza.webp";
+import workCafeImg from "../assets/ambientes/work-café.jpeg";
+---
+
+<section
+  id="espacios"
+  class="py-20 md:py-section-gap bg-surface-container-low border-t border-primary-container/10 md:border-t-0"
+>
+  <div class="max-w-container-max mx-auto px-margin-mobile md:px-gutter">
+    <!-- Header -->
+    <div class="text-center max-w-2xl mx-auto mb-16 md:mb-20 reveal">
+      <span
+        class="text-primary-container text-label-sm uppercase tracking-[0.3em] font-bold block mb-4"
+      >
+        Nuestros Espacios
+      </span>
+      <h2
+        class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-6"
+      >
+        Un lugar para cada momento del día
+      </h2>
+      <p class="text-on-surface-variant text-body-md leading-relaxed">
+        Ven en la mañana a trabajar con nosotros y un buen café, quédate a
+        almorzar bajo la terraza, y llévate pan recién horneado de nuestra
+        amasandería para el camino a casa.
+      </p>
+    </div>
+
+    <div class="space-y-16 md:space-y-24">
+      <!-- Work Café -->
+      <div
+        class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-14 items-center reveal"
+      >
+        <div class="card-lift overflow-hidden">
+          <Image
+            src={workCafeImg}
+            alt="Work Café en Terraza Doña Dominga"
+            class="w-full aspect-4/3 object-cover"
+          />
+        </div>
+        <div>
+          <span
+            class="text-primary-container text-label-sm uppercase tracking-[0.3em] font-bold block mb-3"
+          >
+            Por la mañana
+          </span>
+          <h3
+            class="font-headline-lg text-on-surface text-2xl md:text-3xl font-bold mb-4"
+          >
+            Work Café
+          </h3>
+          <p class="text-on-surface-variant text-body-md leading-relaxed">
+            Un espacio pensado para trabajar con calma, con buen café,
+            conexión y silencio — antes de que la terraza cobre vida. Llega
+            con tu notebook, quédate el tiempo que necesites.
+          </p>
+        </div>
+      </div>
+
+      <!-- Terraza / Restaurant -->
+      <div
+        class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-14 items-center reveal"
+      >
+        <div class="md:order-2 card-lift overflow-hidden">
+          <Image
+            src={terrazaImg}
+            alt="Terraza y Restaurant Doña Dominga"
+            class="w-full aspect-4/3 object-cover"
+          />
+        </div>
+        <div class="md:order-1">
+          <span
+            class="text-primary-container text-label-sm uppercase tracking-[0.3em] font-bold block mb-3"
+          >
+            Mediodía y noche
+          </span>
+          <h3
+            class="font-headline-lg text-on-surface text-2xl md:text-3xl font-bold mb-4"
+          >
+            Terraza & Restaurant
+          </h3>
+          <p class="text-on-surface-variant text-body-md leading-relaxed">
+            Quédate a almorzar con comida casera, celebra un cumpleaños o
+            vive una noche con artistas en vivo — el corazón de Doña
+            Dominga, donde pasa lo mejor del día.
+          </p>
+          <p class="text-on-surface-variant/70 text-sm mt-4 italic">
+            También disponible para cumpleaños, matrimonios y eventos
+            privados.
+          </p>
+        </div>
+      </div>
+
+      <!-- Amasandería (sin foto todavía) -->
+      <div
+        class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-14 items-center reveal"
+      >
+        <div
+          class="aspect-4/3 flex items-center justify-center bg-surface-container-high border border-dashed border-primary-container/20"
+        >
+          <!-- TODO: foto real de la amasandería -->
+          <span
+            class="material-symbols-outlined text-on-surface-variant/25 text-6xl"
+          >
+            bakery_dining
+          </span>
+        </div>
+        <div>
+          <span
+            class="text-primary-container text-label-sm uppercase tracking-[0.3em] font-bold block mb-3"
+          >
+            Para llevar
+          </span>
+          <h3
+            class="font-headline-lg text-on-surface text-2xl md:text-3xl font-bold mb-4"
+          >
+            Amasandería
+          </h3>
+          <p class="text-on-surface-variant text-body-md leading-relaxed">
+            Pan amasado, productos horneados y detalles dulces hechos en
+            casa, listos para llevarte un pedazo de Doña Dominga a donde
+            vayas.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

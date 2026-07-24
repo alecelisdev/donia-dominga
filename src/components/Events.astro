@@ -1,7 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import SocialIcon from "./SocialIcon.astro";
-import { allEvents, todayIso } from "../data/events";
+import { allEvents, invitedArtists, todayIso } from "../data/events";
 
 // Fecha local del build — NO usar toISOString (desfasa el día en Chile)
 const buildTodayIso = todayIso();
@@ -43,12 +43,21 @@ const past = allEvents.filter((ev) => ev.iso < buildTodayIso);
         />
       </div>
       <div class="p-5 md:p-6">
-        <span class="text-primary-container text-label-sm font-bold uppercase tracking-wider block mb-1">
+        <span
+          class="text-primary-container text-label-sm font-bold uppercase tracking-wider block mb-1"
+        >
           Próximo evento
         </span>
-        <h3 class="font-headline-lg text-on-surface text-lg md:text-xl font-bold" data-featured-artist>
+        <h3
+          class="font-headline-lg text-on-surface text-lg md:text-xl font-bold"
+          data-featured-artist
+        >
         </h3>
-        <p class="text-on-surface-variant text-sm mt-1" data-featured-meta></p>
+        <p
+          class="text-on-surface-variant text-sm mt-1"
+          data-featured-meta
+        >
+        </p>
         <a
           href="#reserva"
           class="btn-shine inline-block mt-4 px-6 py-2 bg-primary-container text-on-primary-container text-xs font-bold tracking-widest uppercase text-center hover:brightness-110 active:scale-95 transition-all"
@@ -96,36 +105,65 @@ const past = allEvents.filter((ev) => ev.iso < buildTodayIso);
       <h3
         class="font-headline-lg text-on-surface text-2xl md:text-3xl font-bold"
       >
-        Últimos eventos
+        Eventos destacados
       </h3>
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-5 md:gap-6">
       {
         past.map((ev, i) => (
           <div
             class="reveal card-lift group overflow-hidden bg-surface-container border border-primary-container/10 flex flex-col"
             style={`--reveal-delay: ${i * 100}ms`}
           >
-            <div class="overflow-hidden">
-              <Image
-                src={ev.image}
-                alt={ev.artist}
-                class="w-full h-auto transition-transform duration-700 group-hover:scale-105"
-              />
+            <div
+              class:list={[
+                "w-full aspect-4/3 overflow-hidden flex items-center justify-center",
+                ev.image ? "bg-surface-container-high" : "bg-surface-container-high border border-dashed border-primary-container/20",
+              ]}
+            >
+              {ev.image ? (
+                <Image
+                  src={ev.image}
+                  alt={ev.artist}
+                  class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+              ) : (
+                <span class="material-symbols-outlined text-on-surface-variant/25 text-5xl">
+                  event
+                </span>
+              )}
             </div>
-            <div class="p-5">
-              <span class="text-primary-container text-label-sm font-bold uppercase tracking-wider block mb-1">
-                {ev.date}
-              </span>
-              <h4 class="font-headline-lg text-on-surface text-lg font-bold">
+            <div class="p-4 md:p-5 text-center">
+              <h4 class="font-headline-lg text-on-surface text-base md:text-lg font-bold">
                 {ev.artist}
               </h4>
-              <p class="text-on-surface-variant text-sm mt-1">{ev.genre}</p>
             </div>
           </div>
         ))
       }
+    </div>
+
+    <!-- Artistas invitados: chips, sin orden particular -->
+    <div class="mt-14 pt-10 border-t border-primary-container/10 reveal">
+      <div class="text-center mb-6">
+        <span
+          class="text-primary-container text-label-sm uppercase tracking-[0.3em] font-bold block"
+        >
+          Quiénes nos han visitado
+        </span>
+      </div>
+      <div class="glass-card max-w-3xl mx-auto p-6 md:p-8">
+        <div class="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:justify-center sm:gap-2.5">
+          {
+            invitedArtists.map((name) => (
+              <span class="flex sm:inline-flex items-center justify-center text-center px-3.5 py-2 bg-surface-container border border-primary-container/15 text-on-surface-variant text-sm hover:border-primary-container/50 hover:text-on-surface transition-colors">
+                {name}
+              </span>
+            ))
+          }
+        </div>
+      </div>
     </div>
 
     <!-- CTA WhatsApp -->
@@ -173,7 +211,9 @@ const past = allEvents.filter((ev) => ev.iso < buildTodayIso);
   }
 
   async function loadFeaturedEvent() {
-    const featuredEl = document.querySelector<HTMLElement>("[data-featured-event]");
+    const featuredEl = document.querySelector<HTMLElement>(
+      "[data-featured-event]",
+    );
     const noEventsEl = document.querySelector<HTMLElement>("[data-no-events]");
     if (!featuredEl) return;
 
@@ -190,7 +230,9 @@ const past = allEvents.filter((ev) => ev.iso < buildTodayIso);
 
     const ev = data[0] as Evento;
 
-    const img = featuredEl.querySelector<HTMLImageElement>("[data-featured-image]");
+    const img = featuredEl.querySelector<HTMLImageElement>(
+      "[data-featured-image]",
+    );
     if (img && ev.imagen_url) {
       img.src = ev.imagen_url;
       img.alt = ev.artista;
@@ -205,7 +247,9 @@ const past = allEvents.filter((ev) => ev.iso < buildTodayIso);
     }
 
     if (!ev.imagen_url) {
-      featuredEl.querySelector<HTMLElement>("[data-featured-image]")?.parentElement?.classList.add("hidden");
+      featuredEl
+        .querySelector<HTMLElement>("[data-featured-image]")
+        ?.parentElement?.classList.add("hidden");
     }
 
     featuredEl.classList.remove("hidden");
