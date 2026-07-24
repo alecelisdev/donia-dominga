@@ -1,4 +1,6 @@
-<!-- CONTENIDO PROVISORIO: duplicado de carta-restaurant.html a la espera de la carta real de eventos -->
+<!-- Carta definitiva de eventos. El listado de platos se carga en vivo desde Supabase
+     (tabla carta_eventos_items) — para cambiar precios/platos usar /admin/carta-eventos,
+     no editar esta lista a mano. -->
 <!DOCTYPE html>
 <html lang="es">
 
@@ -212,6 +214,25 @@
       background: var(--accent);
       margin: 0 auto 16px auto;
     }
+
+    footer .back-link {
+      display: inline-block;
+      margin-top: 4px;
+      color: var(--accent-soft);
+      text-decoration: none;
+      letter-spacing: 2px;
+    }
+
+    footer .back-link:hover {
+      color: var(--accent);
+    }
+
+    .menu-status {
+      text-align: center;
+      color: var(--muted);
+      padding: 40px 0;
+      font-size: 13px;
+    }
   </style>
 </head>
 
@@ -221,182 +242,101 @@
       <img class="logo" src="/Logo.jpg" alt="Doña Dominga" />
       <h1 class="brand"><span class="eyebrow-word">Terraza</span><span class="name-word">Doña Dominga</span></h1>
       <div class="place">Santa Victoria - Mallarauco &middot; Desde 1993</div>
-      <p class="doctitle">&ldquo;Carta Restaurant&rdquo;</p>
+      <p class="doctitle">&ldquo;Carta Eventos&rdquo;</p>
     </div>
-    <div class="section">
-      <div class="section-title">Hamburguesas</div>
-      <div class="section-note">Todas incluyen papas fritas</div>
-      <div class="item">
-        <div class="item-row"><span class="item-name">Dominga</span><span class="leader"></span><span
-            class="item-price">$9.500</span></div>
-        <div class="item-desc">Queso fundido · palta · tomate · mayonesa</div>
-      </div>
-      <div class="item">
-        <div class="item-row"><span class="item-name">A lo Pobre</span><span class="leader"></span><span
-            class="item-price">$9.500</span></div>
-        <div class="item-desc">Queso fundido · cebolla caramelizada · huevo frito</div>
-      </div>
-      <div class="item">
-        <div class="item-row"><span class="item-name">La Mallarauquina</span><span class="leader"></span><span
-            class="item-price">$9.500</span></div>
-        <div class="item-desc">Lechuga · palta · tomate · cebolla morada · mayonesa</div>
-      </div>
-    </div>
-    <div class="section">
-      <div class="section-title">Tablas para Compartir</div>
-      <div class="item">
-        <div class="item-row"><span class="item-name">Chorrillana</span><span class="leader"></span><span
-            class="item-price">$15.000</span></div>
-        <!-- <div class="item-desc">Papas fritas · salsa de la casa · pollo al pil pil · tostadas</div> -->
-      </div>
-      <div class="item">
-        <div class="item-row"><span class="item-name">Surtido de Empanadas</span><span class="leader"></span><span
-            class="item-price">$15.000</span></div>
-        <div class="item-desc">Queso · mechada · camarón — 12 unidades y salsa de la casa</div>
-      </div>
-      <div class="item">
-        <div class="item-row"><span class="item-name">Corte a la parrilla</span><span class="leader"></span><span
-            class="item-price">$13.000</span></div>
-        <!-- <div class="item-desc">Ceviche · camarones salteados · cubitos de pescado apanados · tostadas</div> -->
-      </div>
-    </div>
-    <div class="section">
-      <div class="section-title">Platos de Fondo</div>
-      <div class="section-note">Con acompañamiento de arroz o papas fritas</div>
-      <div class="item">
-        <div class="item-row"><span class="item-name">Flat Iron a lo Pobre</span><span class="leader"></span><span
-            class="item-price">$13.000</span></div>
-      </div>
-      <div class="item">
-        <div class="item-row"><span class="item-name">Filete de Pollo a la Grilla</span><span
-            class="leader"></span><span class="item-price">$13.000</span></div>
-      </div>
-    </div>
-    <div class="section">
-      <div class="section-title">Algo Dulce</div>
-      <div class="item">
-        <div class="item-row"><span class="item-name">Tortas y Kuchen de la Casa</span><span class="leader"></span><span
-            class="item-price">$3.500</span></div>
-        <div class="item-desc">Precio por porción</div>
-      </div>
-      <div class="item">
-        <div class="item-row"><span class="item-name">Café / Té</span><span class="leader"></span><span
-            class="item-price">$2.000</span></div>
-      </div>
-      <div class="item">
-        <div class="item-row"><span class="item-name">Café Máquina Sabores</span><span class="leader"></span><span
-            class="item-price">$3.000</span></div>
-      </div>
-    </div>
-    <div class="section">
-      <div class="section-title">Bebidas y Jugos</div>
-      <div class="item">
-        <div class="item-row"><span class="item-name">Bebida</span><span class="leader"></span><span
-            class="item-price">$2.800</span></div>
-      </div>
-      <div class="item">
-        <div class="item-row"><span class="item-name">Jugo Natural</span><span class="leader"></span><span
-            class="item-price">$4.000</span></div>
-        <div class="item-desc">Piña · frutilla</div>
-      </div>
-    </div>
-    <div class="section">
-      <div class="section-title">Cervezas</div>
-      <div class="item">
-        <div class="item-row"><span class="item-name">Austral Calafate</span><span class="leader"></span><span
-            class="item-price">$4.500</span></div>
-      </div>
-      <div class="item">
-        <div class="item-row"><span class="item-name">Corona</span><span class="leader"></span><span
-            class="item-price">$3.500</span></div>
-      </div>
-      <div class="item">
-        <div class="item-row"><span class="item-name">Kuntsman Torobayo</span><span class="leader"></span><span
-            class="item-price">$4.500</span></div>
-      </div>
-      <div class="item">
-        <div class="item-row"><span class="item-name">Michelada</span><span class="leader"></span><span
-            class="item-price">$5.500</span></div>
-      </div>
-    </div>
-    <div class="section">
-      <div class="section-title">Tragos de la Casa</div>
-      <div class="item">
-        <div class="item-row"><span class="item-name">Pisco con Bebida</span><span class="leader"></span><span
-            class="item-price">$5.000</span></div>
-      </div>
-      <div class="item">
-        <div class="item-row"><span class="item-name">Ron con Bebida</span><span class="leader"></span><span
-            class="item-price">$4.500</span></div>
-      </div>
-      <div class="item">
-        <div class="item-row"><span class="item-name">Mojito Tradicional</span><span class="leader"></span><span
-            class="item-price">$6.000</span></div>
-      </div>
-      <div class="item">
-        <div class="item-row"><span class="item-name">Mojito Sabores</span><span class="leader"></span><span
-            class="item-price">$6.500</span></div>
-      </div>
-      <div class="item">
-        <div class="item-row"><span class="item-name">Aperol Spritz</span><span class="leader"></span><span
-            class="item-price">$5.000</span></div>
-      </div>
-      <div class="item">
-        <div class="item-row"><span class="item-name">Ramazzotti Spritz</span><span class="leader"></span><span
-            class="item-price">$6.500</span></div>
-      </div>
-      <div class="item">
-        <div class="item-row"><span class="item-name">Caipiriña</span><span class="leader"></span><span
-            class="item-price">$6.000</span></div>
-      </div>
-      <div class="item">
-        <div class="item-row"><span class="item-name">Tequila Margarita</span><span class="leader"></span><span
-            class="item-price">$6.000</span></div>
-      </div>
-    </div>
-    <div class="section">
-      <div class="section-title">Sour</div>
-      <div class="item">
-        <div class="item-row"><span class="item-name">Pisco Sour de la Casa</span><span class="leader"></span><span
-            class="item-price">$5.000</span></div>
-      </div>
-      <div class="item">
-        <div class="item-row"><span class="item-name">Mango Sour</span><span class="leader"></span><span
-            class="item-price">$5.000</span></div>
-      </div>
-    </div>
-    <div class="section">
-      <div class="section-title">Whisky</div>
-      <div class="item">
-        <div class="item-row"><span class="item-name">Johnnie Walker Negro</span><span class="leader"></span><span
-            class="item-price">$7.000</span></div>
-      </div>
-      <div class="item">
-        <div class="item-row"><span class="item-name">Johnnie Walker Rojo</span><span class="leader"></span><span
-            class="item-price">$6.000</span></div>
-      </div>
-    </div>
-    <div class="section">
-      <div class="section-title">Vinos (750cc)</div>
-      <div class="item">
-        <div class="item-row"><span class="item-name">Toro de Piedra Gran Reserva Cabernet</span><span
-            class="leader"></span><span class="item-price">$17.000</span></div>
-      </div>
-      <div class="item">
-        <div class="item-row"><span class="item-name">Casa Silva Merlot</span><span class="leader"></span><span
-            class="item-price">$13.000</span></div>
-      </div>
-      <div class="item">
-        <div class="item-row"><span class="item-name">Doña Dominga Gran Reserva Carmenère</span><span
-            class="leader"></span><span class="item-price">$15.000</span></div>
-      </div>
+    <div id="menu-items">
+      <p class="menu-status">Cargando carta…</p>
     </div>
 
     <footer>
       <div class="fline"></div>
-
+      <a class="back-link" href="/">&larr; Volver al sitio de Terraza Doña Dominga</a>
     </footer>
   </div>
+
+  <script>
+    // Esta carta se alimenta en vivo desde Supabase (tabla carta_eventos_items).
+    // Los cambios de precios/platos se hacen desde /admin/carta-eventos, NO editando este archivo.
+    var SUPABASE_URL = "https://nbezmlsvoqisqjeacwhq.supabase.co";
+    var SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5iZXptbHN2b3Fpc3FqZWFjd2hxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ3NjY0MDQsImV4cCI6MjEwMDM0MjQwNH0.72u-qNOXkfT1SsaGt1N9_h8AzJYVYMcPZIlzFJSzdbk";
+
+    function formatCLP(amount) {
+      return "$" + Math.round(amount).toLocaleString("es-CL");
+    }
+
+    function escapeHtml(str) {
+      var div = document.createElement("div");
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    var container = document.getElementById("menu-items");
+
+    fetch(
+      SUPABASE_URL +
+        "/rest/v1/carta_eventos_items?select=*&available=eq.true&order=group.asc,sort_order.asc",
+      {
+        headers: {
+          apikey: SUPABASE_ANON_KEY,
+          Authorization: "Bearer " + SUPABASE_ANON_KEY,
+        },
+      }
+    )
+      .then(function (res) {
+        if (!res.ok) throw new Error("Error al cargar la carta");
+        return res.json();
+      })
+      .then(function (items) {
+        if (!items.length) {
+          container.innerHTML =
+            '<p class="menu-status">La carta se está actualizando, vuelve pronto.</p>';
+          return;
+        }
+
+        var groups = [];
+        var groupIndex = {};
+        items.forEach(function (item) {
+          if (!(item.group in groupIndex)) {
+            groupIndex[item.group] = groups.length;
+            groups.push({ name: item.group, items: [] });
+          }
+          groups[groupIndex[item.group]].items.push(item);
+        });
+
+        container.innerHTML = "";
+        groups.forEach(function (group) {
+          var section = document.createElement("div");
+          section.className = "section";
+
+          var title = document.createElement("div");
+          title.className = "section-title";
+          title.textContent = group.name;
+          section.appendChild(title);
+
+          group.items.forEach(function (item) {
+            var itemEl = document.createElement("div");
+            itemEl.className = "item";
+            itemEl.innerHTML =
+              '<div class="item-row"><span class="item-name">' +
+              escapeHtml(item.name) +
+              '</span><span class="leader"></span><span class="item-price">' +
+              formatCLP(item.price) +
+              "</span></div>" +
+              (item.description
+                ? '<div class="item-desc">' + escapeHtml(item.description) + "</div>"
+                : "");
+            section.appendChild(itemEl);
+          });
+
+          container.appendChild(section);
+        });
+      })
+      .catch(function (err) {
+        container.innerHTML =
+          '<p class="menu-status">No pudimos cargar la carta. Intenta recargar la página.</p>';
+        console.error(err);
+      });
+  </script>
 </body>
 
 </html>
