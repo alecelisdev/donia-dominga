@@ -1,56 +1,17 @@
 ---
-import { Image } from "astro:assets";
-import platosImg from "../assets/gallery/nuestra-mesa/pollo.jpg";
-import bebidasImg from "../assets/menu/cocteles.webp";
-import carneImg from "../assets/gallery/nuestra-mesa/carne.jpg";
-import pastelImg from "../assets/gallery/nuestra-mesa/pastel-de-choclo.jpg";
-import porotosImg from "../assets/gallery/nuestra-mesa/porotos.jpg";
-import sopaipillasImg from "../assets/gallery/nuestra-mesa/sopaipillas.jpg";
-import tortaImg from "../assets/gallery/nuestra-mesa/torta.jpg";
-import restaurantImg from "../assets/menu/restaurant.webp";
-import { getMenuItem, formatCLP } from "../data/menu";
+import { getMenuItem } from "../data/menu";
 
-const platosIds = [
-  "dominga",
-  "chorrillana",
-  "corte-parrilla",
-  "filete-pollo-grilla",
-];
-const bebidasIds = [
-  "mojito-tradicional",
-  "pisco-sour",
-  "aperol-spritz",
-  "vino-dona-dominga",
-];
-
-const columns = [
-  {
-    title: "Platos de la Casa",
-    img: platosImg,
-    alt: "Chuleta con huevo, papas y vino Doña Dominga servidos en la mesa",
-    ids: platosIds,
-  },
-  {
-    title: "Bebidas & Tragos",
-    img: bebidasImg,
-    alt: "Selección de cócteles y tragos de la casa",
-    ids: bebidasIds,
-  },
-];
-
-const galleryPhotos = [
-  { img: carneImg, alt: "Carne a la parrilla servida con guarniciones", span: "col-span-4 row-span-2 md:col-span-2 md:row-span-2" },
-  { img: sopaipillasImg, alt: "Sopaipillas caseras con pebre", span: "col-span-2 md:col-span-1" },
-  { img: pastelImg, alt: "Pastel de choclo casero", span: "col-span-2 md:col-span-1" },
-  { img: porotosImg, alt: "Porotos granados de la casa", span: "col-span-2 row-span-2 md:col-span-1 md:row-span-2" },
-  { img: tortaImg, alt: "Torta casera de la repostería", span: "col-span-2 md:col-span-1" },
-  { img: restaurantImg, alt: "Selección de platos del restaurant", span: "col-span-2 md:col-span-1" },
+// TODO: reemplazar los placeholders por fotos reales de cada plato cuando estén disponibles.
+const dishes = [
+  { id: "corte-parrilla", big: true },
+  { id: "filete-pollo-grilla" },
+  { id: "mojito-tradicional" },
 ];
 ---
 
 <section
   id="menu"
-  class="py-section-gap bg-background"
+  class="py-20 md:py-section-gap bg-background border-t border-primary-container/10 md:border-t-0"
 >
   <div class="max-w-container-max mx-auto px-margin-mobile md:px-gutter">
     <!-- Header -->
@@ -73,82 +34,57 @@ const galleryPhotos = [
       </p>
     </div>
 
-    <!-- Top Menu: platos destacados con foto + lista -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 mb-20 md:mb-24">
+    <!-- Subtítulo: recomendaciones de la casa -->
+    <p
+      class="text-center text-primary-container text-sm md:text-base font-semibold uppercase tracking-[0.2em] mb-8"
+    >
+      Recomendaciones de la Casa
+    </p>
+
+    <!-- Platos recomendados: 1 card grande + 2 chicas (fotos placeholder por ahora) -->
+    <div class="flex flex-col md:flex-row md:items-start gap-3 md:gap-4 mb-14">
       {
-        columns.map((col, i) => (
-          <div class="reveal" style={`--reveal-delay: ${i * 150}ms`}>
-            <div class="aspect-4/3 overflow-hidden mb-6">
-              <Image
-                src={col.img}
-                alt={col.alt}
-                class="w-full h-full object-cover"
-              />
+        dishes.map((dish, i) => {
+          const item = getMenuItem(dish.id);
+          return (
+            <div
+              class={`card-lift reveal relative overflow-hidden group aspect-4/3 bg-surface-container-high border border-dashed border-primary-container/20 ${
+                dish.big
+                  ? "md:flex-[1.4_1_0%] md:aspect-square"
+                  : "md:flex-1 md:aspect-square"
+              }`}
+              style={`--reveal-delay: ${i * 130}ms`}
+            >
+              <div class="absolute inset-0 flex items-center justify-center">
+                <span class="material-symbols-outlined text-on-surface-variant/25 text-6xl md:text-7xl">
+                  restaurant
+                </span>
+              </div>
+              <div class="absolute inset-0 bg-linear-to-t from-background/90 via-background/10 to-transparent" />
+              <div class="absolute bottom-4 left-4 right-4 md:bottom-5 md:left-5 md:right-5">
+                <h3 class="font-headline-lg text-on-surface text-lg md:text-xl leading-tight">
+                  {item.name}
+                </h3>
+              </div>
             </div>
-            <h3 class="font-headline-lg text-on-surface text-2xl mb-5">
-              {col.title}
-            </h3>
-            <ul class="space-y-5">
-              {col.ids.map((id) => {
-                const item = getMenuItem(id);
-                return (
-                  <li>
-                    <div class="flex items-baseline">
-                      <span class="font-headline-lg text-on-surface text-lg">
-                        {item.name}
-                      </span>
-                      <span class="dotted-leader" />
-                      <span class="text-primary-container font-semibold">
-                        {formatCLP(item.price)}
-                      </span>
-                    </div>
-                    {item.desc && (
-                      <p class="text-on-surface-variant text-sm mt-1">
-                        {item.desc}
-                      </p>
-                    )}
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-        ))
+          );
+        })
       }
     </div>
 
-    <!-- Galería de platos -->
-    <div class="text-center mb-10">
-      <span
-        class="text-primary-container text-label-sm uppercase tracking-[0.3em] font-bold block mb-3"
-      >
-        Galería
-      </span>
-      <h3 class="font-headline-lg text-on-surface text-2xl md:text-3xl">
-        Un vistazo a nuestros platos
-      </h3>
-    </div>
-
-    <div class="grid grid-cols-4 grid-flow-dense auto-rows-[110px] md:auto-rows-[140px] gap-3 md:gap-4 mb-14">
-      {
-        galleryPhotos.map((photo, i) => (
-          <div
-            class={`card-lift reveal relative overflow-hidden ${photo.span}`}
-            style={`--reveal-delay: ${i * 110}ms`}
-          >
-            <Image
-              src={photo.img}
-              alt={photo.alt}
-              class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 hover:scale-105"
-            />
-          </div>
-        ))
-      }
-    </div>
-
-    <!-- CTA: ver menú completo -->
+    <!-- CTA: ver las 3 cartas -->
     <div
       class="flex flex-col sm:flex-row items-center justify-center gap-4"
     >
+      <a
+        href="/carta-cafeteria.html"
+        target="_blank"
+        rel="noopener"
+        class="min-h-11 w-full sm:w-auto inline-flex items-center justify-center gap-2 px-10 py-4 border border-primary-container text-primary-container hover:bg-primary-container/10 transition-all font-bold uppercase text-sm tracking-widest"
+      >
+        <span class="material-symbols-outlined text-xl">local_cafe</span>
+        Ver Carta Cafetería
+      </a>
       <a
         href="/carta-restaurant.html"
         target="_blank"
@@ -159,13 +95,13 @@ const galleryPhotos = [
         Ver Carta Restaurant
       </a>
       <a
-        href="/carta-cafeteria.html"
+        href="/carta-eventos.html"
         target="_blank"
         rel="noopener"
         class="min-h-11 w-full sm:w-auto inline-flex items-center justify-center gap-2 px-10 py-4 border border-primary-container text-primary-container hover:bg-primary-container/10 transition-all font-bold uppercase text-sm tracking-widest"
       >
-        <span class="material-symbols-outlined text-xl">local_cafe</span>
-        Ver Carta Cafetería
+        <span class="material-symbols-outlined text-xl">celebration</span>
+        Ver Carta Eventos
       </a>
     </div>
     <p class="mt-5 text-center text-on-surface-variant text-xs italic">

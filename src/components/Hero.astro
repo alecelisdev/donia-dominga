@@ -5,18 +5,24 @@ import heroImg from "../assets/hero/hero-comida.png";
 
 <section
   id="inicio"
-  class="relative w-full min-h-[85vh] md:min-h-screen flex items-center justify-center overflow-x-clip"
+  class="relative w-full pt-24 pb-16 md:min-h-screen md:pt-0 md:pb-0 md:flex md:items-center md:justify-center overflow-x-clip"
 >
-  <!-- Background image (estático) -->
-  <div class="absolute inset-0 overflow-hidden">
-    <Image
-      src={heroImg}
-      alt="Selección de platos de Terraza Doña Dominga servidos sobre la mesa"
-      class="hero-bg-treated absolute inset-0 h-full w-full max-w-none object-cover object-center"
-      loading="eager"
-      fetchpriority="high"
-      quality="max"
-    />
+  <!-- Background image (estático). En mobile la foto completa (sin recortar) queda centrada
+       verticalmente en su aspect ratio real, con fade hacia el fondo arriba/abajo. En desktop,
+       full-bleed con recorte (object-cover), igual que antes. -->
+  <div class="absolute inset-0 overflow-hidden bg-background">
+    <div
+      class="absolute inset-x-0 top-1/2 -translate-y-1/2 aspect-43/24 overflow-hidden md:inset-0 md:translate-y-0 md:aspect-auto"
+    >
+      <Image
+        src={heroImg}
+        alt="Selección de platos de Terraza Doña Dominga servidos sobre la mesa"
+        class="hero-bg-treated hero-bg-fade-mobile h-full w-full max-w-none object-cover object-center"
+        loading="eager"
+        fetchpriority="high"
+        quality="max"
+      />
+    </div>
   </div>
 
   <!-- Overlay -->

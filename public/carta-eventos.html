@@ -1,0 +1,402 @@
+<!-- CONTENIDO PROVISORIO: duplicado de carta-restaurant.html a la espera de la carta real de eventos -->
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carta Eventos — Doña Dominga</title>
+  <link rel="icon" type="image/jpeg" href="/Logo.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,400;1,600&family=Manrope:wght@400;500;700;800&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #161311;
+      --surface: #1f1b19;
+      --ink: #eae1dd;
+      --muted: #d0c5af;
+      --accent: #ff5c22;
+      --accent-soft: #ffb68c;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Manrope', sans-serif;
+      padding: 0 0 60px 0;
+    }
+
+    .wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 28px;
+    }
+
+    .masthead {
+      text-align: center;
+      padding: 56px 24px 34px 24px;
+      border-bottom: 1px solid rgba(255, 92, 34, 0.18);
+      margin-bottom: 38px;
+    }
+
+    .masthead .logo {
+      width: 96px;
+      height: 96px;
+      object-fit: cover;
+      border: 2px solid rgba(255, 92, 34, 0.45);
+      margin-bottom: 14px;
+    }
+
+    .masthead .brand {
+      font-family: 'Playfair Display', serif;
+      line-height: 1;
+      margin: 0;
+    }
+
+    .masthead .brand .eyebrow-word {
+      display: block;
+      font-style: italic;
+      font-weight: 600;
+      font-size: 20px;
+      letter-spacing: 0.3px;
+      color: color-mix(in srgb, var(--ink) 90%, transparent);
+      margin-bottom: 8px;
+    }
+
+    .masthead .brand .name-word {
+      display: block;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      font-size: 44px;
+      background-image: linear-gradient(100deg, #fff8f0 0%, #ffd9b8 55%, #ff8a50 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 0 18px rgba(255, 92, 34, 0.35));
+      padding-bottom: 0.15em;
+      margin-bottom: -0.15em;
+    }
+
+    .masthead .place {
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    .masthead .doctitle {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 20px;
+      color: var(--accent-soft);
+      margin-top: 22px;
+    }
+
+    .masthead .tagline {
+      font-size: 12.5px;
+      color: var(--muted);
+      max-width: 420px;
+      margin: 8px auto 0 auto;
+      line-height: 1.5;
+    }
+
+    .section {
+      margin-bottom: 36px;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Manrope', sans-serif;
+      font-weight: 800;
+      font-size: 14px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--ink);
+      border-left: 4px solid var(--accent);
+      padding-left: 12px;
+      margin-bottom: 16px;
+    }
+
+    .section-note {
+      font-size: 11px;
+      color: var(--accent-soft);
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      margin: -8px 0 14px 16px;
+      text-transform: none;
+    }
+
+    .item {
+      margin-bottom: 14px;
+    }
+
+    .item-row {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .item-name {
+      font-family: 'Playfair Display', serif;
+      font-weight: 300;
+      font-size: 16px;
+      color: var(--ink);
+      white-space: nowrap;
+    }
+
+    .item-slash {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .leader {
+      flex: 1;
+      border-bottom: 1px dotted rgba(208, 197, 175, 0.4);
+      margin: 0 2px;
+      transform: translateY(-3px);
+      min-width: 20px;
+    }
+
+    .item-price {
+      font-family: 'Manrope', sans-serif;
+      font-weight: 800;
+      font-size: 15px;
+      color: var(--accent-soft);
+      white-space: nowrap;
+    }
+
+    .item-desc {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+      font-style: italic;
+      line-height: 1.4;
+    }
+
+    .callout {
+      border: 1px solid rgba(255, 92, 34, 0.25);
+      background: var(--surface);
+      padding: 14px 18px;
+      font-size: 12.5px;
+      color: var(--muted);
+      text-align: center;
+      margin: 10px 0 36px 0;
+    }
+
+    .callout b {
+      color: var(--accent-soft);
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px 24px 0 24px;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #6b6259;
+    }
+
+    footer .fline {
+      width: 60px;
+      height: 1px;
+      background: var(--accent);
+      margin: 0 auto 16px auto;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="masthead">
+      <img class="logo" src="/Logo.jpg" alt="Doña Dominga" />
+      <h1 class="brand"><span class="eyebrow-word">Terraza</span><span class="name-word">Doña Dominga</span></h1>
+      <div class="place">Santa Victoria - Mallarauco &middot; Desde 1993</div>
+      <p class="doctitle">&ldquo;Carta Restaurant&rdquo;</p>
+    </div>
+    <div class="section">
+      <div class="section-title">Hamburguesas</div>
+      <div class="section-note">Todas incluyen papas fritas</div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">Dominga</span><span class="leader"></span><span
+            class="item-price">$9.500</span></div>
+        <div class="item-desc">Queso fundido · palta · tomate · mayonesa</div>
+      </div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">A lo Pobre</span><span class="leader"></span><span
+            class="item-price">$9.500</span></div>
+        <div class="item-desc">Queso fundido · cebolla caramelizada · huevo frito</div>
+      </div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">La Mallarauquina</span><span class="leader"></span><span
+            class="item-price">$9.500</span></div>
+        <div class="item-desc">Lechuga · palta · tomate · cebolla morada · mayonesa</div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-title">Tablas para Compartir</div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">Chorrillana</span><span class="leader"></span><span
+            class="item-price">$15.000</span></div>
+        <!-- <div class="item-desc">Papas fritas · salsa de la casa · pollo al pil pil · tostadas</div> -->
+      </div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">Surtido de Empanadas</span><span class="leader"></span><span
+            class="item-price">$15.000</span></div>
+        <div class="item-desc">Queso · mechada · camarón — 12 unidades y salsa de la casa</div>
+      </div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">Corte a la parrilla</span><span class="leader"></span><span
+            class="item-price">$13.000</span></div>
+        <!-- <div class="item-desc">Ceviche · camarones salteados · cubitos de pescado apanados · tostadas</div> -->
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-title">Platos de Fondo</div>
+      <div class="section-note">Con acompañamiento de arroz o papas fritas</div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">Flat Iron a lo Pobre</span><span class="leader"></span><span
+            class="item-price">$13.000</span></div>
+      </div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">Filete de Pollo a la Grilla</span><span
+            class="leader"></span><span class="item-price">$13.000</span></div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-title">Algo Dulce</div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">Tortas y Kuchen de la Casa</span><span class="leader"></span><span
+            class="item-price">$3.500</span></div>
+        <div class="item-desc">Precio por porción</div>
+      </div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">Café / Té</span><span class="leader"></span><span
+            class="item-price">$2.000</span></div>
+      </div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">Café Máquina Sabores</span><span class="leader"></span><span
+            class="item-price">$3.000</span></div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-title">Bebidas y Jugos</div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">Bebida</span><span class="leader"></span><span
+            class="item-price">$2.800</span></div>
+      </div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">Jugo Natural</span><span class="leader"></span><span
+            class="item-price">$4.000</span></div>
+        <div class="item-desc">Piña · frutilla</div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-title">Cervezas</div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">Austral Calafate</span><span class="leader"></span><span
+            class="item-price">$4.500</span></div>
+      </div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">Corona</span><span class="leader"></span><span
+            class="item-price">$3.500</span></div>
+      </div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">Kuntsman Torobayo</span><span class="leader"></span><span
+            class="item-price">$4.500</span></div>
+      </div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">Michelada</span><span class="leader"></span><span
+            class="item-price">$5.500</span></div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-title">Tragos de la Casa</div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">Pisco con Bebida</span><span class="leader"></span><span
+            class="item-price">$5.000</span></div>
+      </div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">Ron con Bebida</span><span class="leader"></span><span
+            class="item-price">$4.500</span></div>
+      </div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">Mojito Tradicional</span><span class="leader"></span><span
+            class="item-price">$6.000</span></div>
+      </div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">Mojito Sabores</span><span class="leader"></span><span
+            class="item-price">$6.500</span></div>
+      </div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">Aperol Spritz</span><span class="leader"></span><span
+            class="item-price">$5.000</span></div>
+      </div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">Ramazzotti Spritz</span><span class="leader"></span><span
+            class="item-price">$6.500</span></div>
+      </div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">Caipiriña</span><span class="leader"></span><span
+            class="item-price">$6.000</span></div>
+      </div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">Tequila Margarita</span><span class="leader"></span><span
+            class="item-price">$6.000</span></div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-title">Sour</div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">Pisco Sour de la Casa</span><span class="leader"></span><span
+            class="item-price">$5.000</span></div>
+      </div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">Mango Sour</span><span class="leader"></span><span
+            class="item-price">$5.000</span></div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-title">Whisky</div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">Johnnie Walker Negro</span><span class="leader"></span><span
+            class="item-price">$7.000</span></div>
+      </div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">Johnnie Walker Rojo</span><span class="leader"></span><span
+            class="item-price">$6.000</span></div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-title">Vinos (750cc)</div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">Toro de Piedra Gran Reserva Cabernet</span><span
+            class="leader"></span><span class="item-price">$17.000</span></div>
+      </div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">Casa Silva Merlot</span><span class="leader"></span><span
+            class="item-price">$13.000</span></div>
+      </div>
+      <div class="item">
+        <div class="item-row"><span class="item-name">Doña Dominga Gran Reserva Carmenère</span><span
+            class="leader"></span><span class="item-price">$15.000</span></div>
+      </div>
+    </div>
+
+    <footer>
+      <div class="fline"></div>
+
+    </footer>
+  </div>
+</body>
+
+</html>
