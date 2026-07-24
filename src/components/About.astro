@@ -1,6 +1,26 @@
 ---
 import { Image } from "astro:assets";
 import doñaDomingaImg from "../assets/about/doña-dominga.png";
+
+// Historia real de la familia, provista por el cliente (folleto Mallarauco.cl)
+const historia = [
+  {
+    title: "Todo comenzó con una galleta campesina",
+    text: "Mi abuelo elaboraba una galleta tradicional, un gran pan que se entregaba a los trabajadores del campo como parte de su derecho, para sus familias. Era hecha en grandes hornos de leña con mucho esfuerzo y dedicación.",
+  },
+  {
+    title: "El legado continúa",
+    text: "Tras un accidente en los hornos que le hizo perder la vista, mi abuelo dejó este oficio en manos de mi papá, quien mantuvo la tradición y siguió horneando con el mismo amor y compromiso de siempre.",
+  },
+  {
+    title: "De la bicicleta al sueño de tener un local",
+    text: "Con empanadas hechas en casa, recorrí en bicicleta las calles de Mallarauco para ofrecer lo mejor de nuestra cocina. Poco a poco, con esfuerzo y perseverancia, ese sueño tomó forma.",
+  },
+  {
+    title: "Un sueño que se hizo realidad",
+    text: "En 1993 abrimos nuestro local, consolidando un espacio familiar dedicado a la gastronomía chilena, con sabor casero y corazón de campo. Así nació Doña Dominga.",
+  },
+];
 ---
 
 {
@@ -42,6 +62,26 @@ import doñaDomingaImg from "../assets/about/doña-dominga.png";
           >Años de historia</span
         >
       </div>
+
+      <!-- Estrellas + familias: debajo de la imagen -->
+      <div class="mt-6">
+        <div class="flex items-center gap-1 mb-2">
+          {
+            Array.from({ length: 5 }).map(() => (
+              <span class="material-symbols-outlined icon-filled text-primary-container text-xl">
+                star
+              </span>
+            ))
+          }
+        </div>
+        <p class="text-on-surface-variant text-label-sm">
+          <span
+            data-count-to="500"
+            data-count-prefix="+"
+            >+500</span
+          > familias nos han visitado
+        </p>
+      </div>
     </div>
 
     <!-- Texto -->
@@ -58,43 +98,38 @@ import doñaDomingaImg from "../assets/about/doña-dominga.png";
         Un legado en<br />Mallarauco
       </h2>
 
-      <div
-        class="space-y-4 text-on-surface-variant text-body-md leading-relaxed mb-8"
-      >
-        <p>
-          Terraza Doña Dominga nació del corazón de una familia con raíces
-          profundas en la tierra de Mallarauco. Lo que comenzó como una reunión
-          entre amigos y vecinos, se convirtió en el lugar de encuentro más
-          querido de la zona.
-        </p>
-        <p>
-          Cada noche ofrecemos una experiencia única: gastronomía casera con
-          productos del campo, quesos artesanales elaborados con tradición, y
-          una selección de tragos preparados con dedicación. Y cuando cae el
-          sol, la terraza cobra vida con artistas en vivo que llenan el aire de
-          música y emoción.
-        </p>
-        <p>
-          Aquí cada detalle importa — desde la luz cálida de las velas hasta el
-          sonido de la música en vivo. Venimos a crear recuerdos que duran toda
-          la vida.
-        </p>
-      </div>
+      <p class="text-on-surface-variant text-body-md leading-relaxed mb-8">
+        Desde 1993, Doña Dominga ha sido mucho más que un restaurante: es un
+        símbolo de trabajo familiar, tradición, sabor chileno y encuentro en el
+        corazón del Valle de Mallarauco.
+      </p>
 
-      <!-- Estrellas -->
-      <div class="flex items-center gap-1 mb-2">
+      <!-- Línea de tiempo: historia real de la familia -->
+      <div class="space-y-5 mb-8">
         {
-          Array.from({ length: 5 }).map(() => (
-            <span class="material-symbols-outlined icon-filled text-primary-container text-xl">
-              star
-            </span>
+          historia.map((paso, i) => (
+            <div
+              class="flex gap-4 reveal"
+              style={`--reveal-delay: ${i * 100}ms`}
+            >
+              <div class="flex flex-col items-center pt-1.5">
+                <span class="w-2.5 h-2.5 bg-primary-container shrink-0" />
+                {i < historia.length - 1 && (
+                  <span class="w-px flex-1 bg-primary-container/20 mt-1.5" />
+                )}
+              </div>
+              <div class="pb-1">
+                <h3 class="font-headline-lg text-on-surface text-base md:text-lg font-bold mb-1">
+                  {paso.title}
+                </h3>
+                <p class="text-on-surface-variant text-sm leading-relaxed">
+                  {paso.text}
+                </p>
+              </div>
+            </div>
           ))
         }
       </div>
-      <p class="text-on-surface-variant text-label-sm">
-        <span data-count-to="500" data-count-prefix="+">+500</span> familias nos han
-        visitado
-      </p>
     </div>
   </div>
 </div>

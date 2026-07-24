@@ -53,6 +53,18 @@ import SocialIcon from "./SocialIcon.astro";
           >Nosotros</a
         >
         <a
+          href="#espacios"
+          data-nav-link="espacios"
+          class="nav-link text-on-surface-variant hover:text-on-surface text-xs uppercase tracking-[0.15em] font-semibold transition-all duration-300"
+          >Espacios</a
+        >
+        <a
+          href="#servicios"
+          data-nav-link="servicios"
+          class="nav-link text-on-surface-variant hover:text-on-surface text-xs uppercase tracking-[0.15em] font-semibold transition-all duration-300"
+          >Servicios</a
+        >
+        <a
           href="#contacto"
           data-nav-link="contacto"
           class="nav-link text-on-surface-variant hover:text-on-surface text-xs uppercase tracking-[0.15em] font-semibold transition-all duration-300"
@@ -157,6 +169,18 @@ import SocialIcon from "./SocialIcon.astro";
         >Nosotros</a
       >
       <a
+        href="#espacios"
+        data-nav-link="espacios"
+        class="nav-link mobile-link spark-indicator pl-4 py-3 text-on-surface-variant hover:text-on-surface text-xs uppercase tracking-[0.15em] font-semibold transition-all duration-300"
+        >Espacios</a
+      >
+      <a
+        href="#servicios"
+        data-nav-link="servicios"
+        class="nav-link mobile-link spark-indicator pl-4 py-3 text-on-surface-variant hover:text-on-surface text-xs uppercase tracking-[0.15em] font-semibold transition-all duration-300"
+        >Servicios</a
+      >
+      <a
         href="#contacto"
         data-nav-link="contacto"
         class="nav-link mobile-link spark-indicator pl-4 py-3 text-on-surface-variant hover:text-on-surface text-xs uppercase tracking-[0.15em] font-semibold transition-all duration-300"
@@ -230,6 +254,8 @@ import SocialIcon from "./SocialIcon.astro";
     document.querySelectorAll<HTMLAnchorElement>("[data-nav-link]");
   const sectionIds = [
     "nosotros",
+    "espacios",
+    "servicios",
     "eventos",
     "menu",
     "galeria",
