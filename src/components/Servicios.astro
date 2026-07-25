@@ -1,5 +1,8 @@
 ---
+import { Image } from "astro:assets";
 import SocialIcon from "./SocialIcon.astro";
+import banqueteriaImg from "../assets/servicios/banquetería.jpeg";
+import eventoEspecialImg from "../assets/servicios/evento-especial.jpeg";
 ---
 
 <section
@@ -20,8 +23,8 @@ import SocialIcon from "./SocialIcon.astro";
         Para tu próxima celebración
       </h2>
       <p class="text-on-surface-variant text-body-md leading-relaxed">
-        También hacemos banquetería y recibimos eventos privados —
-        escríbenos y coordinamos los detalles.
+        También hacemos banquetería y recibimos eventos privados — escríbenos y
+        coordinamos los detalles.
       </p>
     </div>
 
@@ -30,21 +33,24 @@ import SocialIcon from "./SocialIcon.astro";
       <div
         class="reveal card-lift bg-surface-container border border-primary-container/10 overflow-hidden flex flex-col"
       >
-        <div
-          class="aspect-4/3 flex items-center justify-center bg-surface-container-high border-b border-dashed border-primary-container/20"
-        >
-          <!-- TODO: foto real de banquetería -->
-          <span class="material-symbols-outlined text-on-surface-variant/25 text-6xl">
-            room_service
-          </span>
+        <div class="aspect-4/3 overflow-hidden">
+          <Image
+            src={banqueteriaImg}
+            alt="Servicio de banquetería Doña Dominga"
+            class="w-full h-full object-cover"
+          />
         </div>
         <div class="p-6 md:p-8 flex flex-col flex-1 text-center">
-          <h3 class="font-headline-lg text-on-surface text-xl md:text-2xl font-bold mb-2">
+          <h3
+            class="font-headline-lg text-on-surface text-xl md:text-2xl font-bold mb-2"
+          >
             Banquetería
           </h3>
-          <p class="text-on-surface-variant text-sm md:text-base leading-relaxed mb-6 flex-1">
-            Servicio de banquetería para tus eventos, dentro o fuera de
-            la terraza — coordinamos el menú según lo que necesites.
+          <p
+            class="text-on-surface-variant text-sm md:text-base leading-relaxed mb-6 flex-1"
+          >
+            Servicio de banquetería para tus eventos, dentro o fuera de la
+            terraza — coordinamos el menú según lo que necesites.
           </p>
           <a
             href="https://wa.me/56974131205?text=Hola!%20Quiero%20cotizar%20banquetería%20para%20un%20evento"
@@ -52,7 +58,10 @@ import SocialIcon from "./SocialIcon.astro";
             rel="noopener noreferrer"
             class="btn-shine inline-flex items-center justify-center gap-2 px-6 py-3 bg-primary-container text-on-primary-container text-xs font-bold tracking-widest uppercase hover:brightness-110 active:scale-95 transition-all"
           >
-            <SocialIcon platform="whatsapp" class="w-4 h-4 shrink-0" />
+            <SocialIcon
+              platform="whatsapp"
+              class="w-4 h-4 shrink-0"
+            />
             Cotizar por WhatsApp
           </a>
         </div>
@@ -62,19 +71,22 @@ import SocialIcon from "./SocialIcon.astro";
         class="reveal card-lift bg-surface-container border border-primary-container/10 overflow-hidden flex flex-col"
         style="--reveal-delay: 100ms"
       >
-        <div
-          class="aspect-4/3 flex items-center justify-center bg-surface-container-high border-b border-dashed border-primary-container/20"
-        >
-          <!-- TODO: foto real de celebraciones privadas -->
-          <span class="material-symbols-outlined text-on-surface-variant/25 text-6xl">
-            celebration
-          </span>
+        <div class="aspect-4/3 overflow-hidden">
+          <Image
+            src={eventoEspecialImg}
+            alt="Celebración privada en Doña Dominga"
+            class="w-full h-full object-cover"
+          />
         </div>
         <div class="p-6 md:p-8 flex flex-col flex-1 text-center">
-          <h3 class="font-headline-lg text-on-surface text-xl md:text-2xl font-bold mb-2">
+          <h3
+            class="font-headline-lg text-on-surface text-xl md:text-2xl font-bold mb-2"
+          >
             Celebraciones Privadas
           </h3>
-          <p class="text-on-surface-variant text-sm md:text-base leading-relaxed mb-6 flex-1">
+          <p
+            class="text-on-surface-variant text-sm md:text-base leading-relaxed mb-6 flex-1"
+          >
             Recibimos cumpleaños, matrimonios y otros eventos privados en
             nuestro espacio — coordinamos contigo los detalles.
           </p>
@@ -84,7 +96,10 @@ import SocialIcon from "./SocialIcon.astro";
             rel="noopener noreferrer"
             class="btn-shine inline-flex items-center justify-center gap-2 px-6 py-3 bg-primary-container text-on-primary-container text-xs font-bold tracking-widest uppercase hover:brightness-110 active:scale-95 transition-all"
           >
-            <SocialIcon platform="whatsapp" class="w-4 h-4 shrink-0" />
+            <SocialIcon
+              platform="whatsapp"
+              class="w-4 h-4 shrink-0"
+            />
             Consultar por WhatsApp
           </a>
         </div>

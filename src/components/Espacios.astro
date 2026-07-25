@@ -2,6 +2,7 @@
 import { Image } from "astro:assets";
 import terrazaImg from "../assets/ambientes/terraza.webp";
 import workCafeImg from "../assets/ambientes/work-café.jpeg";
+import amasanderiaImg from "../assets/ambientes/amasanderia.jpeg";
 ---
 
 <section
@@ -52,9 +53,9 @@ import workCafeImg from "../assets/ambientes/work-café.jpeg";
             Work Café
           </h3>
           <p class="text-on-surface-variant text-body-md leading-relaxed">
-            Un espacio pensado para trabajar con calma, con buen café,
-            conexión y silencio — antes de que la terraza cobre vida. Llega
-            con tu notebook, quédate el tiempo que necesites.
+            Un espacio pensado para trabajar con calma, con buen café, conexión
+            y silencio — antes de que la terraza cobre vida. Llega con tu
+            notebook, quédate el tiempo que necesites.
           </p>
         </div>
       </div>
@@ -82,26 +83,23 @@ import workCafeImg from "../assets/ambientes/work-café.jpeg";
             Terraza & Restaurant
           </h3>
           <p class="text-on-surface-variant text-body-md leading-relaxed">
-            Quédate a almorzar con comida casera, celebra un cumpleaños o
-            vive una noche con artistas en vivo — el corazón de Doña
-            Dominga, donde pasa lo mejor del día.
+            Quédate a almorzar con comida casera, celebra un cumpleaños o vive
+            una noche con artistas en vivo — el corazón de Doña Dominga, donde
+            pasa lo mejor del día.
           </p>
         </div>
       </div>
 
-      <!-- Amasandería (sin foto todavía) -->
+      <!-- Amasandería -->
       <div
         class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-14 items-center reveal"
       >
-        <div
-          class="aspect-4/3 flex items-center justify-center bg-surface-container-high border border-dashed border-primary-container/20"
-        >
-          <!-- TODO: foto real de la amasandería -->
-          <span
-            class="material-symbols-outlined text-on-surface-variant/25 text-6xl"
-          >
-            bakery_dining
-          </span>
+        <div class="card-lift overflow-hidden">
+          <Image
+            src={amasanderiaImg}
+            alt="Amasandería Doña Dominga"
+            class="w-full aspect-4/3 object-cover"
+          />
         </div>
         <div>
           <span
@@ -115,9 +113,8 @@ import workCafeImg from "../assets/ambientes/work-café.jpeg";
             Amasandería
           </h3>
           <p class="text-on-surface-variant text-body-md leading-relaxed">
-            Pan amasado, productos horneados y detalles dulces hechos en
-            casa, listos para llevarte un pedazo de Doña Dominga a donde
-            vayas.
+            Pan amasado, productos horneados y detalles dulces hechos en casa,
+            listos para llevarte un pedazo de Doña Dominga a donde vayas.
           </p>
         </div>
       </div>
