@@ -21,10 +21,12 @@ const socials = [
   },
 ];
 
-const mapsLink = {
+// El botón "Cómo llegar" (ContactFAQ.astro) ya cubre las direcciones de Google Maps —
+// este ícono se reutiliza para la reseña de Google en vez de duplicar esa función.
+const reviewLink = {
   icon: "map",
-  label: "Google Maps",
-  href: "https://www.google.com/maps/dir/?api=1&destination=Terraza%20Do%C3%B1a%20Dominga%2C%20Santa%20Victoria%20de%20Mallarauco%20121%2C%20Melipilla%2C%20Regi%C3%B3n%20Metropolitana",
+  label: "Déjanos tu reseña en Google",
+  href: "https://www.google.com/maps?cid=15832667403239837746",
 };
 ---
 
@@ -115,14 +117,14 @@ const mapsLink = {
             ))
           }
           <a
-            href={mapsLink.href}
+            href={reviewLink.href}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label={mapsLink.label}
+            aria-label={reviewLink.label}
             class="w-10 h-10 glass-card flex items-center justify-center text-on-surface-variant hover:text-primary-container hover:border-primary-container/30 transition-all"
           >
             <span class="material-symbols-outlined text-lg"
-              >{mapsLink.icon}</span
+              >{reviewLink.icon}</span
             >
           </a>
         </div>
