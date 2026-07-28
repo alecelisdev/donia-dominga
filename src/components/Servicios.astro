@@ -3,6 +3,21 @@ import { Image } from "astro:assets";
 import SocialIcon from "./SocialIcon.astro";
 import banqueteriaImg from "../assets/servicios/banquetería.jpeg";
 import eventoEspecialImg from "../assets/servicios/evento-especial.jpeg";
+
+const servicios = [
+  {
+    image: banqueteriaImg,
+    alt: "Servicio de banquetería Doña Dominga",
+    title: "Banquetería",
+    text: "Llevamos nuestra cocina a tu evento, dentro o fuera de la terraza. Armamos el menú según el tipo de celebración, el número de invitados y lo que tengas en mente.",
+  },
+  {
+    image: eventoEspecialImg,
+    alt: "Celebración privada en Doña Dominga",
+    title: "Celebraciones Privadas",
+    text: "Cumpleaños, matrimonios, aniversarios y otros encuentros especiales tienen un lugar en nuestra terraza. Coordinamos contigo el espacio, el menú y los detalles para que solo te preocupes de disfrutar.",
+  },
+];
 ---
 
 <section
@@ -23,87 +38,53 @@ import eventoEspecialImg from "../assets/servicios/evento-especial.jpeg";
         Para tu próxima celebración
       </h2>
       <p class="text-on-surface-variant text-body-md leading-relaxed">
-        También hacemos banquetería y recibimos eventos privados — escríbenos y
-        coordinamos los detalles.
+        ¿Tienes algo que celebrar? En Doña Dominga también hacemos banquetería y
+        recibimos eventos privados — cuéntanos qué necesitas y coordinamos cada
+        detalle contigo.
       </p>
     </div>
 
-    <!-- Banquetería y celebraciones: 2 servicios distintos, cards separadas -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-      <div
-        class="reveal card-lift bg-surface-container border border-primary-container/10 overflow-hidden flex flex-col"
-      >
-        <div class="aspect-4/3 overflow-hidden">
-          <Image
-            src={banqueteriaImg}
-            alt="Servicio de banquetería Doña Dominga"
-            class="w-full h-full object-cover"
-          />
-        </div>
-        <div class="p-6 md:p-8 flex flex-col flex-1 text-center">
-          <h3
-            class="font-headline-lg text-on-surface text-xl md:text-2xl font-bold mb-2"
-          >
-            Banquetería
-          </h3>
-          <p
-            class="text-on-surface-variant text-sm md:text-base leading-relaxed mb-6 flex-1"
-          >
-            Servicio de banquetería para tus eventos, dentro o fuera de la
-            terraza — coordinamos el menú según lo que necesites.
-          </p>
-          <a
-            href="https://wa.me/56974131205?text=Hola!%20Quiero%20cotizar%20banquetería%20para%20un%20evento"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="btn-shine inline-flex items-center justify-center gap-2 px-6 py-3 bg-primary-container text-on-primary-container text-xs font-bold tracking-widest uppercase hover:brightness-110 active:scale-95 transition-all"
-          >
-            <SocialIcon
-              platform="whatsapp"
-              class="w-4 h-4 shrink-0"
-            />
-            Cotizar por WhatsApp
-          </a>
-        </div>
-      </div>
+    <!-- Banquetería y celebraciones: mismo tamaño/proporción y marco que los platos destacados del Menú -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 max-w-3xl mx-auto">
+      {
+        servicios.map((s, i) => (
+          <div class="reveal relative" style={`--reveal-delay: ${i * 130}ms`}>
+            {/* Frame decorativo, mismo lenguaje visual que los platos destacados del Menú */}
+            <div class="absolute -top-3 -left-3 w-1/3 h-1/3 border-l-4 border-t-4 border-primary-container/30 pointer-events-none z-10" />
+            <div class="absolute -bottom-3 -right-3 w-1/3 h-1/3 border-r-4 border-b-4 border-primary-container/10 pointer-events-none z-10" />
 
-      <div
-        class="reveal card-lift bg-surface-container border border-primary-container/10 overflow-hidden flex flex-col"
-        style="--reveal-delay: 100ms"
+            <div class="card-lift relative overflow-hidden aspect-3/4 bg-surface-container-high">
+              <Image
+                src={s.image}
+                alt={s.alt}
+                class="absolute inset-0 w-full h-full object-cover"
+              />
+            </div>
+
+            <div class="mt-5 text-center">
+              <h3 class="font-headline-lg text-on-surface text-xl md:text-2xl font-bold mb-2">
+                {s.title}
+              </h3>
+              <p class="text-on-surface-variant text-sm md:text-base leading-relaxed">
+                {s.text}
+              </p>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+
+    <!-- Un solo CTA para ambos servicios -->
+    <div class="mt-12 text-center reveal">
+      <a
+        href="https://wa.me/56974131205?text=Hola!%20Quiero%20cotizar%20banquetería%20o%20consultar%20por%20una%20celebración%20privada"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn-shine inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-primary-container text-on-primary-container text-xs font-bold tracking-widest uppercase hover:brightness-110 active:scale-95 transition-all"
       >
-        <div class="aspect-4/3 overflow-hidden">
-          <Image
-            src={eventoEspecialImg}
-            alt="Celebración privada en Doña Dominga"
-            class="w-full h-full object-cover"
-          />
-        </div>
-        <div class="p-6 md:p-8 flex flex-col flex-1 text-center">
-          <h3
-            class="font-headline-lg text-on-surface text-xl md:text-2xl font-bold mb-2"
-          >
-            Celebraciones Privadas
-          </h3>
-          <p
-            class="text-on-surface-variant text-sm md:text-base leading-relaxed mb-6 flex-1"
-          >
-            Recibimos cumpleaños, matrimonios y otros eventos privados en
-            nuestro espacio — coordinamos contigo los detalles.
-          </p>
-          <a
-            href="https://wa.me/56974131205?text=Hola!%20Quiero%20consultar%20por%20una%20celebración%20privada%20(cumpleaños%2C%20matrimonio%2C%20etc)"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="btn-shine inline-flex items-center justify-center gap-2 px-6 py-3 bg-primary-container text-on-primary-container text-xs font-bold tracking-widest uppercase hover:brightness-110 active:scale-95 transition-all"
-          >
-            <SocialIcon
-              platform="whatsapp"
-              class="w-4 h-4 shrink-0"
-            />
-            Consultar por WhatsApp
-          </a>
-        </div>
-      </div>
+        <SocialIcon platform="whatsapp" class="w-4 h-4 shrink-0" />
+        Consultar por WhatsApp
+      </a>
     </div>
   </div>
 </section>

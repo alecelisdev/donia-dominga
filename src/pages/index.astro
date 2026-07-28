@@ -2,15 +2,14 @@
 import Layout from "../layouts/Layout.astro";
 import Nav from "../components/Nav.astro";
 import Hero from "../components/Hero.astro";
+import Menu from "../components/Menu.astro";
+import Servicios from "../components/Servicios.astro";
+import Espacios from "../components/Espacios.astro";
+import Events from "../components/Events.astro";
 import About from "../components/About.astro";
 import Values from "../components/Values.astro";
-import Espacios from "../components/Espacios.astro";
-import Servicios from "../components/Servicios.astro";
-import Events from "../components/Events.astro";
-import Menu from "../components/Menu.astro";
 import Testimonials from "../components/Testimonials.astro";
 import Reservation from "../components/Reservation.astro";
-import Gallery from "../components/Gallery.astro";
 import ContactFAQ from "../components/ContactFAQ.astro";
 import Footer from "../components/Footer.astro";
 import Assistant from "../components/Assistant.astro";
@@ -21,19 +20,18 @@ import Assistant from "../components/Assistant.astro";
   <main>
     <Hero />
     <Menu />
+    <Servicios />
+    <Espacios />
     <!-- Sobre Nosotros + Valores fusionadas en una sola sección (diseño Stitch v3) -->
+    <Events />
     <section
       id="nosotros"
-      class="py-20 md:py-section-gap bg-surface-container-low border-y border-primary-container/10 overflow-hidden"
+      class="py-20 md:py-section-gap bg-background border-y border-primary-container/10 overflow-hidden"
     >
       <About />
       <Values />
     </section>
-    <Espacios />
-    <Servicios />
-    <Events />
     <Testimonials />
-    <Gallery />
     <Reservation />
     <ContactFAQ />
   </main>
@@ -47,8 +45,7 @@ import Assistant from "../components/Assistant.astro";
   ).matches;
 
   // ── Number counters (badge "30+", "+500") ─────────────────────────────────
-  const counters =
-    document.querySelectorAll<HTMLElement>("[data-count-to]");
+  const counters = document.querySelectorAll<HTMLElement>("[data-count-to]");
 
   function animateCounter(el: HTMLElement) {
     const target = parseInt(el.dataset.countTo ?? "0", 10);

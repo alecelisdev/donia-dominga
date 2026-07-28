@@ -3,11 +3,35 @@ import { Image } from "astro:assets";
 import terrazaImg from "../assets/ambientes/terraza.webp";
 import workCafeImg from "../assets/ambientes/work-café.jpeg";
 import amasanderiaImg from "../assets/ambientes/amasanderia.jpeg";
+
+const espacios = [
+  {
+    image: workCafeImg,
+    alt: "Work Café en Terraza Doña Dominga",
+    eyebrow: "Por la mañana",
+    title: "Work Café",
+    text: "Un espacio pensado para trabajar con calma o reunirte con tu equipo, con buen café, conexión y silencio — antes de que la terraza cobre vida. Ideal para llevar tu notebook, cerrar una reunión de trabajo o recibir a un cliente, con la comodidad de un lugar propio.",
+  },
+  {
+    image: terrazaImg,
+    alt: "Terraza y Restaurant Doña Dominga",
+    eyebrow: "Mediodía y noche",
+    title: "Terraza & Restaurant",
+    text: "Quédate a almorzar con comida casera, celebra un cumpleaños o vive una noche con artistas en vivo — el corazón de Doña Dominga, donde pasa lo mejor del día.",
+  },
+  {
+    image: amasanderiaImg,
+    alt: "Amasandería Doña Dominga",
+    eyebrow: "Para llevar",
+    title: "Amasandería",
+    text: "Pan amasado, productos horneados y detalles dulces hechos en casa, listos para llevarte un pedazo de Doña Dominga a donde vayas.",
+  },
+];
 ---
 
 <section
   id="espacios"
-  class="py-20 md:py-section-gap bg-surface-container-low border-t border-primary-container/10 md:border-t-0"
+  class="py-20 md:py-section-gap bg-background border-t border-primary-container/10 md:border-t-0"
 >
   <div class="max-w-container-max mx-auto px-margin-mobile md:px-gutter">
     <!-- Header -->
@@ -29,95 +53,37 @@ import amasanderiaImg from "../assets/ambientes/amasanderia.jpeg";
       </p>
     </div>
 
-    <div class="space-y-16 md:space-y-24">
-      <!-- Work Café -->
-      <div
-        class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-14 items-center reveal"
-      >
-        <div class="card-lift overflow-hidden">
-          <Image
-            src={workCafeImg}
-            alt="Work Café en Terraza Doña Dominga"
-            class="w-full aspect-4/3 object-cover"
-          />
-        </div>
-        <div>
-          <span
-            class="text-primary-container text-label-sm uppercase tracking-[0.3em] font-bold block mb-3"
-          >
-            Por la mañana
-          </span>
-          <h3
-            class="font-headline-lg text-on-surface text-2xl md:text-3xl font-bold mb-4"
-          >
-            Work Café
-          </h3>
-          <p class="text-on-surface-variant text-body-md leading-relaxed">
-            Un espacio pensado para trabajar con calma, con buen café, conexión
-            y silencio — antes de que la terraza cobre vida. Llega con tu
-            notebook, quédate el tiempo que necesites.
-          </p>
-        </div>
-      </div>
+    <!-- Grilla de 3 columnas: misma estructura interna (imagen → etiqueta → título → texto) -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-10 lg:gap-12">
+      {
+        espacios.map((e, i) => (
+          <div class="reveal relative" style={`--reveal-delay: ${i * 130}ms`}>
+            {/* Frame decorativo, mismo lenguaje visual que Menú/Servicios/Eventos */}
+            <div class="absolute -top-3 -left-3 w-1/3 h-1/3 border-l-4 border-t-4 border-primary-container/30 pointer-events-none z-10" />
+            <div class="absolute -bottom-3 -right-3 w-1/3 h-1/3 border-r-4 border-b-4 border-primary-container/10 pointer-events-none z-10" />
 
-      <!-- Terraza / Restaurant -->
-      <div
-        class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-14 items-center reveal"
-      >
-        <div class="md:order-2 card-lift overflow-hidden">
-          <Image
-            src={terrazaImg}
-            alt="Terraza y Restaurant Doña Dominga"
-            class="w-full aspect-4/3 object-cover"
-          />
-        </div>
-        <div class="md:order-1">
-          <span
-            class="text-primary-container text-label-sm uppercase tracking-[0.3em] font-bold block mb-3"
-          >
-            Mediodía y noche
-          </span>
-          <h3
-            class="font-headline-lg text-on-surface text-2xl md:text-3xl font-bold mb-4"
-          >
-            Terraza & Restaurant
-          </h3>
-          <p class="text-on-surface-variant text-body-md leading-relaxed">
-            Quédate a almorzar con comida casera, celebra un cumpleaños o vive
-            una noche con artistas en vivo — el corazón de Doña Dominga, donde
-            pasa lo mejor del día.
-          </p>
-        </div>
-      </div>
+            <div class="card-lift relative overflow-hidden aspect-3/4 bg-surface-container-high">
+              <Image
+                src={e.image}
+                alt={e.alt}
+                class="absolute inset-0 w-full h-full object-cover"
+              />
+            </div>
 
-      <!-- Amasandería -->
-      <div
-        class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-14 items-center reveal"
-      >
-        <div class="card-lift overflow-hidden">
-          <Image
-            src={amasanderiaImg}
-            alt="Amasandería Doña Dominga"
-            class="w-full aspect-4/3 object-cover"
-          />
-        </div>
-        <div>
-          <span
-            class="text-primary-container text-label-sm uppercase tracking-[0.3em] font-bold block mb-3"
-          >
-            Para llevar
-          </span>
-          <h3
-            class="font-headline-lg text-on-surface text-2xl md:text-3xl font-bold mb-4"
-          >
-            Amasandería
-          </h3>
-          <p class="text-on-surface-variant text-body-md leading-relaxed">
-            Pan amasado, productos horneados y detalles dulces hechos en casa,
-            listos para llevarte un pedazo de Doña Dominga a donde vayas.
-          </p>
-        </div>
-      </div>
+            <div class="mt-5">
+              <span class="text-primary-container text-label-sm uppercase tracking-[0.3em] font-bold block mb-3">
+                {e.eyebrow}
+              </span>
+              <h3 class="font-headline-lg text-on-surface text-2xl md:text-3xl font-bold mb-4">
+                {e.title}
+              </h3>
+              <p class="text-on-surface-variant text-body-md leading-relaxed">
+                {e.text}
+              </p>
+            </div>
+          </div>
+        ))
+      }
     </div>
   </div>
 </section>
