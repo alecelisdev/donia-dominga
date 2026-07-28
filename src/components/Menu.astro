@@ -4,13 +4,36 @@ import { getMenuItem } from "../data/menu";
 import flatIronImg from "../assets/menu/destacado-2.png";
 import corteParrillaImg from "../assets/menu/destacado-1.jpeg";
 import restaurantImg from "../assets/menu/restaurant.webp";
+import carrusel1 from "../assets/menu/carrusel-1.jpeg";
+import carrusel2 from "../assets/menu/carrusel-2.jpeg";
+import carrusel3 from "../assets/menu/carrusel-3.jpg";
+import carrusel4 from "../assets/menu/carrusel-4.jpg";
+import carrusel5 from "../assets/menu/carrusel-5.jpg";
+import carrusel6 from "../assets/menu/carrusel-6.jpg";
+import carrusel7 from "../assets/menu/carrusel-7.jpg";
+import carrusel8 from "../assets/menu/carrusel-8.png";
+import carrusel9 from "../assets/menu/carrusel-9.png";
 
 // TODO: reemplazar el placeholder de Filete de Pollo por su foto real cuando esté disponible.
 const dishes = [
-  { id: "flat-iron-a-lo-pobre", big: true, image: flatIronImg },
+  { id: "flat-iron-a-lo-pobre", image: flatIronImg },
   { id: "filete-pollo-grilla", image: restaurantImg },
   { id: "corte-parrilla", image: corteParrillaImg },
 ];
+
+const strip = [
+  carrusel1,
+  carrusel2,
+  carrusel3,
+  carrusel4,
+  carrusel5,
+  carrusel6,
+  carrusel7,
+  carrusel8,
+  carrusel9,
+];
+// Duplicado para el loop infinito del carrusel (misma técnica que Testimonials.astro)
+const stripLoop = [...strip, ...strip];
 ---
 
 <section
@@ -18,108 +41,222 @@ const dishes = [
   class="py-20 md:py-section-gap bg-background border-t border-primary-container/10 md:border-t-0"
 >
   <div class="max-w-container-max mx-auto px-margin-mobile md:px-gutter">
-    <!-- Header -->
-    <div class="text-center mb-16">
-      <span
-        class="text-primary-container text-label-sm uppercase tracking-[0.3em] font-bold block mb-4"
-      >
-        Gastronomía
-      </span>
-      <h2
-        class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-6"
-      >
-        Nuestra Carta
-      </h2>
-      <p
-        class="text-on-surface-variant text-body-md max-w-2xl mx-auto leading-relaxed"
-      >
-        Una selección curada que celebra los ingredientes locales de Mallarauco.
-        Sabores tradicionales diseñados para acompañar nuestras noches de show.
-      </p>
-    </div>
+    <!-- Layout tipo "Best Sellers": columna de texto + 3 platos destacados -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-6 items-stretch">
+      <!-- Columna de texto -->
+      <div class="md:col-span-1 flex flex-col justify-between reveal">
+        <div>
+          <span
+            class="text-primary-container text-label-sm uppercase tracking-[0.3em] font-bold block mb-4"
+          >
+            Menú
+          </span>
+          <h2
+            class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-6"
+          >
+            Nuestra Carta
+          </h2>
+          <!-- <p class="text-on-surface-variant text-body-md leading-relaxed">
+            Una selección curada que celebra los ingredientes locales de
+            Mallarauco. Recomendaciones de la casa, para cada momento del día.
+          </p> -->
+        </div>
+        <a
+          href="/carta-restaurant.html"
+          target="_blank"
+          rel="noopener"
+          class="group mt-8 md:mt-0 inline-flex items-center gap-2 hover:gap-3 text-on-surface font-semibold text-base md:text-lg transition-all"
+        >
+          <span
+            class="underline underline-offset-4 decoration-primary-container/40 group-hover:decoration-primary-container transition-colors"
+            >Ver Carta Completa</span
+          >
+          <span class="material-symbols-outlined text-xl text-primary-container"
+            >north_east</span
+          >
+        </a>
+      </div>
 
-    <!-- Subtítulo: recomendaciones de la casa -->
-    <p
-      class="text-center text-primary-container text-sm md:text-base font-semibold uppercase tracking-[0.2em] mb-8"
-    >
-      Recomendaciones de la Casa
-    </p>
+      <!-- 3 platos destacados: 1 por fila en mobile, 3 en una fila en desktop -->
+      <div class="md:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
+        {
+          dishes.map((dish, i) => {
+            const item = getMenuItem(dish.id);
+            return (
+              <div
+                class="card-lift reveal relative"
+                style={`--reveal-delay: ${i * 130}ms`}
+              >
+                {/* Frame decorativo, mismo lenguaje visual que la foto de "Nosotros" */}
+                <div class="absolute -top-3 -left-3 w-1/3 h-1/3 border-l-4 border-t-4 border-primary-container/30 pointer-events-none z-10" />
+                <div class="absolute -bottom-3 -right-3 w-1/3 h-1/3 border-r-4 border-b-4 border-primary-container/10 pointer-events-none z-10" />
 
-    <!-- Platos recomendados: 1 card grande + 2 chicas -->
-    <div class="flex flex-col md:flex-row md:items-start gap-3 md:gap-4 mb-14">
-      {
-        dishes.map((dish, i) => {
-          const item = getMenuItem(dish.id);
-          return (
-            <div
-              class={`card-lift reveal relative overflow-hidden group aspect-4/3 bg-surface-container-high ${
-                dish.image
-                  ? ""
-                  : "border border-dashed border-primary-container/20"
-              } ${
-                dish.big
-                  ? "md:flex-[1.4_1_0%] md:aspect-square"
-                  : "md:flex-1 md:aspect-square"
-              }`}
-              style={`--reveal-delay: ${i * 130}ms`}
-            >
-              {dish.image ? (
-                <Image
-                  src={dish.image}
-                  alt={item.name}
-                  class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-              ) : (
-                <div class="absolute inset-0 flex items-center justify-center">
-                  <span class="material-symbols-outlined text-on-surface-variant/25 text-6xl md:text-7xl">
-                    restaurant
-                  </span>
+                <div class="relative overflow-hidden group aspect-3/4 bg-surface-container-high">
+                  <Image
+                    src={dish.image}
+                    alt={item.name}
+                    class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                  <div class="absolute inset-0 bg-linear-to-t from-background/90 via-background/10 to-transparent" />
+                  <div class="absolute bottom-4 left-4 right-4 md:bottom-5 md:left-5 md:right-5">
+                    {/* <h3 class="font-headline-lg text-on-surface text-lg md:text-xl leading-tight">
+                      {item.name}
+                    </h3> */}
+                  </div>
                 </div>
-              )}
-              <div class="absolute inset-0 bg-linear-to-t from-background/90 via-background/10 to-transparent" />
-              <div class="absolute bottom-4 left-4 right-4 md:bottom-5 md:left-5 md:right-5">
-                <h3 class="font-headline-lg text-on-surface text-lg md:text-xl leading-tight">
-                  {item.name}
-                </h3>
               </div>
-            </div>
-          );
-        })
-      }
+            );
+          })
+        }
+      </div>
     </div>
 
-    <!-- CTA: ver las 3 cartas -->
-    <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-      <a
-        href="/carta-cafeteria.html"
-        target="_blank"
-        rel="noopener"
-        class="min-h-11 w-full sm:w-auto inline-flex items-center justify-center gap-2 px-10 py-4 border border-primary-container text-primary-container hover:bg-primary-container/10 transition-all font-bold uppercase text-sm tracking-widest"
+    <!-- Carrusel de fotos: auto-scroll, imágenes solapadas con leve inclinación alternada -->
+    <div class="relative reveal mt-10 md:mt-12">
+      <div
+        id="menu-carousel-viewport"
+        class="overflow-hidden"
       >
-        <span class="material-symbols-outlined text-xl">local_cafe</span>
-        Ver Carta Cafetería
-      </a>
-      <a
-        href="/carta-restaurant.html"
-        target="_blank"
-        rel="noopener"
-        class="btn-shine relative overflow-hidden min-h-11 w-full sm:w-auto inline-flex items-center justify-center gap-2 px-10 py-4 bg-primary-container text-on-primary-container hover:bg-primary-container/90 transition-all font-bold uppercase text-sm tracking-widest"
+        <div
+          id="menu-carousel-track"
+          class="flex items-center py-4 will-change-transform"
+        >
+          {
+            stripLoop.map((img, i) => (
+              <div
+                class={`shrink-0 ${i === 0 ? "" : "-ml-8 md:-ml-10"}`}
+                style={`transform: rotate(${i % 2 === 0 ? "-2deg" : "2deg"})`}
+              >
+                <div class="w-[60vw] sm:w-[200px] md:w-[300px] aspect-square overflow-hidden border-2 border-primary-container/40 bg-surface-container-high">
+                  <Image
+                    src={img}
+                    alt="Doña Dominga"
+                    class="w-full h-full object-cover"
+                  />
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+
+      <!-- Flechas -->
+      <button
+        id="menu-carousel-prev"
+        type="button"
+        aria-label="Ver fotos anteriores"
+        class="absolute left-1 md:left-2 top-1/2 -translate-y-1/2 z-20 w-9 h-9 md:w-10 md:h-10 flex items-center justify-center bg-background/40 border border-primary-container/20 text-primary-container/80 backdrop-blur-sm hover:bg-background/70 hover:text-primary-container transition-all"
       >
-        <span class="material-symbols-outlined text-xl">restaurant_menu</span>
-        Ver Carta Restaurant
-      </a>
-      <a
-        href="/carta-eventos.html"
-        target="_blank"
-        rel="noopener"
-        class="min-h-11 w-full sm:w-auto inline-flex items-center justify-center gap-2 px-10 py-4 border border-primary-container text-primary-container hover:bg-primary-container/10 transition-all font-bold uppercase text-sm tracking-widest"
+        <span class="material-symbols-outlined text-xl">chevron_left</span>
+      </button>
+      <button
+        id="menu-carousel-next"
+        type="button"
+        aria-label="Ver más fotos"
+        class="absolute right-1 md:right-2 top-1/2 -translate-y-1/2 z-20 w-9 h-9 md:w-10 md:h-10 flex items-center justify-center bg-background/40 border border-primary-container/20 text-primary-container/80 backdrop-blur-sm hover:bg-background/70 hover:text-primary-container transition-all"
       >
-        <span class="material-symbols-outlined text-xl">celebration</span>
-        Ver Carta Eventos
-      </a>
+        <span class="material-symbols-outlined text-xl">chevron_right</span>
+      </button>
     </div>
-    <p class="mt-5 text-center text-on-surface-variant text-xs italic">
-      La coctelería y los vinos están incluidos en la Carta Restaurant.
-    </p>
   </div>
 </section>
+
+<script>
+  function initMenuCarousel() {
+    const viewport = document.getElementById("menu-carousel-viewport");
+    const track = document.getElementById("menu-carousel-track");
+    const prevBtn = document.getElementById("menu-carousel-prev");
+    const nextBtn = document.getElementById("menu-carousel-next");
+    if (!viewport || !track) return;
+
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    let position = 0;
+    let halfWidth = 0;
+    let isHovering = false;
+    let lastTime: number | null = null;
+    const speed = 42; // px por segundo
+
+    function measure() {
+      halfWidth = (track as HTMLElement).scrollWidth / 2;
+    }
+    measure();
+    window.addEventListener("resize", measure);
+
+    function wrap() {
+      if (!halfWidth) return;
+      if (position <= -halfWidth) position += halfWidth;
+      if (position > 0) position -= halfWidth;
+    }
+
+    function applyTransform() {
+      (track as HTMLElement).style.transform = `translateX(${position}px)`;
+    }
+
+    function move(delta: number) {
+      position -= delta;
+      wrap();
+      applyTransform();
+    }
+
+    // Animación suave para el desplazamiento manual (flechas), con easing propio
+    // vía rAF — independiente del auto-scroll continuo para no pelear con él.
+    let manualAnimation: {
+      start: number;
+      from: number;
+      to: number;
+      duration: number;
+    } | null = null;
+
+    function animateTo(delta: number) {
+      manualAnimation = {
+        start: performance.now(),
+        from: position,
+        to: position - delta,
+        duration: reduceMotion ? 0 : 450,
+      };
+    }
+
+    function frame(time: number) {
+      if (lastTime === null) lastTime = time;
+      const dt = (time - lastTime) / 1000;
+      lastTime = time;
+
+      if (manualAnimation) {
+        const elapsed = time - manualAnimation.start;
+        const t = manualAnimation.duration
+          ? Math.min(1, elapsed / manualAnimation.duration)
+          : 1;
+        const eased = 1 - Math.pow(1 - t, 3);
+        position =
+          manualAnimation.from +
+          (manualAnimation.to - manualAnimation.from) * eased;
+        applyTransform();
+        if (t >= 1) {
+          wrap();
+          applyTransform();
+          manualAnimation = null;
+        }
+      } else if (!isHovering && !reduceMotion) {
+        move(speed * dt);
+      }
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+
+    viewport.addEventListener("mouseenter", () => (isHovering = true));
+    viewport.addEventListener("mouseleave", () => (isHovering = false));
+
+    function cardStep() {
+      const first = track.children[0] as HTMLElement | undefined;
+      return first ? first.getBoundingClientRect().width * 0.75 : 200;
+    }
+
+    prevBtn?.addEventListener("click", () => animateTo(-cardStep()));
+    nextBtn?.addEventListener("click", () => animateTo(cardStep()));
+  }
+
+  initMenuCarousel();
+</script>
