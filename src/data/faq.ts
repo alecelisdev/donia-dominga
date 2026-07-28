@@ -29,10 +29,6 @@ export const faqs: FaqItem[] = [
     q: "¿Es apto para niños?",
     a: "Sí, es un espacio familiar. Ten en cuenta que en noches de shows el ambiente es más de música en vivo hasta tarde.",
   },
-  {
-    q: "¿Tienen opciones vegetarianas?",
-    a: "Sí, contamos con sándwich vegetariano, empanadas de queso y una variada selección de tortas y kuchen en nuestra cafetería.",
-  },
   // Eventos
   {
     q: "¿Los shows tienen costo adicional?",
