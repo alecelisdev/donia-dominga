@@ -6,9 +6,35 @@ import { allEvents, invitedArtists, todayIso } from "../data/events";
 // Fecha local del build — NO usar toISOString (desfasa el día en Chile)
 const buildTodayIso = todayIso();
 
-// El próximo evento ahora viene de Supabase (client-side, ver <script> abajo).
+// El próximo evento viene de Google Sheets (client-side, ver <script> abajo).
 // Los "últimos eventos" (curados a mano) siguen estáticos en events.ts.
 const past = allEvents.filter((ev) => ev.iso < buildTodayIso);
+
+// Mientras Google Sheets no esté configurado (PUBLIC_APPS_SCRIPT_URL sigue
+// siendo el placeholder), se hardcodea acá el próximo evento tal como
+// estaba cargado en Supabase — el <script> de abajo lo sobreescribe solo
+// en cuanto el fetch a Sheets empiece a traer datos reales.
+const FALLBACK_FEATURED_EVENT = {
+  artista: "Potencia",
+  genero: "Cumbia",
+  fecha: "2026-08-08",
+  hora: "20:30:00",
+  imagen_url:
+    "https://nbezmlsvoqisqjeacwhq.supabase.co/storage/v1/object/public/eventos/1785218634284-potencia.jpg",
+};
+
+function formatFechaBuild(iso: string): string {
+  const [y, m, d] = iso.split("-").map(Number);
+  const date = new Date(y, m - 1, d);
+  const label = date.toLocaleDateString("es-CL", {
+    weekday: "short",
+    day: "numeric",
+    month: "short",
+  });
+  return label.charAt(0).toUpperCase() + label.slice(1).replace(".", "");
+}
+
+const featuredMeta = `${FALLBACK_FEATURED_EVENT.genero} · ${formatFechaBuild(FALLBACK_FEATURED_EVENT.fecha)} · ${FALLBACK_FEATURED_EVENT.hora.slice(0, 5)} hrs`;
 ---
 
 <section
@@ -30,10 +56,12 @@ const past = allEvents.filter((ev) => ev.iso < buildTodayIso);
       </h2>
     </div>
 
-    <!-- Próximo evento: un único destacado, poblado client-side desde Supabase -->
+    <!-- Próximo evento: un único destacado. Arranca con el fallback hardcodeado
+         (ver frontmatter) y el <script> de abajo lo actualiza si Google Sheets
+         ya está configurado y trae un evento futuro real. -->
     <div
       data-featured-event
-      class="hidden reveal relative max-w-sm md:max-w-md mx-auto mb-20"
+      class="reveal relative max-w-xs mx-auto mb-20"
     >
       {/* Frame decorativo, mismo lenguaje visual que los platos destacados del Menú y Servicios */}
       <div class="absolute -top-3 -left-3 w-1/3 h-1/3 border-l-4 border-t-4 border-primary-container/30 pointer-events-none z-10" />
@@ -42,7 +70,8 @@ const past = allEvents.filter((ev) => ev.iso < buildTodayIso);
       <div class="card-lift group aspect-3/4 overflow-hidden bg-surface-container-high">
         <img
           data-featured-image
-          alt=""
+          src={FALLBACK_FEATURED_EVENT.imagen_url}
+          alt={FALLBACK_FEATURED_EVENT.artista}
           class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
         />
       </div>
@@ -56,11 +85,13 @@ const past = allEvents.filter((ev) => ev.iso < buildTodayIso);
           class="font-headline-lg text-on-surface text-lg md:text-xl font-bold"
           data-featured-artist
         >
+          {FALLBACK_FEATURED_EVENT.artista}
         </h3>
         <p
           class="text-on-surface-variant text-sm mt-1"
           data-featured-meta
         >
+          {featuredMeta}
         </p>
         <a
           href="#reserva"
@@ -71,10 +102,10 @@ const past = allEvents.filter((ev) => ev.iso < buildTodayIso);
       </div>
     </div>
 
-    <!-- Estado sin eventos futuros: visible por defecto (degradación honesta si JS falla/tarda) -->
+    <!-- Estado sin eventos futuros: oculto por defecto (ya hay un evento hardcodeado arriba) -->
     <div
       data-no-events
-      class="reveal border border-primary-container/15 bg-surface-container text-center px-6 py-14 mb-20 max-w-2xl mx-auto"
+      class="hidden reveal border border-primary-container/15 bg-surface-container text-center px-6 py-14 mb-20 max-w-2xl mx-auto"
     >
       <span
         class="material-symbols-outlined text-primary-container text-4xl mb-4"
@@ -193,7 +224,8 @@ const past = allEvents.filter((ev) => ev.iso < buildTodayIso);
 </section>
 
 <script>
-  import { supabase } from "../lib/supabase";
+  import { fetchTable } from "../lib/sheets";
+  import { todayIso } from "../data/events";
 
   interface Evento {
     artista: string;
@@ -215,25 +247,30 @@ const past = allEvents.filter((ev) => ev.iso < buildTodayIso);
     return label.charAt(0).toUpperCase() + label.slice(1).replace(".", "");
   }
 
+  // Progressive enhancement: mientras Google Sheets no esté configurado esto
+  // falla en silencio y se deja el evento hardcodeado del build (ver
+  // frontmatter de Events.astro) tal cual está en el HTML. En cuanto
+  // PUBLIC_APPS_SCRIPT_URL apunte a un Apps Script real con un evento
+  // futuro cargado, esto lo sobreescribe solo.
   async function loadFeaturedEvent() {
     const featuredEl = document.querySelector<HTMLElement>(
       "[data-featured-event]",
     );
-    const noEventsEl = document.querySelector<HTMLElement>("[data-no-events]");
     if (!featuredEl) return;
 
-    const today = new Date().toISOString().slice(0, 10);
-    const { data, error } = await supabase
-      .from("eventos")
-      .select("artista, genero, fecha, hora, descripcion, imagen_url")
-      .gte("fecha", today)
-      .order("fecha", { ascending: true })
-      .order("hora", { ascending: true })
-      .limit(1);
+    let rows: Evento[];
+    try {
+      rows = await fetchTable<Evento>("eventos");
+    } catch {
+      return;
+    }
 
-    if (error || !data || data.length === 0) return;
+    const today = todayIso();
+    const ev = rows
+      .filter((r) => r.fecha >= today)
+      .sort((a, b) => (a.fecha + a.hora).localeCompare(b.fecha + b.hora))[0];
 
-    const ev = data[0] as Evento;
+    if (!ev) return;
 
     const img = featuredEl.querySelector<HTMLImageElement>(
       "[data-featured-image]",
@@ -250,15 +287,6 @@ const past = allEvents.filter((ev) => ev.iso < buildTodayIso);
       const fechaHora = `${formatFecha(ev.fecha)} · ${ev.hora.slice(0, 5)} hrs`;
       metaEl.textContent = genero ? `${genero} · ${fechaHora}` : fechaHora;
     }
-
-    if (!ev.imagen_url) {
-      featuredEl
-        .querySelector<HTMLElement>("[data-featured-image]")
-        ?.parentElement?.classList.add("hidden");
-    }
-
-    featuredEl.classList.remove("hidden");
-    noEventsEl?.classList.add("hidden");
   }
 
   loadFeaturedEvent();

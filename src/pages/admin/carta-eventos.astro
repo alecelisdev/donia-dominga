@@ -100,13 +100,20 @@ import Layout from "../../layouts/Layout.astro";
 </Layout>
 
 <script>
-  import { supabase } from "../../lib/supabase";
+  import {
+    fetchTable,
+    createRow,
+    updateRow,
+    deleteRow,
+    getStoredPassword,
+    clearStoredPassword,
+  } from "../../lib/sheets";
 
   interface CartaItem {
     id: string;
     name: string;
     price: number;
-    description: string | null;
+    description: string;
     group: string;
     available: boolean;
     sort_order: number;
@@ -137,16 +144,13 @@ import Layout from "../../layouts/Layout.astro";
     return amount.toLocaleString("es-CL", { style: "currency", currency: "CLP", maximumFractionDigits: 0 });
   }
 
-  async function requireSession() {
-    const { data } = await supabase.auth.getSession();
-    if (!data.session) {
-      window.location.href = "/admin";
-    }
+  const password = getStoredPassword();
+  if (!password) {
+    window.location.href = "/admin";
   }
-  requireSession();
 
-  logoutBtn?.addEventListener("click", async () => {
-    await supabase.auth.signOut();
+  logoutBtn?.addEventListener("click", () => {
+    clearStoredPassword();
     window.location.href = "/admin";
   });
 
@@ -193,18 +197,24 @@ import Layout from "../../layouts/Layout.astro";
 
   async function loadItems() {
     if (!listEl) return;
-    const { data, error } = await supabase
-      .from("carta_eventos_items")
-      .select("*")
-      .order("group", { ascending: true })
-      .order("sort_order", { ascending: true });
-
-    if (error) {
-      listEl.innerHTML = `<p class="text-sm text-error">Error cargando la carta: ${error.message}</p>`;
+    let items: CartaItem[];
+    try {
+      const rows = await fetchTable<CartaItem>("carta_eventos_items");
+      items = rows
+        .map((item) => ({
+          ...item,
+          price: Number(item.price),
+          sort_order: Number(item.sort_order),
+        }))
+        .sort((a, b) => {
+          if (a.group !== b.group) return a.group < b.group ? -1 : 1;
+          return a.sort_order - b.sort_order;
+        });
+    } catch (err) {
+      listEl.innerHTML = `<p class="text-sm text-error">Error cargando la carta: ${err instanceof Error ? err.message : ""}</p>`;
       return;
     }
 
-    const items = (data ?? []) as CartaItem[];
     if (items.length === 0) {
       listEl.innerHTML = `<p class="text-sm text-on-surface-variant">Sin ítems registrados.</p>`;
       return;
@@ -261,9 +271,9 @@ import Layout from "../../layouts/Layout.astro";
   async function deleteItem(id: string) {
     if (!window.confirm("¿Borrar este ítem?")) return;
     showToast("loading", "Borrando ítem…");
-    const { error } = await supabase.from("carta_eventos_items").delete().eq("id", id);
-    if (error) {
-      showToast("error", "No se pudo borrar.", error.message);
+    const result = await deleteRow("carta_eventos_items", id, password ?? "");
+    if (!result.ok) {
+      showToast("error", "No se pudo borrar.", result.error);
       return;
     }
     showToast("success", "Ítem borrado.");
@@ -283,16 +293,16 @@ import Layout from "../../layouts/Layout.astro";
         name: nameInput?.value ?? "",
         price: Number(priceInput?.value ?? 0),
         group: groupInput?.value ?? "",
-        description: descriptionInput?.value || null,
+        description: descriptionInput?.value ?? "",
         sort_order: Number(sortOrderInput?.value ?? 0),
         available: availableInput?.checked ?? true,
       };
 
-      const { error } = id
-        ? await supabase.from("carta_eventos_items").update(payload).eq("id", id)
-        : await supabase.from("carta_eventos_items").insert(payload);
+      const result = id
+        ? await updateRow("carta_eventos_items", id, payload, password ?? "")
+        : await createRow("carta_eventos_items", payload, password ?? "");
 
-      if (error) throw error;
+      if (!result.ok) throw new Error(result.error);
 
       showToast("success", id ? "Ítem actualizado." : "Ítem creado.", nameInput?.value);
       resetForm();

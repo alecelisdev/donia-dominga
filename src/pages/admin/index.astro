@@ -12,17 +12,6 @@ import Layout from "../../layouts/Layout.astro";
 
       <form id="login-form" class="space-y-4">
         <div class="space-y-1">
-          <label for="email" class="text-xs uppercase tracking-wide text-on-surface-variant">Email</label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            required
-            autocomplete="email"
-            class="w-full bg-surface-container px-3 py-2.5 text-on-surface border border-primary-container/20 focus:border-primary-container focus:outline-none"
-          />
-        </div>
-        <div class="space-y-1">
           <label for="password" class="text-xs uppercase tracking-wide text-on-surface-variant">Contraseña</label>
           <input
             id="password"
@@ -49,19 +38,15 @@ import Layout from "../../layouts/Layout.astro";
 </Layout>
 
 <script>
-  import { supabase } from "../../lib/supabase";
+  import { login, setStoredPassword, getStoredPassword } from "../../lib/sheets";
 
   const form = document.getElementById("login-form") as HTMLFormElement | null;
   const errorEl = document.getElementById("login-error") as HTMLParagraphElement | null;
   const submitBtn = document.getElementById("login-submit") as HTMLButtonElement | null;
 
-  async function redirectIfLoggedIn() {
-    const { data } = await supabase.auth.getSession();
-    if (data.session) {
-      window.location.href = "/admin/eventos";
-    }
+  if (getStoredPassword()) {
+    window.location.href = "/admin/eventos";
   }
-  redirectIfLoggedIn();
 
   form?.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -69,20 +54,28 @@ import Layout from "../../layouts/Layout.astro";
     if (submitBtn) submitBtn.disabled = true;
 
     const formData = new FormData(form);
-    const email = String(formData.get("email") ?? "");
     const password = String(formData.get("password") ?? "");
 
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-
-    if (error) {
+    try {
+      const result = await login(password);
+      if (!result.ok) {
+        if (errorEl) {
+          errorEl.textContent = result.error ?? "Contraseña incorrecta.";
+          errorEl.classList.remove("hidden");
+        }
+        if (submitBtn) submitBtn.disabled = false;
+        return;
+      }
+    } catch {
       if (errorEl) {
-        errorEl.textContent = "Email o contraseña incorrectos.";
+        errorEl.textContent = "No se pudo conectar. Intenta de nuevo.";
         errorEl.classList.remove("hidden");
       }
       if (submitBtn) submitBtn.disabled = false;
       return;
     }
 
+    setStoredPassword(password);
     window.location.href = "/admin/eventos";
   });
 </script>

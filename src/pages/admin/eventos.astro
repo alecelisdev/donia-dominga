@@ -53,14 +53,13 @@ import Layout from "../../layouts/Layout.astro";
         </div>
 
         <div class="space-y-1">
-          <label for="imagen" class="text-xs uppercase tracking-wide text-on-surface-variant">Foto (opcional)</label>
+          <label for="imagen" class="text-xs uppercase tracking-wide text-on-surface-variant">URL de la imagen (opcional)</label>
           <input
             id="imagen"
             name="imagen"
-            type="file"
-            accept="image/*"
-            capture="environment"
-            class="w-full text-sm text-on-surface-variant cursor-pointer file:mr-3 file:cursor-pointer file:border-0 file:rounded-none file:bg-primary-container file:text-on-primary-container file:px-4 file:py-2 file:text-sm file:font-semibold file:hover:brightness-110 file:transition-all"
+            type="url"
+            placeholder="https://..."
+            class="w-full bg-surface-container px-3 py-2.5 text-on-surface border border-primary-container/20 focus:border-primary-container focus:outline-none"
           />
           <img id="imagen-preview" class="hidden mt-2 max-h-40 border border-primary-container/20" />
         </div>
@@ -107,16 +106,23 @@ import Layout from "../../layouts/Layout.astro";
 </Layout>
 
 <script>
-  import { supabase } from "../../lib/supabase";
+  import {
+    fetchTable,
+    createRow,
+    updateRow,
+    deleteRow,
+    getStoredPassword,
+    clearStoredPassword,
+  } from "../../lib/sheets";
 
   interface Evento {
     id: string;
     artista: string;
-    genero: string | null;
+    genero: string;
     fecha: string;
     hora: string;
-    descripcion: string | null;
-    imagen_url: string | null;
+    descripcion: string;
+    imagen_url: string;
   }
 
   const form = document.getElementById("evento-form") as HTMLFormElement | null;
@@ -140,19 +146,15 @@ import Layout from "../../layouts/Layout.astro";
   const toastDetailEl = document.getElementById("toast-detail") as HTMLParagraphElement | null;
   const toastCloseBtn = document.getElementById("toast-close") as HTMLButtonElement | null;
 
-  let currentImagenUrl: string | null = null;
   let toastHideTimeout: ReturnType<typeof setTimeout> | undefined;
 
-  async function requireSession() {
-    const { data } = await supabase.auth.getSession();
-    if (!data.session) {
-      window.location.href = "/admin";
-    }
+  const password = getStoredPassword();
+  if (!password) {
+    window.location.href = "/admin";
   }
-  requireSession();
 
-  logoutBtn?.addEventListener("click", async () => {
-    await supabase.auth.signOut();
+  logoutBtn?.addEventListener("click", () => {
+    clearStoredPassword();
     window.location.href = "/admin";
   });
 
@@ -162,7 +164,6 @@ import Layout from "../../layouts/Layout.astro";
     if (formTitle) formTitle.textContent = "Nuevo evento";
     cancelBtn?.classList.add("hidden");
     imagenPreview?.classList.add("hidden");
-    currentImagenUrl = null;
   }
 
   function hideToast() {
@@ -199,18 +200,16 @@ import Layout from "../../layouts/Layout.astro";
 
   async function loadEventos() {
     if (!listEl) return;
-    const { data, error } = await supabase
-      .from("eventos")
-      .select("*")
-      .order("fecha", { ascending: true })
-      .order("hora", { ascending: true });
-
-    if (error) {
-      listEl.innerHTML = `<p class="text-sm text-error">Error cargando eventos: ${error.message}</p>`;
+    let eventos: Evento[];
+    try {
+      eventos = (await fetchTable<Evento>("eventos")).sort((a, b) =>
+        (a.fecha + a.hora).localeCompare(b.fecha + b.hora),
+      );
+    } catch (err) {
+      listEl.innerHTML = `<p class="text-sm text-error">Error cargando eventos: ${err instanceof Error ? err.message : ""}</p>`;
       return;
     }
 
-    const eventos = (data ?? []) as Evento[];
     if (eventos.length === 0) {
       listEl.innerHTML = `<p class="text-sm text-on-surface-variant">Sin eventos registrados.</p>`;
       return;
@@ -247,7 +246,7 @@ import Layout from "../../layouts/Layout.astro";
     if (fechaInput) fechaInput.value = ev.fecha;
     if (horaInput) horaInput.value = ev.hora.slice(0, 5);
     if (descripcionInput) descripcionInput.value = ev.descripcion ?? "";
-    currentImagenUrl = ev.imagen_url;
+    if (imagenInput) imagenInput.value = ev.imagen_url ?? "";
     if (imagenPreview && ev.imagen_url) {
       imagenPreview.src = ev.imagen_url;
       imagenPreview.classList.remove("hidden");
@@ -260,19 +259,22 @@ import Layout from "../../layouts/Layout.astro";
   async function deleteEvento(id: string) {
     if (!window.confirm("¿Borrar este evento?")) return;
     showToast("loading", "Borrando evento…");
-    const { error } = await supabase.from("eventos").delete().eq("id", id);
-    if (error) {
-      showToast("error", "No se pudo borrar.", error.message);
+    const result = await deleteRow("eventos", id, password ?? "");
+    if (!result.ok) {
+      showToast("error", "No se pudo borrar.", result.error);
       return;
     }
     showToast("success", "Evento borrado.");
     loadEventos();
   }
 
-  imagenInput?.addEventListener("change", () => {
-    const file = imagenInput.files?.[0];
-    if (!file || !imagenPreview) return;
-    imagenPreview.src = URL.createObjectURL(file);
+  imagenInput?.addEventListener("input", () => {
+    const url = imagenInput.value.trim();
+    if (!url || !imagenPreview) {
+      imagenPreview?.classList.add("hidden");
+      return;
+    }
+    imagenPreview.src = url;
     imagenPreview.classList.remove("hidden");
   });
 
@@ -285,30 +287,20 @@ import Layout from "../../layouts/Layout.astro";
     showToast("loading", id ? "Guardando cambios…" : "Creando evento…");
 
     try {
-      let imagenUrl = currentImagenUrl;
-      const file = imagenInput?.files?.[0];
-      if (file) {
-        const path = `${Date.now()}-${file.name.replace(/\s+/g, "-")}`;
-        const { error: uploadError } = await supabase.storage.from("eventos").upload(path, file);
-        if (uploadError) throw uploadError;
-        const { data: publicUrlData } = supabase.storage.from("eventos").getPublicUrl(path);
-        imagenUrl = publicUrlData.publicUrl;
-      }
-
       const payload = {
         artista: artistaInput?.value ?? "",
-        genero: generoInput?.value || null,
+        genero: generoInput?.value ?? "",
         fecha: fechaInput?.value ?? "",
         hora: horaInput?.value ?? "",
-        descripcion: descripcionInput?.value || null,
-        imagen_url: imagenUrl,
+        descripcion: descripcionInput?.value ?? "",
+        imagen_url: imagenInput?.value.trim() ?? "",
       };
 
-      const { error } = id
-        ? await supabase.from("eventos").update(payload).eq("id", id)
-        : await supabase.from("eventos").insert(payload);
+      const result = id
+        ? await updateRow("eventos", id, payload, password ?? "")
+        : await createRow("eventos", payload, password ?? "");
 
-      if (error) throw error;
+      if (!result.ok) throw new Error(result.error);
 
       showToast("success", id ? "Evento actualizado." : "Evento creado.", artistaInput?.value);
       resetForm();

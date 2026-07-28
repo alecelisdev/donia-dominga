@@ -1,0 +1,33 @@
+id,name,price,description,group,available,sort_order
+521188f8-a329-495d-8cf6-546d24cb4fba,"Tortas y Kuchen de la Casa",3500,"Precio por porción","Algo Dulce",TRUE,0
+a314e908-d760-47dc-b367-b4a19acd6d86,"Café / Té",2000,,"Algo Dulce",TRUE,10
+bf7b5863-17dc-4dc9-90c0-5fda68f5dce9,"Café Máquina Sabores",3000,,"Algo Dulce",TRUE,20
+492d8e49-d09b-4cd5-98b7-fc02cf1dfa2f,"Bebida",2800,,"Bebidas y Jugos",TRUE,0
+d3c09e62-771e-476b-960a-9aa6e442e35a,"Jugo Natural",4000,"Piña · frutilla","Bebidas y Jugos",TRUE,10
+007b5d0a-8f12-467c-9259-928867e5ddd4,"Austral Calafate",4500,,"Cervezas",TRUE,0
+0d6f9d25-6278-4aa0-8fe0-d3763b8aff77,"Corona",3500,,"Cervezas",TRUE,10
+f431c892-618d-496d-bb25-18f46ba32034,"Kuntsman Torobayo",4500,,"Cervezas",TRUE,20
+f2841bf5-4901-483c-84a4-4894ca22748a,"Michelada",5500,,"Cervezas",TRUE,30
+da4fac8c-4f90-4f13-8324-e739c816b7eb,"Dominga",15000,"Queso fundido · palta · tomate · mayonesa","Hamburguesas",TRUE,0
+fece7c21-3334-4426-b540-1ae31e6b6afd,"A lo Pobre",9500,"Queso fundido · cebolla caramelizada · huevo frito","Hamburguesas",TRUE,10
+3cf0a008-106b-4471-b5a5-f441e2d76646,"La Mallarauquina",9500,"Lechuga · palta · tomate · cebolla morada · mayonesa","Hamburguesas",TRUE,20
+4a8a9227-ee45-47d8-9275-fb080b55b4fe,"Flat Iron a lo Pobre",13000,,"Platos de Fondo",TRUE,0
+fefc8922-e161-411c-a37b-ed68abf0eae1,"Filete de Pollo a la Grilla",13000,,"Platos de Fondo",TRUE,10
+1a3e1c0a-6374-418a-a445-b1d902a85f85,"Pisco Sour de la Casa",5000,,"Sour",TRUE,0
+5297277a-655f-407a-b6ff-25a44491995c,"Mango Sour",5000,,"Sour",TRUE,10
+de428377-ee2a-464b-8686-ebe9099163a6,"Chorrillana",15000,,"Tablas para Compartir",TRUE,0
+c5cb3261-7c92-4ad6-89da-9bd6e5a66750,"Surtido de Empanadas",15000,"Queso · mechada · camarón — 12 unidades y salsa de la casa","Tablas para Compartir",TRUE,10
+ead6bc4e-af22-4db8-b6e9-7095ab146406,"Corte a la parrilla",13000,,"Tablas para Compartir",TRUE,20
+8cf3e6f5-ec9f-4198-a512-6fc92ba17101,"Pisco con Bebida",5000,,"Tragos de la Casa",TRUE,0
+4d84b762-602e-4c13-b290-03210deced8a,"Ron con Bebida",4500,,"Tragos de la Casa",TRUE,10
+142dcc35-5042-4cf8-bd1a-634098b0b5d2,"Mojito Tradicional",6000,,"Tragos de la Casa",TRUE,20
+4f2862a2-c396-496c-9774-b6f3d0d10926,"Mojito Sabores",6500,,"Tragos de la Casa",TRUE,30
+dbdadcc1-4f30-4f09-91bb-2384af84a4ff,"Aperol Spritz",5000,,"Tragos de la Casa",TRUE,40
+861060c6-a7aa-4158-8479-e552f19a4a0e,"Ramazzotti Spritz",6500,,"Tragos de la Casa",TRUE,50
+6cda987b-693f-4790-85da-fe9a5817b773,"Caipiriña",6000,,"Tragos de la Casa",TRUE,60
+b301b654-6f69-44ea-a025-56f0468e40cc,"Tequila Margarita",6000,,"Tragos de la Casa",TRUE,70
+42333ea8-04e1-4487-acc2-e46ac2ac33dc,"Toro de Piedra Gran Reserva Cabernet",17000,,"Vinos (750cc)",TRUE,0
+20bd4c02-7ef7-4081-abe5-0120dc6aa86c,"Casa Silva Merlot",13000,,"Vinos (750cc)",TRUE,10
+eae41cad-58c9-4112-97eb-fdf6606ab644,"Doña Dominga Gran Reserva Carmenère",15000,,"Vinos (750cc)",TRUE,20
+3784210f-47fb-48f6-90d8-8580a170adee,"Johnnie Walker Negro",7000,,"Whisky",TRUE,0
+d90469c4-4a99-430d-b879-d0efac3bdb1b,"Johnnie Walker Rojo",6000,,"Whisky",TRUE,10

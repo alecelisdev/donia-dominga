@@ -1,6 +1,6 @@
-<!-- Carta definitiva de eventos. El listado de platos se carga en vivo desde Supabase
-     (tabla carta_eventos_items) — para cambiar precios/platos usar /admin/carta-eventos,
-     no editar esta lista a mano. -->
+<!-- Carta definitiva de eventos. El listado de platos se carga en vivo desde la Google
+     Sheet (pestaña carta_eventos_items) vía Apps Script — para cambiar precios/platos
+     usar /admin/carta-eventos, no editar esta lista a mano. -->
 <!DOCTYPE html>
 <html lang="es">
 
@@ -255,13 +255,14 @@
   </div>
 
   <script>
-    // Esta carta se alimenta en vivo desde Supabase (tabla carta_eventos_items).
+    // Esta carta se alimenta en vivo desde la Google Sheet (pestaña carta_eventos_items)
+    // vía el Apps Script Web App que hace de backend (ver appscript/Code.gs).
     // Los cambios de precios/platos se hacen desde /admin/carta-eventos, NO editando este archivo.
-    var SUPABASE_URL = "https://nbezmlsvoqisqjeacwhq.supabase.co";
-    var SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5iZXptbHN2b3Fpc3FqZWFjd2hxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ3NjY0MDQsImV4cCI6MjEwMDM0MjQwNH0.72u-qNOXkfT1SsaGt1N9_h8AzJYVYMcPZIlzFJSzdbk";
+    // TODO: reemplazar por la URL /exec real luego de desplegar el Apps Script.
+    var APPS_SCRIPT_URL = "REEMPLAZA_CON_TU_APPS_SCRIPT_URL";
 
     function formatCLP(amount) {
-      return "$" + Math.round(amount).toLocaleString("es-CL");
+      return "$" + Math.round(Number(amount)).toLocaleString("es-CL");
     }
 
     function escapeHtml(str) {
@@ -272,21 +273,23 @@
 
     var container = document.getElementById("menu-items");
 
-    fetch(
-      SUPABASE_URL +
-        "/rest/v1/carta_eventos_items?select=*&available=eq.true&order=group.asc,sort_order.asc",
-      {
-        headers: {
-          apikey: SUPABASE_ANON_KEY,
-          Authorization: "Bearer " + SUPABASE_ANON_KEY,
-        },
-      }
-    )
+    fetch(APPS_SCRIPT_URL + "?table=carta_eventos_items")
       .then(function (res) {
         if (!res.ok) throw new Error("Error al cargar la carta");
         return res.json();
       })
-      .then(function (items) {
+      .then(function (data) {
+        if (!data.ok) throw new Error(data.error || "Error al cargar la carta");
+
+        var items = data.rows
+          .filter(function (item) {
+            return item.available === true;
+          })
+          .sort(function (a, b) {
+            if (a.group !== b.group) return a.group < b.group ? -1 : 1;
+            return Number(a.sort_order) - Number(b.sort_order);
+          });
+
         if (!items.length) {
           container.innerHTML =
             '<p class="menu-status">La carta se está actualizando, vuelve pronto.</p>';
