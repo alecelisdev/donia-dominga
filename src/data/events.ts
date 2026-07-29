@@ -42,6 +42,9 @@ export const allEvents: DoñaDomingaEvent[] = [
 // solo para que la gente sepa qué esperar.
 export const invitedArtists: string[] = [
   "Elenco del Teatro en Chilevisión",
+  "Don Carter",
+  "Garras de amor",
+  "Los atletas de la risa",
   "María Jimena Pereyra",
   "Carolina Soto",
   "Grupo La Cumbia",
