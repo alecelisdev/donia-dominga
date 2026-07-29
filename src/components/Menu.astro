@@ -1,18 +1,18 @@
 ---
 import { Image } from "astro:assets";
 import { getMenuItem } from "../data/menu";
-import flatIronImg from "../assets/menu/destacado-2.png";
-import corteParrillaImg from "../assets/menu/destacado-1.jpeg";
+import flatIronImg from "../assets/menu/destacado-2.webp";
+import corteParrillaImg from "../assets/menu/destacado-1.webp";
 import restaurantImg from "../assets/menu/restaurant.webp";
-import carrusel1 from "../assets/menu/carrusel-1.jpeg";
-import carrusel2 from "../assets/menu/carrusel-2.jpeg";
-import carrusel3 from "../assets/menu/carrusel-3.jpg";
-import carrusel4 from "../assets/menu/carrusel-4.jpg";
-import carrusel5 from "../assets/menu/carrusel-5.jpg";
-import carrusel6 from "../assets/menu/carrusel-6.jpg";
-import carrusel7 from "../assets/menu/carrusel-7.jpg";
-import carrusel8 from "../assets/menu/carrusel-8.png";
-import carrusel9 from "../assets/menu/carrusel-9.png";
+import carrusel1 from "../assets/menu/carrusel-1.webp";
+import carrusel2 from "../assets/menu/carrusel-2.webp";
+import carrusel3 from "../assets/menu/carrusel-3.webp";
+import carrusel4 from "../assets/menu/carrusel-4.webp";
+import carrusel5 from "../assets/menu/carrusel-5.webp";
+import carrusel6 from "../assets/menu/carrusel-6.webp";
+import carrusel7 from "../assets/menu/carrusel-7.webp";
+import carrusel8 from "../assets/menu/carrusel-8.webp";
+import carrusel9 from "../assets/menu/carrusel-9.webp";
 
 // TODO: reemplazar el placeholder de Filete de Pollo por su foto real cuando esté disponible.
 const dishes = [
@@ -250,7 +250,9 @@ const stripLoop = [...strip, ...strip];
     viewport.addEventListener("mouseleave", () => (isHovering = false));
 
     function cardStep() {
-      const first = track.children[0] as HTMLElement | undefined;
+      const first = (track as HTMLElement).children[0] as
+        | HTMLElement
+        | undefined;
       return first ? first.getBoundingClientRect().width * 0.75 : 200;
     }
 

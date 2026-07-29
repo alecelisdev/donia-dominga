@@ -1,8 +1,8 @@
 import type { ImageMetadata } from "astro";
-import teatroImg from "../assets/events/teatro.jpg";
-import mariaJimenaCarolinaImg from "../assets/events/Maria-jimena-pereyra-carolina-soto.png";
-import betoEspinozaImg from "../assets/events/beto-espinoza.jpg";
-import claudioNareaImg from "../assets/events/claudio-narea.jpg";
+import teatroImg from "../assets/events/teatro.webp";
+import mariaJimenaCarolinaImg from "../assets/events/melon-melame.webp";
+import betoEspinozaImg from "../assets/events/erick-berrios.webp";
+import claudioNareaImg from "../assets/events/claudio-narea.webp";
 
 export interface DoñaDomingaEvent {
   // Sin `image` → la card se renderiza con placeholder (ver Events.astro)
@@ -24,12 +24,12 @@ export const allEvents: DoñaDomingaEvent[] = [
   {
     image: mariaJimenaCarolinaImg,
     iso: "2026-06-05",
-    artist: "María Jimena Pereyra & Carolina Soto",
+    artist: "Melón Y Melame",
   },
   {
     image: betoEspinozaImg,
     iso: "2026-06-10",
-    artist: "Beto Espinoza",
+    artist: "Erick Berríos",
   },
   {
     image: claudioNareaImg,
