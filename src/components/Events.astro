@@ -2,6 +2,7 @@
 import { Image } from "astro:assets";
 import SocialIcon from "./SocialIcon.astro";
 import { allEvents, invitedArtists, todayIso } from "../data/events";
+import potenciaImg from "../assets/events/potencia.webp";
 
 // Fecha local del build — NO usar toISOString (desfasa el día en Chile)
 const buildTodayIso = todayIso();
@@ -19,8 +20,6 @@ const FALLBACK_FEATURED_EVENT = {
   genero: "Cumbia",
   fecha: "2026-08-08",
   hora: "20:30:00",
-  imagen_url:
-    "https://nbezmlsvoqisqjeacwhq.supabase.co/storage/v1/object/public/eventos/1785218634284-potencia.jpg",
 };
 
 function formatFechaBuild(iso: string): string {
@@ -68,9 +67,9 @@ const featuredMeta = `${FALLBACK_FEATURED_EVENT.genero} · ${formatFechaBuild(FA
       <div class="absolute -bottom-3 -right-3 w-1/3 h-1/3 border-r-4 border-b-4 border-primary-container/10 pointer-events-none z-10" />
 
       <div class="card-lift group aspect-3/4 overflow-hidden bg-surface-container-high">
-        <img
+        <Image
           data-featured-image
-          src={FALLBACK_FEATURED_EVENT.imagen_url}
+          src={potenciaImg}
           alt={FALLBACK_FEATURED_EVENT.artista}
           class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
         />
