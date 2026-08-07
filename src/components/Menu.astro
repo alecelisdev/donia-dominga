@@ -12,6 +12,10 @@ import carrusel6 from "../assets/menu/carrusel-6.webp";
 import carrusel7 from "../assets/menu/carrusel-7.webp";
 import carrusel8 from "../assets/menu/carrusel-8.webp";
 import carrusel9 from "../assets/menu/carrusel-9.webp";
+import carrusel10 from "../assets/menu/carrusel-10.webp";
+import carrusel11 from "../assets/menu/carrusel-11.webp";
+import carrusel12 from "../assets/menu/carrusel-12.webp";
+import carrusel13 from "../assets/menu/carrusel-13.webp";
 
 // TODO: reemplazar el placeholder de Filete de Pollo por su foto real cuando esté disponible.
 // Estas 3 fotos son solo vitrina visual — no tienen conexión con la carta real
@@ -33,6 +37,10 @@ const strip = [
   carrusel7,
   carrusel8,
   carrusel9,
+  carrusel10,
+  carrusel11,
+  carrusel12,
+  carrusel13,
 ];
 // Duplicado para el loop infinito del carrusel (misma técnica que Testimonials.astro)
 const stripLoop = [...strip, ...strip];
@@ -254,8 +262,7 @@ const stripLoop = [...strip, ...strip];
 
     function cardStep() {
       const first = (track as HTMLElement).children[0] as
-        | HTMLElement
-        | undefined;
+        HTMLElement | undefined;
       return first ? first.getBoundingClientRect().width * 0.75 : 200;
     }
 
