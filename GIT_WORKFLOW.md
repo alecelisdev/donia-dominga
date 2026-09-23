@@ -9,6 +9,13 @@ Este repositorio usa **GitHub Flow**. Esta guía aplica a cualquier agente o per
 3. Conserva los cambios preexistentes. Si no pertenecen a la tarea, trabaja en una rama o worktree limpio desde `main` y no los incluyas en tus commits. No hagas `reset --hard`, `clean`, `stash` ni sobrescribas archivos ajenos para despejar el árbol sin autorización.
 4. Si hay remoto, actualiza referencias con `git fetch` y crea la rama desde la rama principal actualizada. Si no hay remoto, crea una rama local desde `main` y recuerda que el PR queda pendiente hasta configurar GitHub.
 
+## Si trabajas en Orca
+
+- Para una tarea nueva, usa el `+` del proyecto y selecciona **Branch from**: `origin/main` o `origin/master` según la rama principal de este repositorio. Si no hay remoto, selecciona `main` o `master` local. Comprueba el base ref configurado en Orca; no tomes `develop` por defecto.
+- Pon un nombre descriptivo a la tarea; Orca crea un worktree y su rama. Si ya estás dentro del worktree de la tarea, **no crees otra rama** con `git switch -c` ni cambies a la rama principal para editar.
+- Usa un worktree por cambio coherente que pueda revisarse y fusionarse por separado, no por sesión, archivo o agente. Reutiliza el mismo worktree al continuar la tarea otro día. Separa cambios independientes o alternativas en worktrees distintos.
+- Mantén el checkout principal para consulta y sincronización. Al terminar, prepara el PR, fusiona según las reglas de esta guía y cierra el worktree cuando ya no sea necesario.
+
 ## Para cada cambio
 
 1. Crea una rama corta por objetivo: `feat/descripcion`, `fix/descripcion`, `docs/descripcion` o `chore/descripcion`. Si varias tareas son independientes, usa ramas distintas. Evita trabajo nuevo directo en `main`.
